@@ -2,33 +2,33 @@ import {Set} from '@nlib/global';
 import {
     ValueOf,
     Definition,
-    DefinitionEnum as IEnum,
-    DefinitionCandidates as ICandidates,
-    DefinitionConditions as IConditions,
-    DefinitionDictionary as IDictionary,
+    DefinitionEnum,
+    DefinitionCandidates,
+    DefinitionConditions,
+    DefinitionDictionary,
 } from './generics';
 
-export class DefinitionEnum<T> extends Set<T> implements IEnum<T> {}
-export class DefinitionCandidates<T> extends Set<Definition<T>> implements ICandidates<T> {}
-export class DefinitionConditions<T> extends Set<Definition<Partial<T>>> implements IConditions<T> {}
-export class DefinitionDictionary<T> extends Set<Definition<ValueOf<T>>> implements IDictionary<T> {}
+export class DefinitionEnumSet<T> extends Set<T> implements DefinitionEnum<T> {}
+export class DefinitionCandidatesSet<T> extends Set<Definition<T>> implements DefinitionCandidates<T> {}
+export class DefinitionConditionsSet<T> extends Set<Definition<Partial<T>>> implements DefinitionConditions<T> {}
+export class DefinitionDictionarySet<T> extends Set<Definition<ValueOf<T>>> implements DefinitionDictionary<T> {}
 
-export const isDefinitionEnum = <T>(input: Definition<T>): input is IEnum<T> => input instanceof DefinitionEnum;
-export const isDefinitionCandidates = <T>(input: Definition<T>): input is ICandidates<T> => input instanceof DefinitionCandidates;
-export const isDefinitionConditions = <T>(input: Definition<T>): input is IConditions<T> => input instanceof DefinitionConditions;
-export const isDefinitionDictionary = <T>(input: Definition<T>): input is IDictionary<T> => input instanceof DefinitionDictionary;
+export const isDefinitionEnumSet = <T>(input: Definition<T>): input is DefinitionEnum<T> => input instanceof DefinitionEnumSet;
+export const isDefinitionCandidatesSet = <T>(input: Definition<T>): input is DefinitionCandidates<T> => input instanceof DefinitionCandidatesSet;
+export const isDefinitionConditionsSet = <T>(input: Definition<T>): input is DefinitionConditions<T> => input instanceof DefinitionConditionsSet;
+export const isDefinitionDictionarySet = <T>(input: Definition<T>): input is DefinitionDictionary<T> => input instanceof DefinitionDictionarySet;
 
 export const definition = {
-    enum: <T>(...data: Array<T>): DefinitionEnum<T> => {
-        return new DefinitionEnum<T>(data);
+    enum: <T>(...data: Array<T>): DefinitionEnumSet<T> => {
+        return new DefinitionEnumSet<T>(data);
     },
-    some: <T>(...data: Array<Definition<any>>): DefinitionCandidates<T> => {
-        return new DefinitionCandidates<T>(data);
+    some: <T>(...data: Array<Definition<any>>): DefinitionCandidatesSet<T> => {
+        return new DefinitionCandidatesSet<T>(data);
     },
-    every: <T>(...data: Array<Definition<any>>): DefinitionConditions<T> => {
-        return new DefinitionConditions<T>(data);
+    every: <T>(...data: Array<Definition<any>>): DefinitionConditionsSet<T> => {
+        return new DefinitionConditionsSet<T>(data);
     },
-    dictionary: <T>(...data: Array<Definition<ValueOf<T>>>): DefinitionDictionary<T> => {
-        return new DefinitionDictionary<T>(data);
+    dictionary: <T>(...data: Array<Definition<ValueOf<T>>>): DefinitionDictionarySet<T> => {
+        return new DefinitionDictionarySet<T>(data);
     },
 };

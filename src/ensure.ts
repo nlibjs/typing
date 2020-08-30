@@ -12,10 +12,10 @@ import {
     Definition,
 } from './generics';
 import {
-    isDefinitionEnum,
-    isDefinitionCandidates,
-    isDefinitionDictionary,
-    isDefinitionConditions,
+    isDefinitionEnumSet,
+    isDefinitionCandidatesSet,
+    isDefinitionDictionarySet,
+    isDefinitionConditionsSet,
 } from './definition';
 import {is$Function} from './is$/Function';
 import {is$Array} from './is$/Array';
@@ -196,16 +196,16 @@ export const checkError = <T>(
     if (is$Function(definition)) {
         return checkDefinitionFunctionError<T>(input, definition, path);
     }
-    if (isDefinitionEnum<T>(definition)) {
+    if (isDefinitionEnumSet<T>(definition)) {
         return checkDefinitionEnumError<T>(input, definition, path);
     }
-    if (isDefinitionCandidates<T>(definition)) {
+    if (isDefinitionCandidatesSet<T>(definition)) {
         return checkDefinitionCandidatesError<T>(input, definition, path);
     }
-    if (isDefinitionDictionary<T>(definition)) {
+    if (isDefinitionDictionarySet<T>(definition)) {
         return checkDefinitionDictionaryError<T>(input, definition, path);
     }
-    if (isDefinitionConditions<T>(definition)) {
+    if (isDefinitionConditionsSet<T>(definition)) {
         return checkDefinitionConditionsError<T>(input, definition, path);
     }
     if ((is$Array as TypeGuardOf<DefinitionArray<T>>)(definition)) {

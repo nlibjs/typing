@@ -14,10 +14,10 @@ import {
     TypeChecker,
 } from './generics';
 import {
-    isDefinitionEnum,
-    isDefinitionCandidates,
-    isDefinitionDictionary,
-    isDefinitionConditions,
+    isDefinitionEnumSet,
+    isDefinitionCandidatesSet,
+    isDefinitionDictionarySet,
+    isDefinitionConditionsSet,
 } from './definition';
 import {is$Function} from './is$/Function';
 import {is$ObjectLike} from './is$/ObjectLike';
@@ -42,7 +42,7 @@ const check = <T>(
     if ((is$Function as TypeGuardOf<TypeGuardOf<T>>)(definition)) {
         return definition(input);
     }
-    if (isDefinitionEnum<T>(definition)) {
+    if (isDefinitionEnumSet<T>(definition)) {
         for (const value of definition) {
             if (value === input) {
                 return true;
@@ -50,10 +50,10 @@ const check = <T>(
         }
         return false;
     }
-    if (isDefinitionCandidates<T>(definition)) {
+    if (isDefinitionCandidatesSet<T>(definition)) {
         return checkCandidates<T>(input, definition);
     }
-    if (isDefinitionDictionary<T>(definition)) {
+    if (isDefinitionDictionarySet<T>(definition)) {
         if (!is$ObjectLike(input)) {
             return false;
         }
@@ -64,7 +64,7 @@ const check = <T>(
         }
         return true;
     }
-    if (isDefinitionConditions<T>(definition)) {
+    if (isDefinitionConditionsSet<T>(definition)) {
         for (const candidate of definition) {
             if (!check<Partial<T>>(input, candidate)) {
                 return false;

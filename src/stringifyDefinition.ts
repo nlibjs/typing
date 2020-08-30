@@ -5,10 +5,10 @@ import {
     Definition,
 } from './generics';
 import {
-    isDefinitionEnum,
-    isDefinitionCandidates,
-    isDefinitionDictionary,
-    isDefinitionConditions,
+    isDefinitionEnumSet,
+    isDefinitionCandidatesSet,
+    isDefinitionDictionarySet,
+    isDefinitionConditionsSet,
 } from './definition';
 import {is$Function} from './is$/Function';
 import {is$Array} from './is$/Array';
@@ -51,13 +51,13 @@ const stringify = function* (
         yield `${indent}${definition.type}\n`;
     } else if (is$Function(definition)) {
         yield `${indent}${definition.toString()}`;
-    } else if (isDefinitionEnum<any>(definition)) {
+    } else if (isDefinitionEnumSet<any>(definition)) {
         yield `${indent}${[...definition].map((value) => JSON.stringify(value)).join('|')}`;
-    } else if (isDefinitionCandidates<any>(definition)) {
+    } else if (isDefinitionCandidatesSet<any>(definition)) {
         yield* stringifyIterableDefinitions(definition, indent, ancestors, 'Some');
-    } else if (isDefinitionDictionary<any>(definition)) {
+    } else if (isDefinitionDictionarySet<any>(definition)) {
         yield* stringifyIterableDefinitions(definition, indent, ancestors, 'Dictionary');
-    } else if (isDefinitionConditions<any>(definition)) {
+    } else if (isDefinitionConditionsSet<any>(definition)) {
         yield* stringifyIterableDefinitions(definition, indent, ancestors, 'Every');
     } else if ((is$Array as TypeGuardOf<DefinitionArray<any>>)(definition)) {
         yield* stringifyIterableDefinitions(definition, indent, ancestors, '', '[', ']');
