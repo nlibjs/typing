@@ -1,4 +1,4 @@
-import {AppError} from '@nlib/global';
+import {AppError, JSON, Object} from '@nlib/global';
 import {
     ValueOf,
     TypeGuardOf,
@@ -65,7 +65,7 @@ const checkDefinitionEnumError = <T>(
         path,
         message: 'The input is not found in the enum.',
     };
-}
+};
 
 const checkDefinitionCandidatesError = <T>(
     input: any,

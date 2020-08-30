@@ -1,4 +1,5 @@
 import ava, {ThrowsExpectation} from 'ava';
+import {JSON} from '@nlib/global';
 import {TypeChecker} from './generics';
 import {ensure} from './ensure';
 

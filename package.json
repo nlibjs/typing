@@ -60,6 +60,44 @@
     "eslintConfig": {
         "extends": [
             "@nlib/eslint-config"
+        ],
+        "rules": {
+            "@nlib/restrict-globals": "error"
+        },
+        "overrides": [
+            {
+                "files": [
+                    "src/is/*.ts",
+                    "src/is$/*.ts",
+                    "src/createTypeChecker.ts",
+                    "src/definition.ts",
+                    "src/ensure.ts",
+                    "src/generics.ts",
+                    "src/stringifyDefinition.ts",
+                    "src/stringifyDefinition.test.ts",
+                    "src/testTypeChecker.ts"
+                ],
+                "rules": {
+                    "@typescript-eslint/no-explicit-any": "off",
+                    "@typescript-eslint/unbound-method": "off"
+                }
+            },
+            {
+                "files": [
+                    "src/createTypeChecker.ts"
+                ],
+                "rules": {
+                    "max-lines-per-function": "off"
+                }
+            },
+            {
+                "files": [
+                    "src/ensure.ts"
+                ],
+                "rules": {
+                    "@typescript-eslint/no-unsafe-assignment": "off"
+                }
+            }
         ]
     },
     "commitlint": {

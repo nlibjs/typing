@@ -1,3 +1,4 @@
+import {JSON, Object} from '@nlib/global';
 import {
     TypeGuardOf,
     DefinitionArray,
