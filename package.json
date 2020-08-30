@@ -25,6 +25,9 @@
         "lint": "eslint --ext .ts --ext .js src",
         "prepack": "rimraf 'lib/**/*.test.*'"
     },
+    "dependencies": {
+        "@nlib/global": "^3.17.8"
+    },
     "devDependencies": {
         "@commitlint/cli": "^9.1.2",
         "@commitlint/config-conventional": "^9.1.2",
@@ -89,8 +92,5 @@
             ":label(dependencies)",
             ":automergeMinor"
         ]
-    },
-    "dependencies": {
-        "@nlib/global": "^3.17.8"
     }
 }
