@@ -1,0 +1,20 @@
+import {isBoolean} from './Boolean';
+import {testTypeCheckerSuccess, testTypeCheckerFail} from '../testTypeChecker';
+import {Infinity, Number} from '@nlib/global';
+
+testTypeCheckerFail(isBoolean, -Infinity);
+testTypeCheckerFail(isBoolean, Number.MAX_SAFE_INTEGER * -2);
+testTypeCheckerFail(isBoolean, -1.1);
+testTypeCheckerFail(isBoolean, -1);
+testTypeCheckerFail(isBoolean, 0);
+testTypeCheckerFail(isBoolean, 1);
+testTypeCheckerFail(isBoolean, 1.1);
+testTypeCheckerFail(isBoolean, Number.MAX_SAFE_INTEGER * 2);
+testTypeCheckerFail(isBoolean, Infinity);
+testTypeCheckerFail(isBoolean, '');
+testTypeCheckerFail(isBoolean, 'foo');
+testTypeCheckerFail(isBoolean, []);
+testTypeCheckerFail(isBoolean, null);
+testTypeCheckerSuccess(isBoolean, true);
+testTypeCheckerSuccess(isBoolean, false);
+testTypeCheckerFail(isBoolean, {});

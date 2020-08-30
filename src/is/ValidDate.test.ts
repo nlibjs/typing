@@ -1,0 +1,22 @@
+import {isValidDate} from './ValidDate';
+import {testTypeCheckerSuccess, testTypeCheckerFail} from '../testTypeChecker';
+import {Infinity, Number, Date} from '@nlib/global';
+
+testTypeCheckerFail(isValidDate, -Infinity);
+testTypeCheckerFail(isValidDate, Number.MAX_SAFE_INTEGER * -2);
+testTypeCheckerFail(isValidDate, -1.1);
+testTypeCheckerFail(isValidDate, -1);
+testTypeCheckerFail(isValidDate, 0);
+testTypeCheckerFail(isValidDate, 1);
+testTypeCheckerFail(isValidDate, 1.1);
+testTypeCheckerFail(isValidDate, Number.MAX_SAFE_INTEGER * 2);
+testTypeCheckerFail(isValidDate, Infinity);
+testTypeCheckerFail(isValidDate, '');
+testTypeCheckerFail(isValidDate, 'foo');
+testTypeCheckerFail(isValidDate, []);
+testTypeCheckerFail(isValidDate, null);
+testTypeCheckerFail(isValidDate, true);
+testTypeCheckerFail(isValidDate, false);
+testTypeCheckerFail(isValidDate, {});
+testTypeCheckerSuccess(isValidDate, new Date());
+testTypeCheckerFail(isValidDate, new Date('Foo'));

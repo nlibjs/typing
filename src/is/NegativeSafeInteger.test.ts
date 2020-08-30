@@ -1,0 +1,20 @@
+import {isNegativeSafeInteger} from './NegativeSafeInteger';
+import {testTypeCheckerSuccess, testTypeCheckerFail} from '../testTypeChecker';
+import {Infinity, Number} from '@nlib/global';
+
+testTypeCheckerFail(isNegativeSafeInteger, -Infinity);
+testTypeCheckerFail(isNegativeSafeInteger, Number.MAX_SAFE_INTEGER * -2);
+testTypeCheckerFail(isNegativeSafeInteger, -1.1);
+testTypeCheckerSuccess(isNegativeSafeInteger, -1);
+testTypeCheckerFail(isNegativeSafeInteger, 0);
+testTypeCheckerFail(isNegativeSafeInteger, 1);
+testTypeCheckerFail(isNegativeSafeInteger, 1.1);
+testTypeCheckerFail(isNegativeSafeInteger, Number.MAX_SAFE_INTEGER * 2);
+testTypeCheckerFail(isNegativeSafeInteger, Infinity);
+testTypeCheckerFail(isNegativeSafeInteger, '');
+testTypeCheckerFail(isNegativeSafeInteger, 'foo');
+testTypeCheckerFail(isNegativeSafeInteger, []);
+testTypeCheckerFail(isNegativeSafeInteger, null);
+testTypeCheckerFail(isNegativeSafeInteger, true);
+testTypeCheckerFail(isNegativeSafeInteger, false);
+testTypeCheckerFail(isNegativeSafeInteger, {});

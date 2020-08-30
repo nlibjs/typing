@@ -1,0 +1,23 @@
+import {isObjectLike} from './ObjectLike';
+import {testTypeCheckerSuccess, testTypeCheckerFail} from '../testTypeChecker';
+import {Infinity, Number, Date} from '@nlib/global';
+
+testTypeCheckerFail(isObjectLike, -Infinity);
+testTypeCheckerFail(isObjectLike, Number.MAX_SAFE_INTEGER * -2);
+testTypeCheckerFail(isObjectLike, -1.1);
+testTypeCheckerFail(isObjectLike, -1);
+testTypeCheckerFail(isObjectLike, 0);
+testTypeCheckerFail(isObjectLike, 1);
+testTypeCheckerFail(isObjectLike, 1.1);
+testTypeCheckerFail(isObjectLike, Number.MAX_SAFE_INTEGER * 2);
+testTypeCheckerFail(isObjectLike, Infinity);
+testTypeCheckerFail(isObjectLike, '');
+testTypeCheckerFail(isObjectLike, 'foo');
+testTypeCheckerSuccess(isObjectLike, []);
+testTypeCheckerFail(isObjectLike, null);
+testTypeCheckerFail(isObjectLike, true);
+testTypeCheckerFail(isObjectLike, false);
+testTypeCheckerSuccess(isObjectLike, {});
+testTypeCheckerSuccess(isObjectLike, new Date());
+testTypeCheckerSuccess(isObjectLike, new Date('Foo'));
+testTypeCheckerSuccess(isObjectLike, () => null);

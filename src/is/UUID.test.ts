@@ -1,0 +1,26 @@
+import {isUUID} from './UUID';
+import {testTypeCheckerSuccess, testTypeCheckerFail} from '../testTypeChecker';
+import {Infinity, Number, Date, undefined} from '@nlib/global';
+
+testTypeCheckerFail(isUUID, -Infinity);
+testTypeCheckerFail(isUUID, Number.MAX_SAFE_INTEGER * -2);
+testTypeCheckerFail(isUUID, -1.1);
+testTypeCheckerFail(isUUID, -1);
+testTypeCheckerFail(isUUID, 0);
+testTypeCheckerFail(isUUID, 1);
+testTypeCheckerFail(isUUID, 1.1);
+testTypeCheckerFail(isUUID, Number.MAX_SAFE_INTEGER * 2);
+testTypeCheckerFail(isUUID, Infinity);
+testTypeCheckerFail(isUUID, '');
+testTypeCheckerFail(isUUID, 'foo');
+testTypeCheckerFail(isUUID, '12345678-abcd-ef01-1234-00009999000');
+testTypeCheckerSuccess(isUUID, '12345678-abcd-ef01-1234-000099990000');
+testTypeCheckerFail(isUUID, []);
+testTypeCheckerFail(isUUID, null);
+testTypeCheckerFail(isUUID, true);
+testTypeCheckerFail(isUUID, false);
+testTypeCheckerFail(isUUID, {});
+testTypeCheckerFail(isUUID, new Date());
+testTypeCheckerFail(isUUID, new Date('Foo'));
+testTypeCheckerFail(isUUID, () => null);
+testTypeCheckerFail(isUUID, undefined);

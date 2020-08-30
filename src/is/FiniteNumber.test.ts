@@ -1,0 +1,20 @@
+import {isFiniteNumber} from './FiniteNumber';
+import {testTypeCheckerSuccess, testTypeCheckerFail} from '../testTypeChecker';
+import {Infinity, Number} from '@nlib/global';
+
+testTypeCheckerFail(isFiniteNumber, -Infinity);
+testTypeCheckerSuccess(isFiniteNumber, Number.MAX_SAFE_INTEGER * -2);
+testTypeCheckerSuccess(isFiniteNumber, -1.1);
+testTypeCheckerSuccess(isFiniteNumber, -1);
+testTypeCheckerSuccess(isFiniteNumber, 0);
+testTypeCheckerSuccess(isFiniteNumber, 1);
+testTypeCheckerSuccess(isFiniteNumber, 1.1);
+testTypeCheckerSuccess(isFiniteNumber, Number.MAX_SAFE_INTEGER * 2);
+testTypeCheckerFail(isFiniteNumber, Infinity);
+testTypeCheckerFail(isFiniteNumber, '');
+testTypeCheckerFail(isFiniteNumber, 'foo');
+testTypeCheckerFail(isFiniteNumber, []);
+testTypeCheckerFail(isFiniteNumber, null);
+testTypeCheckerFail(isFiniteNumber, true);
+testTypeCheckerFail(isFiniteNumber, false);
+testTypeCheckerFail(isFiniteNumber, {});

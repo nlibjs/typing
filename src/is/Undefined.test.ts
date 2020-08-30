@@ -1,0 +1,24 @@
+import {isUndefined} from './Undefined';
+import {testTypeCheckerSuccess, testTypeCheckerFail} from '../testTypeChecker';
+import {Infinity, Number, Date, undefined} from '@nlib/global';
+
+testTypeCheckerFail(isUndefined, -Infinity);
+testTypeCheckerFail(isUndefined, Number.MAX_SAFE_INTEGER * -2);
+testTypeCheckerFail(isUndefined, -1.1);
+testTypeCheckerFail(isUndefined, -1);
+testTypeCheckerFail(isUndefined, 0);
+testTypeCheckerFail(isUndefined, 1);
+testTypeCheckerFail(isUndefined, 1.1);
+testTypeCheckerFail(isUndefined, Number.MAX_SAFE_INTEGER * 2);
+testTypeCheckerFail(isUndefined, Infinity);
+testTypeCheckerFail(isUndefined, '');
+testTypeCheckerFail(isUndefined, 'foo');
+testTypeCheckerFail(isUndefined, []);
+testTypeCheckerFail(isUndefined, null);
+testTypeCheckerFail(isUndefined, true);
+testTypeCheckerFail(isUndefined, false);
+testTypeCheckerFail(isUndefined, {});
+testTypeCheckerFail(isUndefined, new Date());
+testTypeCheckerFail(isUndefined, new Date('Foo'));
+testTypeCheckerFail(isUndefined, () => null);
+testTypeCheckerSuccess(isUndefined, undefined);

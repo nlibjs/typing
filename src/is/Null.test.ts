@@ -1,0 +1,23 @@
+import {isNull} from './Null';
+import {testTypeCheckerSuccess, testTypeCheckerFail} from '../testTypeChecker';
+import {Infinity, Number, Date} from '@nlib/global';
+
+testTypeCheckerFail(isNull, -Infinity);
+testTypeCheckerFail(isNull, Number.MAX_SAFE_INTEGER * -2);
+testTypeCheckerFail(isNull, -1.1);
+testTypeCheckerFail(isNull, -1);
+testTypeCheckerFail(isNull, 0);
+testTypeCheckerFail(isNull, 1);
+testTypeCheckerFail(isNull, 1.1);
+testTypeCheckerFail(isNull, Number.MAX_SAFE_INTEGER * 2);
+testTypeCheckerFail(isNull, Infinity);
+testTypeCheckerFail(isNull, '');
+testTypeCheckerFail(isNull, 'foo');
+testTypeCheckerFail(isNull, []);
+testTypeCheckerSuccess(isNull, null);
+testTypeCheckerFail(isNull, true);
+testTypeCheckerFail(isNull, false);
+testTypeCheckerFail(isNull, {});
+testTypeCheckerFail(isNull, new Date());
+testTypeCheckerFail(isNull, new Date('Foo'));
+testTypeCheckerFail(isNull, () => null);
