@@ -3,7 +3,6 @@ export * from './definition';
 export * from './ensure';
 export * from './generics';
 export * from './stringifyDefinition';
-export * from './testTypeChecker';
 
 export * from './is/Array';
 export * from './is/Boolean';
