@@ -1,4 +1,3 @@
-
 {
     "compilerOptions": {
         "target": "esnext",
@@ -8,10 +7,16 @@
         "resolveJsonModule": true,
         "removeComments": true,
         "declaration": true,
+        "sourceMap": true,
         "noFallthroughCasesInSwitch": true,
         "noImplicitReturns": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
+        "baseUrl": "./node_modules",
+        "paths": {
+            "@nlib/global": ["@nlib/global/esm"],
+            "@nlib/test": ["@nlib/test/esm"]
+        },
         "outDir": "esm"
     }
 }
