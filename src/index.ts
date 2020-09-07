@@ -27,4 +27,3 @@ export * from './is/Undefined';
 export * from './is/UUID';
 export * from './is/ValidDate';
 export * from './stringifyDefinition';
-export * from './testTypeChecker';
