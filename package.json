@@ -78,8 +78,7 @@
                     "src/ensure.ts",
                     "src/generics.ts",
                     "src/stringifyDefinition.ts",
-                    "src/stringifyDefinition.test.ts",
-                    "src/testTypeChecker.ts"
+                    "src/stringifyDefinition.test.ts"
                 ],
                 "rules": {
                     "@typescript-eslint/no-explicit-any": "off",
