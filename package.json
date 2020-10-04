@@ -52,10 +52,8 @@
         "@nlib/global": "^3.17.15"
     },
     "devDependencies": {
-        "@commitlint/cli": "^11.0.0",
-        "@commitlint/config-conventional": "^11.0.0",
-        "@nlib/changelog": "^0.1.4",
         "@nlib/eslint-config": "^3.17.11",
+        "@nlib/lint-commit": "^0.1.3",
         "@nlib/nodetool": "^0.1.8",
         "@nlib/test": "^3.18.6",
         "@types/eslint": "^7.2.2",
@@ -66,6 +64,7 @@
         "husky": "^4.2.5",
         "lint-staged": "^10.3.0",
         "npm-run-all": "^4.1.5",
+        "sucrase": "^3.15.0",
         "typescript": "^4.0.2"
     },
     "eslintConfig": {
@@ -75,14 +74,14 @@
         "overrides": [
             {
                 "files": [
+                    "*.test.ts",
                     "src/is/*.ts",
                     "src/is$/*.ts",
                     "src/createTypeChecker.ts",
                     "src/definition.ts",
                     "src/ensure.ts",
                     "src/generics.ts",
-                    "src/stringifyDefinition.ts",
-                    "src/stringifyDefinition.test.ts"
+                    "src/stringifyDefinition.ts"
                 ],
                 "rules": {
                     "@typescript-eslint/no-explicit-any": "off",
@@ -107,14 +106,9 @@
             }
         ]
     },
-    "commitlint": {
-        "extends": [
-            "@nlib/eslint-config/commitlint.config.js"
-        ]
-    },
     "husky": {
         "hooks": {
-            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+            "commit-msg": "nlib-lint-commit --input HUSKY_GIT_PARAMS",
             "pre-commit": "lint-staged"
         }
     },

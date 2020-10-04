@@ -4,7 +4,6 @@ import {
     TypeGuardOf,
     DefinitionEnum,
     DefinitionCandidates,
-    DefinitionDictionary,
     DefinitionConditions,
     DefinitionArray,
     DefinitionObject,
@@ -14,7 +13,7 @@ import {
 import {
     isDefinitionEnumSet,
     isDefinitionCandidatesSet,
-    isDefinitionDictionarySet,
+    isDefinitionDictionaryClass,
     isDefinitionConditionsSet,
 } from './definition';
 import {is$Function} from './is$/Function';
@@ -90,7 +89,7 @@ const checkDefinitionCandidatesError = <T>(
 
 const checkDefinitionDictionaryError = <T>(
     input: any,
-    definition: DefinitionDictionary<T>,
+    definition: Definition<T>,
     path: string,
 ): CheckErrorFailedResult | null => {
     if (!is$ObjectLike(input)) {
@@ -103,11 +102,7 @@ const checkDefinitionDictionaryError = <T>(
     }
     for (const key of Object.keys(input)) {
         const value = input[key];
-        const error = checkDefinitionCandidatesError(
-            value,
-            definition as DefinitionCandidates<ValueOf<T>>,
-            `${path}.${key}`,
-        );
+        const error = checkError(value, definition, `${path}.${key}`);
         if (error) {
             return error;
         }
@@ -202,8 +197,8 @@ export const checkError = <T>(
     if (isDefinitionCandidatesSet<T>(definition)) {
         return checkDefinitionCandidatesError<T>(input, definition, path);
     }
-    if (isDefinitionDictionarySet<T>(definition)) {
-        return checkDefinitionDictionaryError<T>(input, definition, path);
+    if (isDefinitionDictionaryClass<T>(definition)) {
+        return checkDefinitionDictionaryError<ValueOf<T>>(input, definition.definition, path);
     }
     if (isDefinitionConditionsSet<T>(definition)) {
         return checkDefinitionConditionsError<T>(input, definition, path);

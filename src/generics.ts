@@ -18,7 +18,9 @@ export interface TypeChecker<T> {
 export interface DefinitionEnum<T> extends Iterable<T> {}
 export interface DefinitionCandidates<T> extends Iterable<Definition<T>> {}
 export interface DefinitionConditions<T> extends Iterable<Definition<Partial<T>>> {}
-export interface DefinitionDictionary<T> extends Iterable<Definition<ValueOf<T>>> {}
+export interface DefinitionDictionary<T> {
+    definition: Definition<ValueOf<T>>,
+}
 export type Definition<T> =
 | TypeGuardOf<T>
 | TypeChecker<T>
