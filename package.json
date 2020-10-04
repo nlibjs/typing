@@ -48,9 +48,8 @@
         "@nlib/global": "^3.17.15"
     },
     "devDependencies": {
-        "@commitlint/cli": "^9.1.2",
-        "@commitlint/config-conventional": "^9.1.2",
         "@nlib/eslint-config": "^3.17.11",
+        "@nlib/lint-commit": "^0.1.3",
         "@nlib/nodetool": "^0.1.8",
         "@nlib/test": "^3.18.6",
         "@types/eslint": "^7.2.2",
@@ -103,14 +102,9 @@
             }
         ]
     },
-    "commitlint": {
-        "extends": [
-            "@nlib/eslint-config/commitlint.config.js"
-        ]
-    },
     "husky": {
         "hooks": {
-            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+            "commit-msg": "nlib-lint-commit --input HUSKY_GIT_PARAMS",
             "pre-commit": "lint-staged"
         }
     },
