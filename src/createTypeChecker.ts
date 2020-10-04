@@ -16,7 +16,7 @@ import {
 import {
     isDefinitionEnumSet,
     isDefinitionCandidatesSet,
-    isDefinitionDictionarySet,
+    isDefinitionDictionaryClass,
     isDefinitionConditionsSet,
 } from './definition';
 import {is$Function} from './is$/Function';
@@ -53,12 +53,12 @@ const check = <T>(
     if (isDefinitionCandidatesSet<T>(definition)) {
         return checkCandidates<T>(input, definition);
     }
-    if (isDefinitionDictionarySet<T>(definition)) {
+    if (isDefinitionDictionaryClass<T>(definition)) {
         if (!is$ObjectLike(input)) {
             return false;
         }
         for (const key of Object.keys(input)) {
-            if (!checkCandidates<ValueOf<T>>(input[key], definition)) {
+            if (!check(input[key], definition.definition)) {
                 return false;
             }
         }

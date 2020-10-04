@@ -7,7 +7,7 @@ import {
 import {
     isDefinitionEnumSet,
     isDefinitionCandidatesSet,
-    isDefinitionDictionarySet,
+    isDefinitionDictionaryClass,
     isDefinitionConditionsSet,
 } from './definition';
 import {is$Function} from './is$/Function';
@@ -55,8 +55,9 @@ const stringify = function* (
         yield `${indent}${[...definition].map((value) => JSON.stringify(value)).join('|')}`;
     } else if (isDefinitionCandidatesSet<any>(definition)) {
         yield* stringifyIterableDefinitions(definition, indent, ancestors, 'Some');
-    } else if (isDefinitionDictionarySet<any>(definition)) {
-        yield* stringifyIterableDefinitions(definition, indent, ancestors, 'Dictionary');
+    } else if (isDefinitionDictionaryClass<any>(definition)) {
+        yield 'Dictionary: ';
+        yield* stringify(definition.definition, indent, ancestors);
     } else if (isDefinitionConditionsSet<any>(definition)) {
         yield* stringifyIterableDefinitions(definition, indent, ancestors, 'Every');
     } else if ((is$Array as TypeGuardOf<DefinitionArray<any>>)(definition)) {

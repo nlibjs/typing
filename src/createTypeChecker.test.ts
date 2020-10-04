@@ -20,7 +20,7 @@ testFunction(isSome, {input: '1', expected: true});
 testFunction(isSome, {input: null, expected: true});
 testFunction(isSome, {input: 1, expected: false});
 
-const isDictionary = createTypeChecker<{a: string, b: null}>('Dictionary', definition.dictionary(isString));
+const isDictionary = createTypeChecker('Dictionary', definition.dictionary(isString));
 testFunction(isDictionary, {input: {a: 'a', b: 'b'}, expected: true});
 testFunction(isDictionary, {input: {a: 'a', b: 1}, expected: false});
 

@@ -40,11 +40,7 @@ testFunction(stringifyDefinition, {
 });
 testFunction(stringifyDefinition, {
     input: definition.dictionary<{[key: string]: string}>(isString),
-    expected: [
-        'Dictionary {',
-        '  String,',
-        '}',
-    ].join('\n'),
+    expected: 'Dictionary: String',
 });
 testFunction(stringifyDefinition, {
     input: definition.every({id: isString}, {id: isUUID}),
