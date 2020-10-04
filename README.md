@@ -1,4 +1,4 @@
-# typing
+# @nlib/typing
 
 Typing tools.
 

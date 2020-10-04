@@ -1,13 +1,13 @@
+import {testFunction} from '@nlib/test';
 import {isArray} from './Array';
-import {testTypeCheckerSuccess, testTypeCheckerFail} from '../testTypeChecker';
 
-testTypeCheckerSuccess(isArray, []);
-testTypeCheckerSuccess(isArray, [1]);
-testTypeCheckerFail(isArray, 'foo');
-testTypeCheckerFail(isArray, '');
-testTypeCheckerFail(isArray, 1);
-testTypeCheckerFail(isArray, 1.1);
-testTypeCheckerFail(isArray, null);
-testTypeCheckerFail(isArray, true);
-testTypeCheckerFail(isArray, false);
-testTypeCheckerFail(isArray, {});
+testFunction(isArray, {input: [], expected: true});
+testFunction(isArray, {input: [1], expected: true});
+testFunction(isArray, {input: 'foo', expected: false});
+testFunction(isArray, {input: '', expected: false});
+testFunction(isArray, {input: 1, expected: false});
+testFunction(isArray, {input: 1.1, expected: false});
+testFunction(isArray, {input: null, expected: false});
+testFunction(isArray, {input: true, expected: false});
+testFunction(isArray, {input: false, expected: false});
+testFunction(isArray, {input: {}, expected: false});

@@ -1,12 +1,12 @@
+import {testFunction} from '@nlib/test';
 import {isString} from './String';
-import {testTypeCheckerSuccess, testTypeCheckerFail} from '../testTypeChecker';
 
-testTypeCheckerSuccess(isString, '');
-testTypeCheckerSuccess(isString, 'foo');
-testTypeCheckerFail(isString, []);
-testTypeCheckerFail(isString, 1);
-testTypeCheckerFail(isString, 1.1);
-testTypeCheckerFail(isString, null);
-testTypeCheckerFail(isString, true);
-testTypeCheckerFail(isString, false);
-testTypeCheckerFail(isString, {});
+testFunction(isString, {expected: true, input: ''});
+testFunction(isString, {expected: true, input: 'foo'});
+testFunction(isString, {expected: false, input: []});
+testFunction(isString, {expected: false, input: 1});
+testFunction(isString, {expected: false, input: 1.1});
+testFunction(isString, {expected: false, input: null});
+testFunction(isString, {expected: false, input: true});
+testFunction(isString, {expected: false, input: false});
+testFunction(isString, {expected: false, input: {}});
