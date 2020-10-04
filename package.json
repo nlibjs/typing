@@ -74,14 +74,14 @@
         "overrides": [
             {
                 "files": [
+                    "*.test.ts",
                     "src/is/*.ts",
                     "src/is$/*.ts",
                     "src/createTypeChecker.ts",
                     "src/definition.ts",
                     "src/ensure.ts",
                     "src/generics.ts",
-                    "src/stringifyDefinition.ts",
-                    "src/stringifyDefinition.test.ts"
+                    "src/stringifyDefinition.ts"
                 ],
                 "rules": {
                     "@typescript-eslint/no-explicit-any": "off",
