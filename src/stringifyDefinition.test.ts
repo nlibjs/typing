@@ -39,7 +39,7 @@ testFunction(stringifyDefinition, {
     ].join('\n'),
 });
 testFunction(stringifyDefinition, {
-    input: definition.dictionary<{[key: string]: string}>(isString),
+    input: definition.dictionary<Record<string, string>>(isString),
     expected: 'Dictionary: String',
 });
 testFunction(stringifyDefinition, {
