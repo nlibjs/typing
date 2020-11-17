@@ -57,7 +57,7 @@
         "@nlib/lint-commit": "0.1.3",
         "@nlib/nodetool": "0.1.11",
         "@nlib/test": "3.18.6",
-        "@types/eslint": "7.2.4",
+        "@types/eslint": "7.2.5",
         "@typescript-eslint/eslint-plugin": "4.7.0",
         "@typescript-eslint/parser": "4.7.0",
         "ava": "3.13.0",
