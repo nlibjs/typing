@@ -1,4 +1,4 @@
 import {createTypeChecker} from '../createTypeChecker';
-import {is$String} from '../is$/String';
+import {is$String} from '../is.private';
 
 export const isString = createTypeChecker<string>('String', is$String);

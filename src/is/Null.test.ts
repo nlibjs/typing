@@ -1,5 +1,4 @@
 import {isNull} from './Null';
-import {Infinity, Number, Date} from '@nlib/global';
 import {testFunction} from '@nlib/test';
 
 testFunction(isNull, {expected: false, input: -Infinity});

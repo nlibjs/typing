@@ -1,5 +1,4 @@
 import {isNonPositiveSafeInteger} from './NonPositiveSafeInteger';
-import {Infinity, Number} from '@nlib/global';
 import {testFunction} from '@nlib/test';
 
 testFunction(isNonPositiveSafeInteger, {expected: false, input: -Infinity});

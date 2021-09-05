@@ -1,5 +1,4 @@
 import {isNonNegativeFiniteNumber} from './NonNegativeFiniteNumber';
-import {Infinity, Number} from '@nlib/global';
 import {testFunction} from '@nlib/test';
 
 testFunction(isNonNegativeFiniteNumber, {expected: false, input: -Infinity});

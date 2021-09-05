@@ -17,7 +17,6 @@
         "noUnusedParameters": true,
         "baseUrl": "./node_modules",
         "paths": {
-            "@nlib/global": ["@nlib/global/esm"],
             "@nlib/test": ["@nlib/test/esm"]
         }
     }

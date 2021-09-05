@@ -1,5 +1,4 @@
 import {isBoolean} from './Boolean';
-import {Infinity, Number} from '@nlib/global';
 import {testFunction} from '@nlib/test';
 
 testFunction(isBoolean, {input: -Infinity, expected: false});

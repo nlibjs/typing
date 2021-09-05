@@ -41,9 +41,6 @@
         "version:changelog": "npx @nlib/changelog --output CHANGELOG.md",
         "version:add": "git add ."
     },
-    "dependencies": {
-        "@nlib/global": "3.18.0"
-    },
     "devDependencies": {
         "@nlib/eslint-config": "3.17.25",
         "@nlib/githooks": "0.1.0",
@@ -62,40 +59,9 @@
         "extends": [
             "@nlib"
         ],
-        "overrides": [
-            {
-                "files": [
-                    "*.test.ts",
-                    "src/is/*.ts",
-                    "src/is$/*.ts",
-                    "src/createTypeChecker.ts",
-                    "src/definition.ts",
-                    "src/ensure.ts",
-                    "src/generics.ts",
-                    "src/stringifyDefinition.ts"
-                ],
-                "rules": {
-                    "@typescript-eslint/no-explicit-any": "off",
-                    "@typescript-eslint/unbound-method": "off"
-                }
-            },
-            {
-                "files": [
-                    "src/createTypeChecker.ts"
-                ],
-                "rules": {
-                    "max-lines-per-function": "off"
-                }
-            },
-            {
-                "files": [
-                    "src/ensure.ts"
-                ],
-                "rules": {
-                    "@typescript-eslint/no-unsafe-assignment": "off"
-                }
-            }
-        ]
+        "rules": {
+            "@nlib/no-globals": "off"
+        }
     },
     "ava": {
         "extensions": [

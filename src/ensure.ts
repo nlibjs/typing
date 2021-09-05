@@ -1,11 +1,8 @@
-import {AppError, JSON, Object} from '@nlib/global';
-import {
-    ValueOf,
-    TypeGuardOf,
+import type {
+    TypeGuard,
     DefinitionEnum,
     DefinitionCandidates,
     DefinitionConditions,
-    DefinitionArray,
     DefinitionObject,
     TypeChecker,
     Definition,
@@ -13,46 +10,52 @@ import {
 import {
     isDefinitionEnumSet,
     isDefinitionCandidatesSet,
-    isDefinitionDictionaryClass,
     isDefinitionConditionsSet,
-} from './definition';
-import {is$Function} from './is$/Function';
-import {is$Array} from './is$/Array';
-import {is$ObjectLike} from './is$/ObjectLike';
+    arrayDefinitionStore,
+    optionalDefinitionStore,
+    definitionStore,
+} from './definition.private';
 import {stringifyDefinition} from './stringifyDefinition';
-import {isTypeChecker} from './createTypeChecker';
+import {ModuleError} from './ModuleError.private';
+import {is$Array, is$Function, is$Object, is$RegExp, is$String} from './is.private';
+import {isTypeChecker} from './is/TypeChecker';
+import {testValue} from './testValue';
 
 export interface CheckErrorFailedResult {
     path: string,
-    input: any,
-    definition: Definition<any>,
+    input: unknown,
+    definition: Definition,
     message: string,
 }
 
-const stringifyError = (
-    error: CheckErrorFailedResult,
-): string => [
+export type CheckErrorResult =
+| CheckErrorFailedResult
+| null;
+
+const keys = Object.keys as <T>(value: T) => Array<keyof T>;
+
+const stringifyError = (error: Exclude<CheckErrorResult, null>): string => [
     `${error.path}: ${error.message}`,
     `actual: ${JSON.stringify(error.input, null, 2)}`,
     `expected: ${stringifyDefinition(error.definition)}`,
 ].join('\n');
 
-const checkDefinitionFunctionError = <T>(
-    input: any,
-    definition: TypeGuardOf<T> | TypeChecker<T>,
+const getDefinitionFunctionError = (
+    input: unknown,
+    definition: TypeChecker<unknown> | TypeGuard<unknown>,
     path: string,
-): CheckErrorFailedResult | null => definition(input) ? null : {
+): CheckErrorResult => definition(input) ? null : {
     input,
     definition,
     path,
-    message: 'The definition function returned false.',
+    message: `The input doesn't pass the test (${definition.name}).`,
 };
 
-const checkDefinitionEnumError = <T>(
-    input: any,
-    definition: DefinitionEnum<T>,
+const getDefinitionEnumError = (
+    input: unknown,
+    definition: DefinitionEnum<unknown>,
     path: string,
-): CheckErrorFailedResult | null => {
+): CheckErrorResult => {
     for (const value of definition) {
         if (value === input) {
             return null;
@@ -62,18 +65,18 @@ const checkDefinitionEnumError = <T>(
         input,
         definition,
         path,
-        message: 'The input is not found in the enum.',
+        message: `The input (${input}) isn't in enum (${[...definition].join(', ')}).`,
     };
 };
 
-const checkDefinitionCandidatesError = <T>(
-    input: any,
-    definition: DefinitionCandidates<T>,
+const getDefinitionCandidatesError = (
+    input: unknown,
+    definition: DefinitionCandidates<unknown>,
     path: string,
-): CheckErrorFailedResult | null => {
+): CheckErrorResult => {
     const errors: Array<CheckErrorFailedResult> = [];
     for (const candidate of definition) {
-        const error = checkError<T>(input, candidate, path);
+        const error = getTypeError(input, candidate, path);
         if (!error) {
             return null;
         }
@@ -83,41 +86,18 @@ const checkDefinitionCandidatesError = <T>(
         input,
         definition,
         path,
-        message: `All definitions failed.\n${errors.map(stringifyError).join('\n')}`,
+        message: `The input doesn't pass any tests.\n${errors.map(stringifyError).join('\n')}`,
     };
 };
 
-const checkDefinitionDictionaryError = <T>(
-    input: any,
-    definition: Definition<T>,
+const getDefinitionConditionsError = (
+    input: unknown,
+    definition: DefinitionConditions<unknown>,
     path: string,
-): CheckErrorFailedResult | null => {
-    if (!is$ObjectLike(input)) {
-        return {
-            input,
-            definition,
-            path,
-            message: 'The input is not a map.',
-        };
-    }
-    for (const key of Object.keys(input)) {
-        const value = input[key];
-        const error = checkError(value, definition, `${path}.${key}`);
-        if (error) {
-            return error;
-        }
-    }
-    return null;
-};
-
-const checkDefinitionConditionsError = <T>(
-    input: any,
-    definition: DefinitionConditions<T>,
-    path: string,
-): CheckErrorFailedResult | null => {
+): CheckErrorResult => {
     let index = 0;
     for (const candidate of definition) {
-        const error = checkError(input, candidate, path);
+        const error = getTypeError(input, candidate, path);
         if (error) {
             return {
                 input,
@@ -131,36 +111,12 @@ const checkDefinitionConditionsError = <T>(
     return null;
 };
 
-const checkDefinitionArrayError = <T>(
-    input: any,
-    definition: DefinitionArray<T>,
+const getDefinitionObjectError = (
+    input: unknown,
+    definition: DefinitionObject<unknown>,
     path: string,
-): CheckErrorFailedResult | null => {
-    if (!is$Array(input)) {
-        return {
-            input,
-            definition,
-            path,
-            message: 'The input is not an array.',
-        };
-    }
-    const tupleLength = definition.length;
-    const inputLength = input.length;
-    for (let index = 0; index < inputLength; index++) {
-        const error = checkError(input[index], definition[index % tupleLength], `${path}.${index}`);
-        if (error) {
-            return error;
-        }
-    }
-    return null;
-};
-
-const checkDefinitionObjectError = <T>(
-    input: any,
-    definition: DefinitionObject<T>,
-    path: string,
-): CheckErrorFailedResult | null => {
-    if (!is$ObjectLike(input)) {
+): CheckErrorResult => {
+    if (!is$Object(input)) {
         return {
             input,
             definition,
@@ -168,8 +124,8 @@ const checkDefinitionObjectError = <T>(
             message: 'The input is not a map.',
         };
     }
-    for (const key of Object.keys(definition)) {
-        const error = checkError(input[key], definition[key], `${path}.${key}`);
+    for (const key of keys(definition)) {
+        const error = getTypeError(input[String(key)], definition[key], `${path}.${key}`);
         if (error) {
             return error;
         }
@@ -177,49 +133,109 @@ const checkDefinitionObjectError = <T>(
     return null;
 };
 
-export const checkError = <T>(
-    input: any,
-    definition: Definition<T>,
-    path?: string,
-): CheckErrorFailedResult | null => {
+const checkArrayDefinitionError = (
+    input: Array<unknown>,
+    definition: Definition,
+    path: string,
+): CheckErrorResult => {
+    const {length} = input;
+    for (let index = 0; index < length; index++) {
+        const error = getTypeError(input[index], definition, `${path}.${index}`);
+        if (error) {
+            return error;
+        }
+    }
+    return null;
+};
+
+const getTypeCheckerDefinitionError = (
+    input: unknown,
+    definition: TypeChecker<unknown>,
+    path: string,
+): CheckErrorResult => {
+    let def = arrayDefinitionStore.get(definition);
+    if (def) {
+        if (is$Array(input)) {
+            return checkArrayDefinitionError(input, def, path);
+        } else {
+            return {input, definition, path, message: 'The input is not an array.'};
+        }
+    }
+    def = optionalDefinitionStore.get(definition);
+    if (def) {
+        if (input === undefined) {
+            return null;
+        } else {
+            return getTypeError(input, def, path);
+        }
+    }
+    def = definitionStore.get(definition);
+    if (def) {
+        return getTypeError(input, def, path);
+    }
+    throw new ModuleError({code: 'NoDefinition'});
+};
+
+const getRegExpDefinitionError = (
+    input: unknown,
+    definition: RegExp,
+    path: string,
+): CheckErrorResult => {
+    if (!is$String(input)) {
+        return {input, definition, path, message: 'The input is not a string.'};
+    }
+    if (definition.test(input)) {
+        return null;
+    }
+    return {input, definition, path, message: `"${input}" doesn't match to ${definition}.`};
+};
+
+export const getTypeError = (
+    input: unknown,
+    definition: Definition,
+    path: string,
+): CheckErrorResult => {
     if (!path) {
-        return {input, definition, path: '', message: 'The type has no path.'};
+        return {input, definition, path, message: 'The type has no path.'};
+    }
+    if (is$RegExp(definition)) {
+        return getRegExpDefinitionError(input, definition, path);
     }
     if (isTypeChecker(definition)) {
-        return checkError(input, definition.definition, path);
+        return getTypeCheckerDefinitionError(input, definition, path);
     }
     if (is$Function(definition)) {
-        return checkDefinitionFunctionError<T>(input, definition, path);
+        return getDefinitionFunctionError(input, definition, path);
     }
-    if (isDefinitionEnumSet<T>(definition)) {
-        return checkDefinitionEnumError<T>(input, definition, path);
+    if (isDefinitionEnumSet(definition)) {
+        return getDefinitionEnumError(input, definition, path);
     }
-    if (isDefinitionCandidatesSet<T>(definition)) {
-        return checkDefinitionCandidatesError<T>(input, definition, path);
+    if (isDefinitionCandidatesSet(definition)) {
+        return getDefinitionCandidatesError(input, definition, path);
     }
-    if (isDefinitionDictionaryClass<T>(definition)) {
-        return checkDefinitionDictionaryError<ValueOf<T>>(input, definition.definition, path);
+    if (isDefinitionConditionsSet(definition)) {
+        return getDefinitionConditionsError(input, definition, path);
     }
-    if (isDefinitionConditionsSet<T>(definition)) {
-        return checkDefinitionConditionsError<T>(input, definition, path);
-    }
-    if ((is$Array as TypeGuardOf<DefinitionArray<T>>)(definition)) {
-        return checkDefinitionArrayError<T>(input, definition, path);
-    }
-    return checkDefinitionObjectError<T>(input, definition, path);
+    return getDefinitionObjectError(input, definition, path);
 };
 
 export const ensure = <T>(
-    input: any,
-    checker: TypeChecker<T>,
+    input: unknown,
+    definition: Definition<T>,
+    path = '_',
 ): T => {
-    const error = checkError(input, checker.definition, '_');
-    if (error) {
-        throw new AppError({
-            code: 'TypeCheckError',
-            message: stringifyError(error),
-            data: error,
-        });
+    if (testValue(input, definition)) {
+        return input;
     }
-    return input as T;
+    const error: CheckErrorResult = getTypeError(input, definition, path) || {
+        input,
+        definition,
+        path,
+        message: 'The input doesn\'t match to the definition.',
+    };
+    throw new ModuleError({
+        code: 'TypeCheckError',
+        message: stringifyError(error),
+        data: error,
+    });
 };

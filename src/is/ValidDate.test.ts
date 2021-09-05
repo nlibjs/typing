@@ -1,4 +1,3 @@
-import {Infinity, Number, Date} from '@nlib/global';
 import {testFunction} from '@nlib/test';
 import {isValidDate} from './ValidDate';
 

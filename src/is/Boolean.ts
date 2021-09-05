@@ -2,5 +2,5 @@ import {createTypeChecker} from '../createTypeChecker';
 
 export const isBoolean = createTypeChecker(
     'Boolean',
-    (input: any): input is boolean => typeof input === 'boolean',
+    (input: unknown): input is boolean => typeof input === 'boolean',
 );

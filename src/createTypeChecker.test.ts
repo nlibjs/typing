@@ -1,9 +1,9 @@
 import {testFunction} from '@nlib/test';
-import {is$String} from './is$/String';
 import {isString} from './is/String';
 import {createTypeChecker} from './createTypeChecker';
 import {definition} from './definition';
 import {isNull} from './is/Null';
+import {is$String} from './is.private';
 
 testFunction(createTypeChecker, {
     parameters: ['', is$String],
@@ -20,13 +20,13 @@ testFunction(isSome, {input: '1', expected: true});
 testFunction(isSome, {input: null, expected: true});
 testFunction(isSome, {input: 1, expected: false});
 
-const isDictionary = createTypeChecker('Dictionary', definition.dictionary(isString));
+const isDictionary = createTypeChecker('Dictionary', isString.dictionary);
 testFunction(isDictionary, {input: {a: 'a', b: 'b'}, expected: true});
 testFunction(isDictionary, {input: {a: 'a', b: 1}, expected: false});
 
 const isEvery = createTypeChecker('Every', definition.every(
     isString,
-    (input: any): input is string => `${input}`.includes('a'),
+    (input: unknown): input is string => `${input}`.includes('a'),
 ));
 testFunction(isEvery, {input: '1a', expected: true});
 testFunction(isEvery, {input: '11', expected: false});

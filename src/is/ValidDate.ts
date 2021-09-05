@@ -1,12 +1,13 @@
-import {getType} from '@nlib/global';
 import {createTypeChecker} from '../createTypeChecker';
+
+const {prototype: {toString}} = Object;
 
 const isDate = createTypeChecker(
     'Date',
-    (input: any): input is Date => getType(input) === 'Date',
+    (input: unknown): input is Date => toString.call(input) === '[object Date]',
 );
 
 export const isValidDate = createTypeChecker(
     'ValidDate',
-    (input: any): input is Date => isDate(input) && 0 < input.getTime(),
+    (input: unknown): input is Date => isDate(input) && 0 < input.getTime(),
 );

@@ -1,4 +1,3 @@
-import {Infinity, Number} from '@nlib/global';
 import {testFunction} from '@nlib/test';
 import {isPositiveSafeInteger} from './PositiveSafeInteger';
 

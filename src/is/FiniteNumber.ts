@@ -1,8 +1,7 @@
-import {Number} from '@nlib/global';
 import {createTypeChecker} from '../createTypeChecker';
-import {TypeGuardOf} from '../generics';
+import type {TypeGuard} from '../generics';
 
 export const isFiniteNumber = createTypeChecker<number>(
     'FiniteNumber',
-    Number.isFinite as TypeGuardOf<number>,
+    Number.isFinite as TypeGuard<number>,
 );

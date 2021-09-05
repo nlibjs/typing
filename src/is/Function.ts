@@ -1,10 +1,7 @@
 import {createTypeChecker} from '../createTypeChecker';
-
-export interface AnyFunction {
-    (...args: Array<any>): any,
-}
+import type {Callable} from '../generics';
 
 export const isFunction = createTypeChecker(
     'Function',
-    (input: any): input is AnyFunction => typeof input === 'function',
+    (input: unknown): input is Callable => typeof input === 'function',
 );

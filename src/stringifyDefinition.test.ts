@@ -6,7 +6,7 @@ import {isBoolean} from './is/Boolean';
 import {isUUID} from './is/UUID';
 
 testFunction(stringifyDefinition, {
-    input: (input: any) => typeof input === 'number',
+    input: (input: unknown) => typeof input === 'number',
     expected: '(input) => typeof input === \'number\'',
 });
 testFunction(stringifyDefinition, {
@@ -14,7 +14,7 @@ testFunction(stringifyDefinition, {
     expected: 'String',
 });
 testFunction(stringifyDefinition, {
-    input: definition.enum<string | number>(1, '2'),
+    input: definition.enum<number | string>(1, '2'),
     expected: '1|"2"',
 });
 testFunction(stringifyDefinition, {
@@ -39,7 +39,7 @@ testFunction(stringifyDefinition, {
     ].join('\n'),
 });
 testFunction(stringifyDefinition, {
-    input: definition.dictionary<Record<string, string>>(isString),
+    input: isString.dictionary,
     expected: 'Dictionary: String',
 });
 testFunction(stringifyDefinition, {

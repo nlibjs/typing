@@ -1,4 +1,3 @@
-import {Infinity, Number, Date, undefined} from '@nlib/global';
 import {testFunction} from '@nlib/test';
 import {isUUID} from './UUID';
 

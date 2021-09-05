@@ -1,117 +1,76 @@
-import {
-    Symbol,
-    Object,
-    defineHiddenReadOnlyProperty,
-    defineReadOnlyProperties,
-    AppError,
-} from '@nlib/global';
-import {
-    ValueOf,
-    ArrayItemOf,
-    TypeGuardOf,
-    Definition,
-    DefinitionArray,
-    TypeChecker,
-} from './generics';
-import {
-    isDefinitionEnumSet,
-    isDefinitionCandidatesSet,
-    isDefinitionDictionaryClass,
-    isDefinitionConditionsSet,
-} from './definition';
-import {is$Function} from './is$/Function';
-import {is$ObjectLike} from './is$/ObjectLike';
-import {is$Array} from './is$/Array';
+import {cacheResult} from './cacheResult';
+import {arrayDefinitionStore, dictionaryDefinitionStore, optionalDefinitionStore} from './definition.private';
+import type {Definition, DefinitionObject, TypeChecker, UniversalDefinition} from './generics';
+import {is$Array, is$Object, is$String} from './is.private';
+import {isTypeChecker} from './is/TypeChecker';
+import {ModuleError} from './ModuleError.private';
+import {testValue} from './testValue';
 
-export const checkCandidates = <T>(
-    input: any,
-    definitions: Iterable<Definition<T>>,
-): boolean => {
-    for (const candidate of definitions) {
-        if (check<T>(input, candidate)) {
-            return true;
-        }
-    }
-    return false;
-};
-
-const check = <T>(
-    input: any,
-    definition: Definition<T>,
-): input is T => {
-    if ((is$Function as TypeGuardOf<TypeGuardOf<T>>)(definition)) {
-        return definition(input);
-    }
-    if (isDefinitionEnumSet<T>(definition)) {
-        for (const value of definition) {
-            if (value === input) {
-                return true;
-            }
-        }
-        return false;
-    }
-    if (isDefinitionCandidatesSet<T>(definition)) {
-        return checkCandidates<T>(input, definition);
-    }
-    if (isDefinitionDictionaryClass<T>(definition)) {
-        if (!is$ObjectLike(input)) {
-            return false;
-        }
-        for (const key of Object.keys(input)) {
-            if (!check(input[key], definition.definition)) {
-                return false;
-            }
-        }
-        return true;
-    }
-    if (isDefinitionConditionsSet<T>(definition)) {
-        for (const candidate of definition) {
-            if (!check<Partial<T>>(input, candidate)) {
-                return false;
-            }
-        }
-        return true;
-    }
-    if ((is$Array as TypeGuardOf<DefinitionArray<T>>)(definition)) {
-        if (is$Array(input)) {
-            const tupleLength = definition.length;
-            return input.every((item, index) => check<ArrayItemOf<T>>(item, definition[index % tupleLength]));
-        }
-        return false;
-    }
-    if (is$ObjectLike(input)) {
-        for (const key of Object.keys(definition)) {
-            if (!check<ValueOf<T>>(input[key], definition[key])) {
-                return false;
-            }
-        }
-        return true;
-    }
-    return false;
-};
-
-const IS_TYPE_CHECKER = Symbol('isTypeChecker');
+// eslint-disable-next-line @typescript-eslint/unbound-method
+const defineProperties = Object.defineProperties as <T, P>(
+    object: T,
+    props: {[K in keyof P]: {get: () => P[K]} | {value: P[K]}},
+) => P & T;
+const entries = Object.entries as <T>(object: T) => Array<[keyof T, T[keyof T]]>;
+const definitionStore = new WeakMap<TypeChecker<unknown>, Definition>();
+// eslint-disable-next-line max-lines-per-function
 export const createTypeChecker = <T>(
     type: string,
-    definition: Definition<T>,
+    definition: UniversalDefinition<T> | (T extends string ? RegExp : DefinitionObject<T>),
 ): TypeChecker<T> => {
     if (!type) {
-        throw new AppError({
-            code: 'NoTypeName',
-            message: 'The type has no name.',
+        throw new ModuleError({code: 'NoTypeName', data: {type, definition}});
+    }
+    if (isTypeChecker(definition)) {
+        throw new ModuleError({
+            code: 'UselessWrapping',
+            message: `UselessWrapping: ${type}(${definition.name})`,
             data: {type, definition},
         });
     }
-    return defineReadOnlyProperties(
-        defineHiddenReadOnlyProperty(
-            (input: any): input is T => check<T>(input, definition),
-            IS_TYPE_CHECKER,
-            true,
-        ),
-        {type, definition, name: `is${type}`},
+    const typeChecker: TypeChecker<T> = defineProperties(
+        (input: unknown): input is T => testValue<T>(input, definition),
+        {
+            type: {value: type},
+            name: {value: `is${type}`},
+            array: {
+                get: cacheResult(() => {
+                    const arrayTypeChecker = createTypeChecker(
+                        `${type}Array`,
+                        (input: unknown): input is Array<T> => {
+                            return is$Array(input) && input.every((item) => typeChecker(item));
+                        },
+                    );
+                    arrayDefinitionStore.set(arrayTypeChecker, definition);
+                    return arrayTypeChecker;
+                }),
+            },
+            optional: {
+                get: cacheResult(() => {
+                    const optionalTypeChecker = createTypeChecker(
+                        `${type}?`,
+                        (input: unknown): input is T | undefined => {
+                            return input === undefined || typeChecker(input);
+                        },
+                    );
+                    optionalDefinitionStore.set(optionalTypeChecker, definition);
+                    return optionalTypeChecker;
+                }),
+            },
+            dictionary: {
+                get: cacheResult(() => {
+                    const dictionaryTypeChecker = createTypeChecker(
+                        `Record<string, ${type}>`,
+                        (input: unknown): input is Record<string, T> => {
+                            return is$Object(input) && entries(input).every(([key, value]) => is$String(key) && typeChecker(value));
+                        },
+                    );
+                    dictionaryDefinitionStore.set(dictionaryTypeChecker, definition);
+                    return dictionaryTypeChecker;
+                }),
+            },
+        },
     );
+    definitionStore.set(typeChecker, definition);
+    return typeChecker;
 };
-
-export const isTypeChecker = (
-    input: any,
-): input is TypeChecker<any> => is$ObjectLike(input) && IS_TYPE_CHECKER in input;

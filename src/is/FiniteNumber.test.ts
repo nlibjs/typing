@@ -1,5 +1,4 @@
 import {isFiniteNumber} from './FiniteNumber';
-import {Infinity, Number} from '@nlib/global';
 import {testFunction} from '@nlib/test';
 
 testFunction(isFiniteNumber, {input: -Infinity, expected: false});

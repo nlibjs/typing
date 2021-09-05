@@ -1,5 +1,4 @@
 import {isUndefined} from './Undefined';
-import {Infinity, Number, Date, undefined} from '@nlib/global';
 import {testFunction} from '@nlib/test';
 
 testFunction(isUndefined, {expected: false, input: -Infinity});
