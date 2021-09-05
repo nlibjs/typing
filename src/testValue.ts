@@ -1,4 +1,4 @@
-import type {ValueOf, Definition} from './generics';
+import type {Definition} from './generics';
 import {
     isDefinitionEnumSet,
     isDefinitionCandidatesSet,
@@ -41,7 +41,7 @@ export const testValue = <T>(input: unknown, definition: Definition<T>): input i
     }
     if (is$Object(input)) {
         for (const key of keys(definition)) {
-            if (!testValue<ValueOf<T>>(input[String(key)], definition[key])) {
+            if (!testValue<T[keyof T]>(input[String(key)], definition[key])) {
                 return false;
             }
         }

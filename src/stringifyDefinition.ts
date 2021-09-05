@@ -9,10 +9,10 @@ import {is$Function} from './primitive.private';
 
 const keys = Object.keys as <T>(value: T) => Array<keyof T>;
 
-export const stringifyDefinition = (
-    definition: Definition,
+export const stringifyDefinition = <T>(
+    definition: Definition<T>,
     indent = '',
-    ancestors: Array<Definition> = [],
+    ancestors: Array<Definition<T>> = [],
 ): string => [...stringify(definition, indent, ancestors)].join('').trim();
 
 const stringify = function* (
@@ -42,19 +42,19 @@ const stringify = function* (
     }
 };
 
-const concat = (
-    ancestors: Array<Definition>,
-    definition: Definition,
-): Array<Definition> => {
+const concat = <T>(
+    ancestors: Array<Definition<T>>,
+    definition: Definition<T>,
+): Array<Definition<T>> => {
     const result = ancestors.slice();
     result[result.length] = definition;
     return result;
 };
 
-const stringifyIterableDefinitions = function* (
-    definitions: Iterable<Definition>,
+const stringifyIterableDefinitions = function* <T>(
+    definitions: Iterable<Definition<T>>,
     indent: string,
-    ancestors: Array<Definition>,
+    ancestors: Array<Definition<T>>,
     prefix: string,
     open = '{',
     close = '}',

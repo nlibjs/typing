@@ -6,7 +6,7 @@ import {
     isTypeChecker,
     optionalDefinitionStore,
 } from './definition.private';
-import type {DefinitionObject, TypeChecker, UniversalDefinition} from './generics';
+import type {Definition, TypeChecker} from './generics';
 import {ModuleError} from './ModuleError.private';
 import {is$Array, is$Object, is$String} from './primitive.private';
 import {testValue} from './testValue';
@@ -22,7 +22,7 @@ const entries = Object.entries as <T>(object: T) => Array<[keyof T, T[keyof T]]>
 // eslint-disable-next-line max-lines-per-function
 export const createTypeChecker = <T>(
     type: string,
-    definition: UniversalDefinition<T> | (T extends string ? RegExp : DefinitionObject<T>),
+    definition: Exclude<Definition<T>, TypeChecker<T>>,
 ): TypeChecker<T> => {
     if (!type) {
         throw new ModuleError({code: 'NoTypeName', data: {type, definition}});
