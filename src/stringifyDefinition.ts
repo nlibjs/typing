@@ -9,31 +9,11 @@ import {is$Function} from './primitive.private';
 
 const keys = Object.keys as <T>(value: T) => Array<keyof T>;
 
-const concat = (
-    ancestors: Array<Definition>,
+export const stringifyDefinition = (
     definition: Definition,
-): Array<Definition> => {
-    const result = ancestors.slice();
-    result[result.length] = definition;
-    return result;
-};
-
-const stringifyIterableDefinitions = function* (
-    definitions: Iterable<Definition>,
-    indent: string,
-    ancestors: Array<Definition>,
-    prefix: string,
-    open = '{',
-    close = '}',
-): Generator<string> {
-    yield `${indent}${prefix} ${open}\n`;
-    const itemIndent = `${indent}  `;
-    const nextAncestors = concat(ancestors, definitions);
-    for (const definition of definitions) {
-        yield `${itemIndent}${stringifyDefinition(definition, itemIndent, nextAncestors)},\n`;
-    }
-    yield `${indent}${close}\n`;
-};
+    indent = '',
+    ancestors: Array<Definition> = [],
+): string => [...stringify(definition, indent, ancestors)].join('').trim();
 
 const stringify = function* (
     definition: Definition,
@@ -62,8 +42,28 @@ const stringify = function* (
     }
 };
 
-export const stringifyDefinition = (
+const concat = (
+    ancestors: Array<Definition>,
     definition: Definition,
-    indent = '',
-    ancestors: Array<Definition> = [],
-): string => [...stringify(definition, indent, ancestors)].join('').trim();
+): Array<Definition> => {
+    const result = ancestors.slice();
+    result[result.length] = definition;
+    return result;
+};
+
+const stringifyIterableDefinitions = function* (
+    definitions: Iterable<Definition>,
+    indent: string,
+    ancestors: Array<Definition>,
+    prefix: string,
+    open = '{',
+    close = '}',
+): Generator<string> {
+    yield `${indent}${prefix} ${open}\n`;
+    const itemIndent = `${indent}  `;
+    const nextAncestors = concat(ancestors, definitions);
+    for (const definition of definitions) {
+        yield `${itemIndent}${stringifyDefinition(definition, itemIndent, nextAncestors)},\n`;
+    }
+    yield `${indent}${close}\n`;
+};

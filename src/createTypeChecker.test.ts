@@ -20,9 +20,8 @@ testFunction(isSome, {input: '1', expected: true});
 testFunction(isSome, {input: null, expected: true});
 testFunction(isSome, {input: 1, expected: false});
 
-const isDictionary = createTypeChecker('Dictionary', isString.dictionary);
-testFunction(isDictionary, {input: {a: 'a', b: 'b'}, expected: true});
-testFunction(isDictionary, {input: {a: 'a', b: 1}, expected: false});
+testFunction(isString.dictionary, {input: {a: 'a', b: 'b'}, expected: true});
+testFunction(isString.dictionary, {input: {a: 'a', b: 1}, expected: false});
 
 const isEvery = createTypeChecker('Every', definition.every(
     isString,
@@ -30,11 +29,6 @@ const isEvery = createTypeChecker('Every', definition.every(
 ));
 testFunction(isEvery, {input: '1a', expected: true});
 testFunction(isEvery, {input: '11', expected: false});
-
-const isTuple = createTypeChecker('Tuple', [isString, isNull]);
-testFunction(isTuple, {input: ['a', null, 'b'], expected: true});
-testFunction(isTuple, {input: ['a', null, 'b', null], expected: true});
-testFunction(isTuple, {input: ['a', null, 'b', null, null], expected: false});
 
 const isObject = createTypeChecker<{a: string, b: null}>('Object', {
     a: isString,
