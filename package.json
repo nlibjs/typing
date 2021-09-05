@@ -23,27 +23,21 @@
     },
     "files": [
         "esm",
-        "cjs",
-        "!*.test.*",
-        "!*.map"
+        "cjs"
     ],
     "scripts": {
+        "test": "ava",
+        "lint": "eslint --ext .ts --ext .js src",
         "build": "run-s build:*",
-        "build:index": "indexen --input src --output src/index.ts",
+        "build:index": "npx @nlib/indexen --input src --output src/index.ts",
         "build:esm": "run-s build:esm:*",
-        "build:esm:tsc": "tsc",
-        "build:esm:rename": "replace-ext --directory esm --entry js/mjs",
-        "build:esm:resolve": "resolve-imports --directory esm --ext mjs",
+        "build:esm:tsc": "tsc --project tsconfig.esm.json",
+        "build:esm:rename": "npx @nlib/change-ext --directory esm --mapping js/mjs",
+        "build:esm:resolve": "npx @nlib/resolve-imports --directory esm --ext mjs",
         "build:cjs": "run-s build:cjs:*",
         "build:cjs:tsc": "tsc --project tsconfig.cjs.json",
-        "build:cjs:rename": "replace-ext --directory cjs --entry js/cjs",
-        "build:cjs:resolve": "resolve-imports --directory cjs --ext cjs --cjs",
-        "test": "run-s build test:*",
-        "test-skipbuild": "run-s test:*",
-        "test:type": "tsc --noEmit",
-        "test:cjs": "ava './cjs/**/*.test.cjs'",
-        "test:esm": "ava './esm/**/*.test.mjs'",
-        "lint": "eslint --ext .ts --ext .js src",
+        "build:cjs:rename": "npx @nlib/change-ext --directory cjs --mapping js/cjs",
+        "build:cjs:resolve": "npx @nlib/resolve-imports --directory cjs --ext cjs --cjs",
         "version": "run-s version:changelog version:add",
         "version:changelog": "npx @nlib/changelog --output CHANGELOG.md",
         "version:add": "git add ."
@@ -54,17 +48,15 @@
     "devDependencies": {
         "@nlib/eslint-config": "3.17.16",
         "@nlib/githooks": "0.1.0",
-        "@nlib/nodetool": "0.1.17",
         "@nlib/test": "3.18.7",
         "@types/eslint": "7.28.0",
         "@typescript-eslint/eslint-plugin": "4.25.0",
         "@typescript-eslint/parser": "4.30.0",
         "ava": "3.15.0",
         "eslint": "7.32.0",
-        "husky": "4.3.8",
         "lint-staged": "11.1.2",
         "npm-run-all": "4.1.5",
-        "sucrase": "3.20.1",
+        "ts-node": "10.2.1",
         "typescript": "4.2.4"
     },
     "eslintConfig": {
@@ -106,11 +98,16 @@
             }
         ]
     },
-    "husky": {
-        "hooks": {
-            "commit-msg": "nlib-lint-commit --input HUSKY_GIT_PARAMS",
-            "pre-commit": "lint-staged"
-        }
+    "ava": {
+        "extensions": [
+            "ts"
+        ],
+        "require": [
+            "ts-node/register"
+        ],
+        "files": [
+            "./src/**/*.test.ts"
+        ]
     },
     "lint-staged": {
         "*.ts": [
