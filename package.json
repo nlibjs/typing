@@ -52,10 +52,8 @@
         "@nlib/global": "3.18.0"
     },
     "devDependencies": {
-        "@nlib/changelog": "0.1.9",
         "@nlib/eslint-config": "3.17.16",
         "@nlib/githooks": "0.1.0",
-        "@nlib/lint-commit": "0.1.4",
         "@nlib/nodetool": "0.1.17",
         "@nlib/test": "3.18.7",
         "@types/eslint": "7.28.0",
