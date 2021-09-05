@@ -1,3 +1,4 @@
+import ava from 'ava';
 import {testFunction} from '@nlib/test';
 import {isString} from './is/String';
 import {createTypeChecker} from './createTypeChecker';
@@ -20,6 +21,13 @@ testFunction(isSome, {input: '1', expected: true});
 testFunction(isSome, {input: null, expected: true});
 testFunction(isSome, {input: 1, expected: false});
 
+testFunction(isString.array, {input: ['a', 'b'], expected: true});
+testFunction(isString.array, {input: ['a', 1], expected: false});
+
+testFunction(isString.optional, {input: 'a', expected: true});
+testFunction(isString.optional, {input: undefined, expected: true});
+testFunction(isString.optional, {input: 1, expected: false});
+
 testFunction(isString.dictionary, {input: {a: 'a', b: 'b'}, expected: true});
 testFunction(isString.dictionary, {input: {a: 'a', b: 1}, expected: false});
 
@@ -36,3 +44,14 @@ const isObject = createTypeChecker<{a: string, b: null}>('Object', {
 });
 testFunction(isObject, {input: {a: '', b: null}, expected: true});
 testFunction(isObject, {input: {a: '', b: 1}, expected: false});
+
+const isHexColor = createTypeChecker('HexColor', /^#[0-9a-f]{6}$/);
+testFunction(isHexColor, {input: '#000000', expected: true});
+testFunction(isHexColor, {input: '#00000g', expected: false});
+testFunction(isHexColor, {input: '#abcdef', expected: true});
+
+ava('Cannot pass typeChecker', (t) => {
+    t.throws(() => {
+        createTypeChecker('String2', isString);
+    });
+});
