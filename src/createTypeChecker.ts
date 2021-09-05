@@ -1,9 +1,8 @@
 import {cacheResult} from './cacheResult';
-import {arrayDefinitionStore, dictionaryDefinitionStore, optionalDefinitionStore} from './definition.private';
+import {arrayDefinitionStore, dictionaryDefinitionStore, isTypeChecker, optionalDefinitionStore} from './definition.private';
 import type {Definition, DefinitionObject, TypeChecker, UniversalDefinition} from './generics';
-import {is$Array, is$Object, is$String} from './is.private';
-import {isTypeChecker} from './is/TypeChecker';
 import {ModuleError} from './ModuleError.private';
+import {is$Array, is$Object, is$String} from './primitive.private';
 import {testValue} from './testValue';
 
 // eslint-disable-next-line @typescript-eslint/unbound-method

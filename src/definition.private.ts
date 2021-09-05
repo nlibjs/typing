@@ -18,3 +18,5 @@ export const definitionStore = new WeakMap<TypeChecker<unknown>, Definition>();
 export const arrayDefinitionStore = new WeakMap<TypeChecker<unknown>, Definition>();
 export const optionalDefinitionStore = new WeakMap<TypeChecker<unknown>, Definition>();
 export const dictionaryDefinitionStore = new WeakMap<TypeChecker<unknown>, Definition>();
+
+export const isTypeChecker = (input: unknown): input is TypeChecker<unknown> => definitionStore.has(input as TypeChecker<unknown>);

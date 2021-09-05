@@ -14,10 +14,6 @@
         "noFallthroughCasesInSwitch": true,
         "noImplicitReturns": true,
         "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "baseUrl": "./node_modules",
-        "paths": {
-            "@nlib/test": ["@nlib/test/esm"]
-        }
+        "noUnusedParameters": true
     }
 }

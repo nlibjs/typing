@@ -3,9 +3,9 @@ import {
     isDefinitionEnumSet,
     isDefinitionCandidatesSet,
     isDefinitionConditionsSet,
+    isTypeChecker,
 } from './definition.private';
-import {isTypeChecker} from './is/TypeChecker';
-import {is$Function} from './is.private';
+import {is$Function} from './primitive.private';
 
 const keys = Object.keys as <T>(value: T) => Array<keyof T>;
 

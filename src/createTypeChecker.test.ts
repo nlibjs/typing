@@ -3,7 +3,7 @@ import {isString} from './is/String';
 import {createTypeChecker} from './createTypeChecker';
 import {definition} from './definition';
 import {isNull} from './is/Null';
-import {is$String} from './is.private';
+import {is$String} from './primitive.private';
 
 testFunction(createTypeChecker, {
     parameters: ['', is$String],

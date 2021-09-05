@@ -4,7 +4,7 @@ import {
     isDefinitionCandidatesSet,
     isDefinitionConditionsSet,
 } from './definition.private';
-import {is$Object, is$String, is$RegExp} from './is.private';
+import {is$Object, is$String, is$RegExp} from './primitive.private';
 
 const keys = Object.keys as <T>(value: T) => Array<keyof T>;
 

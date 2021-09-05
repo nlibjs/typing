@@ -14,11 +14,11 @@ import {
     arrayDefinitionStore,
     optionalDefinitionStore,
     definitionStore,
+    isTypeChecker,
 } from './definition.private';
 import {stringifyDefinition} from './stringifyDefinition';
 import {ModuleError} from './ModuleError.private';
-import {is$Array, is$Function, is$Object, is$RegExp, is$String} from './is.private';
-import {isTypeChecker} from './is/TypeChecker';
+import {is$Array, is$Function, is$Object, is$RegExp, is$String} from './primitive.private';
 import {testValue} from './testValue';
 
 export interface CheckErrorFailedResult {
