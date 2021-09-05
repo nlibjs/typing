@@ -45,7 +45,7 @@
         "test:esm": "ava './esm/**/*.test.mjs'",
         "lint": "eslint --ext .ts --ext .js src",
         "version": "run-s version:changelog version:add",
-        "version:changelog": "nlib-changelog --output CHANGELOG.md",
+        "version:changelog": "npx @nlib/changelog --output CHANGELOG.md",
         "version:add": "git add ."
     },
     "dependencies": {
@@ -54,6 +54,7 @@
     "devDependencies": {
         "@nlib/changelog": "0.1.9",
         "@nlib/eslint-config": "3.17.16",
+        "@nlib/githooks": "0.1.0",
         "@nlib/lint-commit": "0.1.4",
         "@nlib/nodetool": "0.1.17",
         "@nlib/test": "3.18.7",
