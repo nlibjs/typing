@@ -46,7 +46,7 @@
         "@nlib/global": "3.18.0"
     },
     "devDependencies": {
-        "@nlib/eslint-config": "3.17.16",
+        "@nlib/eslint-config": "3.17.25",
         "@nlib/githooks": "0.1.0",
         "@nlib/test": "3.18.7",
         "@types/eslint": "7.28.0",
