@@ -1,7 +1,4 @@
 import {testFunction} from '@nlib/test';
 import {testValue} from './testValue';
 
-testFunction(testValue, {
-    parameters: [1, null],
-    expected: false,
-});
+testFunction(testValue, [1, null as never], false);

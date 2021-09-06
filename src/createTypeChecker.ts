@@ -1,4 +1,4 @@
-import {cacheResult} from './cacheResult';
+import {cacheResult} from './cacheResult.private';
 import {
     arrayDefinitionStore,
     definitionStore,

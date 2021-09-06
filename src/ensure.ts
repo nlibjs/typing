@@ -16,7 +16,7 @@ import {
     definitionStore,
     isTypeChecker,
 } from './definition.private';
-import {stringifyDefinition} from './stringifyDefinition';
+import {stringifyDefinition} from './stringifyDefinition.private';
 import {ModuleError} from './ModuleError.private';
 import {is$Array, is$Function, is$Object, is$RegExp, is$String} from './primitive.private';
 import {testValue} from './testValue';
