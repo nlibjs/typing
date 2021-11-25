@@ -44,7 +44,7 @@
         "version:add": "git add ."
     },
     "devDependencies": {
-        "@nlib/eslint-config": "3.17.25",
+        "@nlib/eslint-config": "3.17.29",
         "@nlib/githooks": "0.1.0",
         "@nlib/test": "4.0.0",
         "@types/eslint": "7.28.0",
