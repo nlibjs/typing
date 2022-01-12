@@ -44,18 +44,18 @@
         "version:add": "git add ."
     },
     "devDependencies": {
-        "@nlib/eslint-config": "3.17.25",
+        "@nlib/eslint-config": "3.17.30",
         "@nlib/githooks": "0.1.0",
         "@nlib/test": "4.0.0",
-        "@types/eslint": "7.28.0",
-        "@typescript-eslint/eslint-plugin": "4.30.0",
-        "@typescript-eslint/parser": "4.32.0",
-        "ava": "3.15.0",
-        "eslint": "7.32.0",
-        "lint-staged": "11.1.2",
+        "@types/eslint": "8.2.2",
+        "@typescript-eslint/eslint-plugin": "5.9.1",
+        "@typescript-eslint/parser": "5.9.1",
+        "ava": "4.0.1",
+        "eslint": "8.6.0",
+        "lint-staged": "12.1.7",
         "npm-run-all": "4.1.5",
-        "ts-node": "10.2.1",
-        "typescript": "4.4.2"
+        "ts-node": "10.4.0",
+        "typescript": "4.5.4"
     },
     "eslintConfig": {
         "extends": [
