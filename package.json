@@ -39,13 +39,13 @@
         "version:add": "git add ."
     },
     "devDependencies": {
-        "@nlib/change-ext": "^0.1.2",
-        "@nlib/changelog": "^0.1.11",
+        "@nlib/change-ext": "0.1.2",
+        "@nlib/changelog": "0.1.11",
         "@nlib/eslint-config": "3.17.30",
         "@nlib/githooks": "0.1.0",
-        "@nlib/indexen": "^0.1.2",
-        "@nlib/lint-commit": "^0.1.8",
-        "@nlib/resolve-imports": "^1.0.2",
+        "@nlib/indexen": "0.1.2",
+        "@nlib/lint-commit": "0.1.8",
+        "@nlib/resolve-imports": "1.0.2",
         "@nlib/test": "4.0.0",
         "@types/eslint": "8.2.2",
         "@typescript-eslint/eslint-plugin": "5.9.1",
