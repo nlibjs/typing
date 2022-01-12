@@ -15,14 +15,12 @@
     "engines": {
         "node": ">=12"
     },
-    "main": "./esm/index.mjs",
-    "exports": {
-        "import": "./esm/index.mjs",
-        "require": "./cjs/index.cjs"
-    },
+    "main": "./cjs/index.js",
     "files": [
         "esm",
-        "cjs"
+        "cjs",
+        "src",
+        "!**/*.test.ts"
     ],
     "scripts": {
         "test": "run-s test:*",
@@ -34,11 +32,8 @@
         "build:esm": "run-s build:esm:*",
         "build:esm:tsc": "tsc --project tsconfig.esm.json",
         "build:esm:rename": "npx nlib-change-ext --directory esm --mapping js/mjs",
-        "build:esm:resolve": "npx nlib-resolve-imports --directory esm --ext mjs",
-        "build:cjs": "run-s build:cjs:*",
-        "build:cjs:tsc": "tsc --project tsconfig.cjs.json",
-        "build:cjs:rename": "npx nlib-change-ext --directory cjs --mapping js/cjs",
-        "build:cjs:resolve": "npx nlib-resolve-imports --directory cjs --ext cjs --cjs",
+        "build:esm:resolve": "npx nlib-resolve-imports --include esm --ext mjs",
+        "build:cjs": "tsc --project tsconfig.cjs.json",
         "version": "run-s version:changelog version:add",
         "version:changelog": "npx nlib-changelog --output CHANGELOG.md",
         "version:add": "git add ."
