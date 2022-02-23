@@ -1,12 +1,10 @@
-import {testFunction} from '@nlib/test';
+import {listCheckerTests} from './tests.private';
 import {isString} from './String';
 
-testFunction(isString, [''], true);
-testFunction(isString, ['foo'], true);
-testFunction(isString, [[]], false);
-testFunction(isString, [1], false);
-testFunction(isString, [1.1], false);
-testFunction(isString, [null], false);
-testFunction(isString, [true], false);
-testFunction(isString, [false], false);
-testFunction(isString, [{}], false);
+describe(isString.name, () => {
+    for (const {key, input, expected} of listCheckerTests('EmptyString', 'NonEmptyString', 'UUID', 'NonUUID')) {
+        it(`${key} → ${expected}`, () => {
+            expect(isString(input)).toBe(expected);
+        });
+    }
+});

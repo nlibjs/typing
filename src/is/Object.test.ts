@@ -1,22 +1,10 @@
-import {testFunction} from '@nlib/test';
+import {listCheckerTests} from './tests.private';
 import {isObject} from './Object';
 
-testFunction(isObject, [-Infinity], false);
-testFunction(isObject, [Number.MAX_SAFE_INTEGER * -2], false);
-testFunction(isObject, [-1.1], false);
-testFunction(isObject, [-1], false);
-testFunction(isObject, [0], false);
-testFunction(isObject, [1], false);
-testFunction(isObject, [1.1], false);
-testFunction(isObject, [Number.MAX_SAFE_INTEGER * 2], false);
-testFunction(isObject, [Infinity], false);
-testFunction(isObject, [''], false);
-testFunction(isObject, ['foo'], false);
-testFunction(isObject, [[]], true);
-testFunction(isObject, [null], false);
-testFunction(isObject, [true], false);
-testFunction(isObject, [false], false);
-testFunction(isObject, [{}], true);
-testFunction(isObject, [new Date()], true);
-testFunction(isObject, [new Date('Foo')], true);
-testFunction(isObject, [() => null], true);
+describe(isObject.name, () => {
+    for (const {key, input, expected} of listCheckerTests('EmptyArray', 'Object', 'InvalidDate', 'ValidDate', 'Function', 'Class')) {
+        it(`${key} → ${expected}`, () => {
+            expect(isObject(input)).toBe(expected);
+        });
+    }
+});

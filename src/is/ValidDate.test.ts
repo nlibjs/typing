@@ -1,21 +1,10 @@
-import {testFunction} from '@nlib/test';
+import {listCheckerTests} from './tests.private';
 import {isValidDate} from './ValidDate';
 
-testFunction(isValidDate, [-Infinity], false);
-testFunction(isValidDate, [Number.MAX_SAFE_INTEGER * -2], false);
-testFunction(isValidDate, [-1.1], false);
-testFunction(isValidDate, [-1], false);
-testFunction(isValidDate, [0], false);
-testFunction(isValidDate, [1], false);
-testFunction(isValidDate, [1.1], false);
-testFunction(isValidDate, [Number.MAX_SAFE_INTEGER * 2], false);
-testFunction(isValidDate, [Infinity], false);
-testFunction(isValidDate, [''], false);
-testFunction(isValidDate, ['foo'], false);
-testFunction(isValidDate, [[]], false);
-testFunction(isValidDate, [null], false);
-testFunction(isValidDate, [true], false);
-testFunction(isValidDate, [false], false);
-testFunction(isValidDate, [{}], false);
-testFunction(isValidDate, [new Date()], true);
-testFunction(isValidDate, [new Date('Foo')], false);
+describe(isValidDate.name, () => {
+    for (const {key, input, expected} of listCheckerTests('ValidDate')) {
+        it(`${key} → ${expected}`, () => {
+            expect(isValidDate(input)).toBe(expected);
+        });
+    }
+});
