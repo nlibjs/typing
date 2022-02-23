@@ -1,22 +1,10 @@
+import {listCheckerTests} from './tests.private';
 import {isNull} from './Null';
-import {testFunction} from '@nlib/test';
 
-testFunction(isNull, [-Infinity], false);
-testFunction(isNull, [Number.MAX_SAFE_INTEGER * -2], false);
-testFunction(isNull, [-1.1], false);
-testFunction(isNull, [-1], false);
-testFunction(isNull, [0], false);
-testFunction(isNull, [1], false);
-testFunction(isNull, [1.1], false);
-testFunction(isNull, [Number.MAX_SAFE_INTEGER * 2], false);
-testFunction(isNull, [Infinity], false);
-testFunction(isNull, [''], false);
-testFunction(isNull, ['foo'], false);
-testFunction(isNull, [[]], false);
-testFunction(isNull, [null], true);
-testFunction(isNull, [true], false);
-testFunction(isNull, [false], false);
-testFunction(isNull, [{}], false);
-testFunction(isNull, [new Date()], false);
-testFunction(isNull, [new Date('Foo')], false);
-testFunction(isNull, [() => null], false);
+describe(isNull.name, () => {
+    for (const {key, input, expected} of listCheckerTests('Null')) {
+        it(`${key} → ${expected}`, () => {
+            expect(isNull(input)).toBe(expected);
+        });
+    }
+});

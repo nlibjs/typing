@@ -1,19 +1,10 @@
-import {testFunction} from '@nlib/test';
+import {listCheckerTests} from './tests.private';
 import {isPositiveSafeInteger} from './PositiveSafeInteger';
 
-testFunction(isPositiveSafeInteger, [-Infinity], false);
-testFunction(isPositiveSafeInteger, [Number.MAX_SAFE_INTEGER * -2], false);
-testFunction(isPositiveSafeInteger, [-1.1], false);
-testFunction(isPositiveSafeInteger, [-1], false);
-testFunction(isPositiveSafeInteger, [0], false);
-testFunction(isPositiveSafeInteger, [1], true);
-testFunction(isPositiveSafeInteger, [1.1], false);
-testFunction(isPositiveSafeInteger, [Number.MAX_SAFE_INTEGER * 2], false);
-testFunction(isPositiveSafeInteger, [Infinity], false);
-testFunction(isPositiveSafeInteger, [''], false);
-testFunction(isPositiveSafeInteger, ['foo'], false);
-testFunction(isPositiveSafeInteger, [[]], false);
-testFunction(isPositiveSafeInteger, [null], false);
-testFunction(isPositiveSafeInteger, [true], false);
-testFunction(isPositiveSafeInteger, [false], false);
-testFunction(isPositiveSafeInteger, [{}], false);
+describe(isPositiveSafeInteger.name, () => {
+    for (const {key, input, expected} of listCheckerTests('PositiveInteger')) {
+        it(`${key} → ${expected}`, () => {
+            expect(isPositiveSafeInteger(input)).toBe(expected);
+        });
+    }
+});

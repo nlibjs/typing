@@ -1,25 +1,10 @@
-import {testFunction} from '@nlib/test';
+import {listCheckerTests} from './tests.private';
 import {isUUID} from './UUID';
 
-testFunction(isUUID, [-Infinity], false);
-testFunction(isUUID, [Number.MAX_SAFE_INTEGER * -2], false);
-testFunction(isUUID, [-1.1], false);
-testFunction(isUUID, [-1], false);
-testFunction(isUUID, [0], false);
-testFunction(isUUID, [1], false);
-testFunction(isUUID, [1.1], false);
-testFunction(isUUID, [Number.MAX_SAFE_INTEGER * 2], false);
-testFunction(isUUID, [Infinity], false);
-testFunction(isUUID, [''], false);
-testFunction(isUUID, ['foo'], false);
-testFunction(isUUID, ['12345678-abcd-ef01-1234-00009999000'], false);
-testFunction(isUUID, ['12345678-abcd-ef01-1234-000099990000'], true);
-testFunction(isUUID, [[]], false);
-testFunction(isUUID, [null], false);
-testFunction(isUUID, [true], false);
-testFunction(isUUID, [false], false);
-testFunction(isUUID, [{}], false);
-testFunction(isUUID, [new Date()], false);
-testFunction(isUUID, [new Date('Foo')], false);
-testFunction(isUUID, [() => null], false);
-testFunction(isUUID, [undefined], false);
+describe(isUUID.name, () => {
+    for (const {key, input, expected} of listCheckerTests('UUID')) {
+        it(`${key} → ${expected}`, () => {
+            expect(isUUID(input)).toBe(expected);
+        });
+    }
+});

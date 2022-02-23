@@ -1,23 +1,10 @@
+import {listCheckerTests} from './tests.private';
 import {isUndefined} from './Undefined';
-import {testFunction} from '@nlib/test';
 
-testFunction(isUndefined, [-Infinity], false);
-testFunction(isUndefined, [Number.MAX_SAFE_INTEGER * -2], false);
-testFunction(isUndefined, [-1.1], false);
-testFunction(isUndefined, [-1], false);
-testFunction(isUndefined, [0], false);
-testFunction(isUndefined, [1], false);
-testFunction(isUndefined, [1.1], false);
-testFunction(isUndefined, [Number.MAX_SAFE_INTEGER * 2], false);
-testFunction(isUndefined, [Infinity], false);
-testFunction(isUndefined, [''], false);
-testFunction(isUndefined, ['foo'], false);
-testFunction(isUndefined, [[]], false);
-testFunction(isUndefined, [null], false);
-testFunction(isUndefined, [true], false);
-testFunction(isUndefined, [false], false);
-testFunction(isUndefined, [{}], false);
-testFunction(isUndefined, [new Date()], false);
-testFunction(isUndefined, [new Date('Foo')], false);
-testFunction(isUndefined, [() => null], false);
-testFunction(isUndefined, [undefined], true);
+describe(isUndefined.name, () => {
+    for (const {key, input, expected} of listCheckerTests('Undefined')) {
+        it(`${key} → ${expected}`, () => {
+            expect(isUndefined(input)).toBe(expected);
+        });
+    }
+});
