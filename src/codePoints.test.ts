@@ -25,6 +25,7 @@ describe(listCodePoints.name, () => {
             for (const value of expected) {
                 expect(generator.next()).toMatchObject({value});
             }
+            expect(generator.next()).toMatchObject({done: true, value: undefined});
         });
     }
 });
