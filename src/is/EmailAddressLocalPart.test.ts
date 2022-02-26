@@ -11,13 +11,14 @@ describe(isEmailAddressLocalPart.name, () => {
         'DomainWithHyphenAndDigits',
         'DomainStartsWithDigits',
         'InvalidDomainEndsWithHyphen',
-        'IPv4',
         'Digits64',
         'DigitsSeparatedByDot',
         'EmailAddressLocalPartSymbols',
         'SmallLatin',
         'CapitalLatin',
         'QuotedSingle',
+        'IPv4',
+        'InvalidIPv4',
     )) {
         it(`${key} → ${expected}`, () => {
             expect(isEmailAddressLocalPart(input)).toBe(expected);

@@ -14,7 +14,6 @@ describe(isString.name, () => {
         'InvalidDomainEndsWithHyphen',
         'InvalidDomainStartsWithDot',
         'InvalidDomainEndsWithDot',
-        'IPv4',
         'Digits64',
         'Digits65',
         'DigitsSeparatedByDot',
@@ -29,6 +28,10 @@ describe(isString.name, () => {
         'EmailAddressLong64',
         'EmailAddressLong65',
         'EmailAddressSymbols',
+        'IPv4',
+        'IPv6',
+        'InvalidIPv4',
+        'InvalidIPv6',
     )) {
         it(`${key} → ${expected}`, () => {
             expect(isString(input)).toBe(expected);
