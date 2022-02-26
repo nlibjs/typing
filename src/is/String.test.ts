@@ -24,6 +24,11 @@ describe(isString.name, () => {
         'CapitalLatin',
         'QuotedSingle',
         'QuotedDouble',
+        'EmailAddressNoLocalPart',
+        'EmailAddress1LocalPart',
+        'EmailAddressLong64',
+        'EmailAddressLong65',
+        'EmailAddressSymbols',
     )) {
         it(`${key} → ${expected}`, () => {
             expect(isString(input)).toBe(expected);
