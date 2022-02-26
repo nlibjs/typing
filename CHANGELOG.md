@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.3.1 (2022-02-26)
+
+### Features
+
+- add isHttpsUrlString ([371f945](https://github.com/nlibjs/typing/commit/371f9454e96ab3af52aa5fd2a85c871a93d8129a))
+- add isBase64UrlString ([ccd2559](https://github.com/nlibjs/typing/commit/ccd255954612ba8bd00d769515b30cc5cd7c574e))
+- add isBase64String ([cee64e4](https://github.com/nlibjs/typing/commit/cee64e4d58916d608489b5d85a4c2ab7138d1a5b))
+
+### Tests
+
+- fix tests for string ([e5c4aeb](https://github.com/nlibjs/typing/commit/e5c4aebc1ac8dd46421adac89b4ae4d3ec7033d1))
+
+
 ## v0.3.0 (2022-02-26)
 
 ### Features
