@@ -1,9 +1,8 @@
 import {listCheckerTests} from './tests.private';
-import {isString} from './String';
+import {isEmailAddressLocalPart} from './EmailAddressLocalPart';
 
-describe(isString.name, () => {
+describe(isEmailAddressLocalPart.name, () => {
     for (const {key, input, expected} of listCheckerTests(
-        'EmptyString',
         'NonEmptyString',
         'UUID',
         'NonUUID',
@@ -12,21 +11,16 @@ describe(isString.name, () => {
         'DomainWithHyphenAndDigits',
         'DomainStartsWithDigits',
         'InvalidDomainEndsWithHyphen',
-        'InvalidDomainStartsWithDot',
-        'InvalidDomainEndsWithDot',
         'IPv4',
         'Digits64',
-        'Digits65',
         'DigitsSeparatedByDot',
-        'DigitsSeparatedBy2Dots',
         'EmailAddressLocalPartSymbols',
         'SmallLatin',
         'CapitalLatin',
         'QuotedSingle',
-        'QuotedDouble',
     )) {
         it(`${key} → ${expected}`, () => {
-            expect(isString(input)).toBe(expected);
+            expect(isEmailAddressLocalPart(input)).toBe(expected);
         });
     }
 });
