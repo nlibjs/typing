@@ -19,6 +19,8 @@ describe(isEmailAddressLocalPart.name, () => {
         'QuotedSingle',
         'IPv4',
         'InvalidIPv4',
+        'Base64',
+        'Base64Url',
     )) {
         it(`${key} → ${expected}`, () => {
             expect(isEmailAddressLocalPart(input)).toBe(expected);

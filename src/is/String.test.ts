@@ -32,6 +32,12 @@ describe(isString.name, () => {
         'IPv6',
         'InvalidIPv4',
         'InvalidIPv6',
+        'HttpsUrl',
+        'InvalidHttpsUrl',
+        'HttpUrl',
+        'InvalidHttpUrl',
+        'Base64',
+        'Base64Url',
     )) {
         it(`${key} → ${expected}`, () => {
             expect(isString(input)).toBe(expected);
