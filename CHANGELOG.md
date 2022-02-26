@@ -1,5 +1,28 @@
 # Changelog
 
+## v0.3.0 (2022-02-26)
+
+### Features
+
+- add isIpv4Address, isIpv6Address ([2a42fc3](https://github.com/nlibjs/typing/commit/2a42fc3e0eacfc794a8f821be3659e6495b5fd4f))
+- add parseIpv6Address ([4b39a58](https://github.com/nlibjs/typing/commit/4b39a58f23616d80dcfa38325e954367d976bc8b))
+- add parseIpv4Address ([7084a30](https://github.com/nlibjs/typing/commit/7084a30adda101c861c2b99ffac7c8ecffd4f4df))
+- add isEmailAddress ([3c2a364](https://github.com/nlibjs/typing/commit/3c2a364a7ce3970a15d4351fd5a6f4248b2644f3))
+- add isEmailAddressLocalPart ([c2cf58e](https://github.com/nlibjs/typing/commit/c2cf58e28b7bccb686f3a4212dc660a572c0c585))
+- add getType ([99f8ecf](https://github.com/nlibjs/typing/commit/99f8ecf39747d42575f5de8fda1fbd9094042df9))
+- expose codePoints ([06dbae5](https://github.com/nlibjs/typing/commit/06dbae55dd1d28893297099d9e01bc1d6298c7d0))
+- add isDomainName ([afe15f9](https://github.com/nlibjs/typing/commit/afe15f9e35bd022d6348b06fc691ce4afeffabfb))
+
+### Bug Fixes
+
+- import ([5313ddc](https://github.com/nlibjs/typing/commit/5313ddcd30ec301fa4a1145c54783e99f27d7815))
+
+### Tests
+
+- check end ([54b3e86](https://github.com/nlibjs/typing/commit/54b3e86d42baa4cad8b3562a99a5c0acc8407aa0))
+- add some testes for domain name ([656fb46](https://github.com/nlibjs/typing/commit/656fb469b50b5fe8ef80437b7147511e62f71883))
+
+
 ## v0.2.3 (2022-01-12)
 
 ### Bug Fixes
