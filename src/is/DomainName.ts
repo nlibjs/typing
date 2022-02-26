@@ -1,4 +1,4 @@
-import {FULL_STOP, HYPHEN_MINUS, isDigitCodePoint, isSmallLatinCodePoint, listCodePoints} from '../codePoints.private';
+import {FULL_STOP, HYPHEN_MINUS, isDigitCodePoint, isSmallLatinCodePoint, listCodePoints} from '../codePoints';
 import {createTypeChecker} from '../createTypeChecker';
 import type {Nominal} from '../generics';
 import {isString} from './String';
