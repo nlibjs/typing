@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.3.4 (2022-02-27)
+
+### Bug Fixes
+
+- skip indexen in the build steps ([3a77e34](https://github.com/nlibjs/typing/commit/3a77e34af5a5cd80421a9146d981529b1e39a17e))
+
+
 ## v0.3.3 (2022-02-27)
 
 ### Bug Fixes
