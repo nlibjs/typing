@@ -5,7 +5,7 @@ import {isString} from './String';
 
 export type Ipv6Address = Nominal<string, 'Ipv6Address'>;
 
-export const isIpv6Address = createTypeChecker<Ipv6Address>(
+export const isIpv6Address = createTypeChecker(
     'Ipv6Address',
     (input: unknown): input is Ipv6Address => {
         if (isString(input)) {

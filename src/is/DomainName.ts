@@ -14,11 +14,9 @@ import {isString} from './String';
  */
 export type DomainName = Nominal<string, 'DomainName'>;
 
-export const isDomainName = createTypeChecker<DomainName>(
+export const isDomainName = createTypeChecker(
     'Domain',
-    (
-        input: unknown,
-    ): input is DomainName => {
+    (input: unknown): input is DomainName => {
         if (!isString(input)) {
             return false;
         }

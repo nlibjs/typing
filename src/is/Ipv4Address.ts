@@ -5,7 +5,7 @@ import {isString} from './String';
 
 export type Ipv4Address = Nominal<string, 'Ipv4Address'>;
 
-export const isIpv4Address = createTypeChecker<Ipv4Address>(
+export const isIpv4Address = createTypeChecker(
     'Ipv4Address',
     (input: unknown): input is Ipv4Address => {
         if (isString(input)) {

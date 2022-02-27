@@ -17,9 +17,9 @@ export interface Dictionary<T> extends Record<string, T> {}
 export type DefinitionObject<T> = {
     [K in keyof T]: Definition<T[K]>;
 };
-export interface TypeChecker<T> extends TypeGuard<T> {
+export interface TypeChecker<T, N extends string = string> extends TypeGuard<T> {
     readonly name: string,
-    readonly type: string,
+    readonly type: N,
     readonly array: TypeChecker<Array<T>>,
     readonly optional: TypeChecker<T | undefined>,
     readonly dictionary: TypeChecker<Record<string, T>>,

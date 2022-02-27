@@ -6,7 +6,7 @@ import {isString} from './String';
 
 export type EmailAddress = Nominal<string, 'EmailAddress'>;
 
-export const isEmailAddress = createTypeChecker<EmailAddress>(
+export const isEmailAddress = createTypeChecker(
     'EmailAddress',
     (input: unknown): input is EmailAddress => {
         if (!isString(input)) {

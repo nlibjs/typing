@@ -20,10 +20,10 @@ const defineProperties = Object.defineProperties as <T, P>(
 const entries = Object.entries as <T>(object: T) => Array<[keyof T, T[keyof T]]>;
 
 // eslint-disable-next-line max-lines-per-function
-export const createTypeChecker = <T>(
-    type: string,
+export const createTypeChecker = <T, N extends string = string>(
+    type: N,
     definition: Exclude<Definition<T>, TypeChecker<T>>,
-): TypeChecker<T> => {
+): TypeChecker<T, N> => {
     if (!type) {
         throw new ModuleError({code: 'NoTypeName', data: {type, definition}});
     }
@@ -34,14 +34,14 @@ export const createTypeChecker = <T>(
             data: {type, definition},
         });
     }
-    const typeChecker: TypeChecker<T> = defineProperties(
+    const typeChecker: TypeChecker<T, N> = defineProperties(
         (input: unknown): input is T => testValue<T>(input, definition),
         {
             type: {value: type},
             name: {value: `is${type}`},
             array: {
                 get: cacheResult(() => {
-                    const arrayTypeChecker = createTypeChecker(
+                    const arrayTypeChecker = createTypeChecker<Array<T>, `${N}Array`>(
                         `${type}Array`,
                         (input: unknown): input is Array<T> => {
                             return is$Array(input) && input.every((item) => typeChecker(item));

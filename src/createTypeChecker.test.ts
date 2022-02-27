@@ -54,7 +54,7 @@ describe(createTypeChecker.name, () => {
         expect(isEvery(['a'])).toBe(false);
     });
     it('should create an object checker from definitions', () => {
-        const isObject = createTypeChecker<{a: string, b: null}>('Object', {
+        const isObject = createTypeChecker('Object', {
             a: isString,
             b: isNull,
         });

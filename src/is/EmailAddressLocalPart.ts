@@ -62,11 +62,9 @@ const isAtomText = (codePoint: number): boolean => isSmallLatinCodePoint(codePoi
 || isDigitCodePoint(codePoint)
 || allowedNonAlphaNumerics.has(codePoint);
 
-export const isEmailAddressLocalPart = createTypeChecker<string>(
+export const isEmailAddressLocalPart = createTypeChecker(
     'EmailAddressLocalPart',
-    (
-        input: unknown,
-    ): input is string => {
+    (input: unknown): input is string => {
         if (!isString(input)) {
             return false;
         }

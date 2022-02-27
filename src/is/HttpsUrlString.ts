@@ -4,7 +4,7 @@ import {isDomainName} from './DomainName';
 import {isString} from './String';
 
 export type HttpsUrlString = Nominal<string, 'HttpsUrlString'>;
-export const isHttpsUrlString = createTypeChecker<HttpsUrlString>(
+export const isHttpsUrlString = createTypeChecker(
     'HttpsUrlString',
     (input: unknown): input is HttpsUrlString => {
         if (isString(input) && input.startsWith('https://')) {
