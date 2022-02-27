@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.3.3 (2022-02-27)
+
+### Bug Fixes
+
+- update index ([53eb5c8](https://github.com/nlibjs/typing/commit/53eb5c824d2c347955bf04ba18cae030eef8121d))
+
+
 ## v0.3.2 (2022-02-27)
 
 ### Features
