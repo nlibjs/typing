@@ -1,2 +1,3 @@
 #!/bin/sh
+npm run update-index
 npx lint-staged
