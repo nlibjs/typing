@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.3.2 (2022-02-27)
+
+### Features
+
+- add the second parameter N: TypeChecker<T, N> ([7e0d32b](https://github.com/nlibjs/typing/commit/7e0d32b57e67fb5bfffde6337b3cb8c39246be4a))
+
+
 ## v0.3.1 (2022-02-26)
 
 ### Features
