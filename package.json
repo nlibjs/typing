@@ -47,7 +47,7 @@
         "@nlib/lint-commit": "0.1.8",
         "@nlib/resolve-imports": "1.0.2",
         "@types/eslint": "8.4.1",
-        "@types/jest": "27.4.1",
+        "@types/jest": "27.5.0",
         "@typescript-eslint/eslint-plugin": "5.22.0",
         "@typescript-eslint/parser": "5.21.0",
         "eslint": "8.14.0",
