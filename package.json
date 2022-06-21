@@ -43,7 +43,7 @@
         "@nlib/changelog": "0.1.11",
         "@nlib/eslint-config": "3.17.30",
         "@nlib/githooks": "0.1.0",
-        "@nlib/indexen": "0.1.2",
+        "@nlib/indexen": "0.2.2",
         "@nlib/lint-commit": "0.1.8",
         "@nlib/resolve-imports": "1.0.2",
         "@types/eslint": "8.4.2",
