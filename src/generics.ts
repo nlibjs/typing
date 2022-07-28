@@ -15,6 +15,7 @@ export interface TypeGuard<T> {
     (input: unknown): input is T,
     readonly type?: string,
 }
+export type DefinitionType<T> = T extends Definition<infer S> ? S : never;
 export type GuardedType<T> = T extends TypeGuard<infer S> ? S : never;
 export interface Dictionary<T> extends Record<string, T> {}
 export type DefinitionObject<T> = {
