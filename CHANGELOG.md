@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.2.1 (2022-07-28)
+
+### Dependency Upgrades
+
+- @nlib/esmify:0.1.2→0.1.4 ([f8fff72](https://github.com/nlibjs/typing/commit/f8fff7297717b79d12a0610f7be3122812501d85))
+
+
 ## v0.4.0 (2022-07-28)
 
 ### Features
