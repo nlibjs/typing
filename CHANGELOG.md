@@ -1,5 +1,26 @@
 # Changelog
 
+## v0.2.1 (2022-07-28)
+
+### Features
+
+- esm ([2e65f53](https://github.com/nlibjs/typing/commit/2e65f538837b227307d96aa5f5cf3d1cf633eee6))
+- rename ([a89b125](https://github.com/nlibjs/typing/commit/a89b12522d9b4de0c6a8f4ca8fe32f42a7879cfe))
+- add DefinitionType<T> ([beaf55d](https://github.com/nlibjs/typing/commit/beaf55d49dbc3bcf8ef6f8734149a6b445f0dc9f))
+- add MapKey<T> and MapValue<T> ([12f5aab](https://github.com/nlibjs/typing/commit/12f5aab51c41acb0ea48d77991a3a2cdda2dcf80))
+- add SetItem<T> ([d39dc2c](https://github.com/nlibjs/typing/commit/d39dc2c3b25af74557402c61d5d40f3656b893f6))
+
+### Dependency Upgrades
+
+- typescript:4.6.4→4.7.4 ([78e0dfa](https://github.com/nlibjs/typing/commit/78e0dfae90cfcfcf3cf70e9c70ae6ae89cc99162))
+- eslint:8.14.0→8.20.0 eslint-plugin-jest:26.1.5→26.6.0 ([2fdf2ab](https://github.com/nlibjs/typing/commit/2fdf2ab2f2ae1c4ca2cf2f639b4638bf3699e19d))
+- @typescript-eslint/eslint-plugin:5.22.0→5.31.0 @typescript-eslint/parser:5.22.0→5.31.0 ([1a660df](https://github.com/nlibjs/typing/commit/1a660dfdaaa7b772196be603fc156c14ada5ab7c))
+- lint-staged:12.4.1→13.0.3 ([9b0ca0d](https://github.com/nlibjs/typing/commit/9b0ca0df35a61bdbbaaa9915326c321a10a614a7))
+- jest:27.5.1→28.1.3 ts-jest:27.1.4→28.0.7 ([b5e664d](https://github.com/nlibjs/typing/commit/b5e664d1b4341abc438b102ae1843017f20e57ca))
+- @types/eslint:8.4.2→8.4.5 @types/jest:27.5.0→28.1.6 ([6571782](https://github.com/nlibjs/typing/commit/65717822a81d7524582ef6bea4a5609bede4dd4c))
+- @nlib/changelog:0.1.11→0.2.1 @nlib/eslint-config:3.17.30→3.18.0 @nlib/indexen:0.1.2→0.2.2 @nlib/lint-commit:0.1.8→0.2.0 ([802189d](https://github.com/nlibjs/typing/commit/802189dfc5dec102b58bb0513cea3de4d112ce24))
+
+
 ## v0.3.4 (2022-02-27)
 
 ### Bug Fixes
