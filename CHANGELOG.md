@@ -1,10 +1,14 @@
 # Changelog
 
-## v0.4.3 (2022-07-28)
+## v0.4.4 (2022-07-28)
 
 ### Bug Fixes
 
 - index ([49b04ca](https://github.com/nlibjs/typing/commit/49b04ca927c4e8fe0630dbf114753b3c860905f1))
+
+### Dependency Upgrades
+
+- @nlib/esmify:0.1.4→0.1.5 ([056f3d0](https://github.com/nlibjs/typing/commit/056f3d0c06b0cf34cf306371d50f83db765cec94))
 
 
 ## v0.4.2 (2022-07-28)
