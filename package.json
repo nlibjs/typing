@@ -16,7 +16,7 @@
         "node": ">=14"
     },
     "type": "module",
-    "main": "./lib/index.mjs",
+    "main": "./lib/index.js",
     "files": [
         "lib",
         "!**/*.test.*"
