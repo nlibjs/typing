@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.2.1 (2022-07-28)
+## v0.4.1 (2022-07-28)
 
 ### Dependency Upgrades
 
