@@ -4,6 +4,9 @@ export type Nominal<K, T extends string> = K & {
 };
 export type Resolved<T> = T extends Promise<infer S> ? S : T;
 export type ValueOf<T> = T[keyof T];
+export type SetItem<T> = T extends Set<infer I> ? I : never;
+export type MapKey<T> = T extends Map<infer I, unknown> ? I : never;
+export type MapValue<T> = T extends Map<unknown, infer I> ? I : never;
 export type ArrayItem<T> = T extends Array<infer I> ? I : never;
 export interface Callable<Return = unknown> {
     (...args: Array<unknown>): Return,
@@ -12,6 +15,7 @@ export interface TypeGuard<T> {
     (input: unknown): input is T,
     readonly type?: string,
 }
+export type DefinedType<T> = T extends Definition<infer S> ? S : never;
 export type GuardedType<T> = T extends TypeGuard<infer S> ? S : never;
 export interface Dictionary<T> extends Record<string, T> {}
 export type DefinitionObject<T> = {
