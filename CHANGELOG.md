@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.2.1 (2022-07-28)
+
+### Bug Fixes
+
+- build command ([42a5c40](https://github.com/nlibjs/typing/commit/42a5c40d0aff52d4d8da92060f82bfc2bd0c1245))
+
+
 ## v0.4.1 (2022-07-28)
 
 ### Dependency Upgrades
