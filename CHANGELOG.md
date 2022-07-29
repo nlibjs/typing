@@ -1,9 +1,10 @@
 # Changelog
 
-## v0.4.6 (2022-07-29)
+## v0.4.7 (2022-07-29)
 
 ### Bug Fixes
 
+- default to cjs ([360a8b8](https://github.com/nlibjs/typing/commit/360a8b837a6379dfb0f110605f45853b29133a38))
 - main ([0426c2c](https://github.com/nlibjs/typing/commit/0426c2c0fad0c76a4914ad02f620a55479e09abf))
 - index ([49b04ca](https://github.com/nlibjs/typing/commit/49b04ca927c4e8fe0630dbf114753b3c860905f1))
 
