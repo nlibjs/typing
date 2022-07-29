@@ -16,9 +16,14 @@
         "node": ">=14"
     },
     "type": "module",
-    "main": "./lib/index.js",
+    "main": "./cjs/index.js",
+    "exports": {
+        "import": "./esm/index.mjs",
+        "require": "./cjs/index.js"
+    },
     "files": [
-        "lib",
+        "cjs",
+        "esm",
         "!**/*.test.*"
     ],
     "scripts": {
@@ -28,8 +33,10 @@
         "lint": "eslint --ext .ts --ext .js src",
         "build": "run-s build:*",
         "build:index": "nlib-indexen --output src/index.ts \"./**/*.ts\"",
-        "build:tsc": "tsc",
-        "build:esmify": "nlib-esmify \"./lib/**/*\"",
+        "build:esm": "run-s build:esm:*",
+        "build:esm:tsc": "tsc --project tsconfig.esm.json",
+        "build:esm:esmify": "nlib-esmify \"./esm/**/*\"",
+        "build:cjs": "tsc --project tsconfig.cjs.json",
         "postversion": "run-s postversion:*",
         "postversion:changelog": "nlib-changelog --output CHANGELOG.md",
         "postversion:add": "git add .",
@@ -38,7 +45,7 @@
     "devDependencies": {
         "@nlib/changelog": "0.2.1",
         "@nlib/eslint-config": "3.18.0",
-        "@nlib/esmify": "0.2.0",
+        "@nlib/esmify": "0.3.0",
         "@nlib/githooks": "0.1.0",
         "@nlib/indexen": "0.2.5",
         "@nlib/lint-commit": "0.2.0",
