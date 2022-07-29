@@ -1,7 +1,7 @@
 import {createTypeChecker} from '../createTypeChecker';
 import type {Nominal} from '../generics';
-import {isDomainName} from './DomainName';
 import {isString} from './String';
+import {isUrlHostString} from './UrlHostString';
 
 export type HttpsUrlString = Nominal<string, 'HttpsUrlString'>;
 export const isHttpsUrlString = createTypeChecker(
@@ -12,7 +12,7 @@ export const isHttpsUrlString = createTypeChecker(
             if (domainPartEnd < 0) {
                 domainPartEnd = input.length;
             }
-            if (!isDomainName(input.slice(8, domainPartEnd))) {
+            if (!isUrlHostString(input.slice(8, domainPartEnd))) {
                 return false;
             }
             return !input.slice(domainPartEnd).includes(' ');

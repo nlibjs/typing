@@ -42,7 +42,11 @@ const typeCheckerTestValues = {
     InvalidIPv4: '192.168.0.256',
     InvalidIPv6: 'ABCD:EF01:2345:6789:ABCD:EF01:2345:678G',
     HttpsUrl: 'https://example.com/foo',
+    HttpsUrlWithPort: 'https://example.com:3000/foo',
     InvalidHttpsUrl: 'https://example.com/fo o',
+    HostWithPort: 'example.com:3000',
+    HostIPv6: '[ABCD:EF01:2345:6789:ABCD:EF01:2345:6789]',
+    HostIPv6WithPort: '[ABCD:EF01:2345:6789:ABCD:EF01:2345:6789]:3000',
     HttpUrl: 'http://example.com/foo',
     InvalidHttpUrl: 'http://example.com/fo o',
     Base64: '8J+YhA==',
@@ -59,6 +63,17 @@ const typeCheckerTestValues = {
     Class: class Foo {
         public foo?: number;
     },
+    Uint8Array: new Uint8Array([1, 2, 3]),
+    Uint8ClampedArray: new Uint8ClampedArray([1, 2, 3]),
+    Uint16Array: new Uint16Array([1, 2, 3]),
+    Uint32Array: new Uint32Array([1, 2, 3]),
+    Int8Array: new Int8Array([1, 2, 3]),
+    Int16Array: new Int16Array([1, 2, 3]),
+    Int32Array: new Int32Array([1, 2, 3]),
+    Float32Array: new Float32Array([1, 2, 3]),
+    Float64Array: new Float64Array([1, 2, 3]),
+    BigUint64Array: new BigUint64Array([1n, 2n, 3n]),
+    BigInt64Array: new BigInt64Array([1n, 2n, 3n]),
 };
 type TestKey = keyof typeof typeCheckerTestValues;
 export const listCheckerTests = function* (...trueKeys: Array<TestKey>) {
