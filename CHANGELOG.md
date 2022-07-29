@@ -1,9 +1,15 @@
 # Changelog
 
-## v0.4.7 (2022-07-29)
+## v0.4.8 (2022-07-29)
+
+### Features
+
+- add TypedArray ([572fef4](https://github.com/nlibjs/typing/commit/572fef4828e9f811a7a0e380d877bc9390b3839e))
+- add UrlHostString ([2761747](https://github.com/nlibjs/typing/commit/276174700345d974414e4fea24e8b339f3ac6b78))
 
 ### Bug Fixes
 
+- HttpsUrlString rejects urls with port ([5ba7c74](https://github.com/nlibjs/typing/commit/5ba7c740db011848a2115dc5c9de32dfe16619bc))
 - default to cjs ([360a8b8](https://github.com/nlibjs/typing/commit/360a8b837a6379dfb0f110605f45853b29133a38))
 - main ([0426c2c](https://github.com/nlibjs/typing/commit/0426c2c0fad0c76a4914ad02f620a55479e09abf))
 - index ([49b04ca](https://github.com/nlibjs/typing/commit/49b04ca927c4e8fe0630dbf114753b3c860905f1))
