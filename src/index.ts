@@ -34,4 +34,5 @@ export * from './is/SafeInteger';
 export * from './is/String';
 export * from './is/UUID';
 export * from './is/Undefined';
+export * from './is/UrlHostString';
 export * from './is/ValidDate';
