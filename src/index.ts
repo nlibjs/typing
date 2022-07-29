@@ -32,6 +32,7 @@ export * from './is/PositiveFiniteNumber';
 export * from './is/PositiveSafeInteger';
 export * from './is/SafeInteger';
 export * from './is/String';
+export * from './is/TypedArray';
 export * from './is/UUID';
 export * from './is/Undefined';
 export * from './is/UrlHostString';
