@@ -13,13 +13,14 @@ export interface Callable<Return = unknown> {
 }
 export type RequiredKeys<T> = {[P in keyof T]: undefined extends T[P] ? never : P}[keyof T];
 export type OptionalKeys<T> = {[P in keyof T]: undefined extends T[P] ? P : never}[keyof T];
-export type UndefinedAsOptional<T> = T extends object ? {[K in OptionalKeys<T>]?: Exclude<T[K], 'undefined'>} & {[K in RequiredKeys<T>]: T[K]} : T;
+export type UndefinedAsOptional<T extends object> = {[K in OptionalKeys<T>]?: Exclude<T[K], 'undefined'>} & {[K in RequiredKeys<T>]: T[K]};
 export interface TypeGuard<T> {
     (input: unknown): input is T,
     readonly type?: string,
 }
-export type DefinedType<T> = T extends Definition<infer S> ? UndefinedAsOptional<S> : never;
-export type GuardedType<T> = T extends TypeGuard<infer S> ? UndefinedAsOptional<S> : never;
+type ProcessUndefined<T> = T extends {__brand: string} ? T : T extends object ? UndefinedAsOptional<T> : T;
+export type DefinedType<T> = T extends Definition<infer S> ? ProcessUndefined<S> : never;
+export type GuardedType<T> = T extends TypeGuard<infer S> ? ProcessUndefined<S> : never;
 export interface Dictionary<T> extends Record<string, T> {}
 export type DefinitionObject<T> = {
     [K in keyof T]: Definition<T[K]>;
