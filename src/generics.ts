@@ -13,7 +13,7 @@ export interface Callable<Return = unknown> {
 }
 export type RequiredKeys<T> = {[P in keyof T]: undefined extends T[P] ? never : P}[keyof T];
 export type OptionalKeys<T> = {[P in keyof T]: undefined extends T[P] ? P : never}[keyof T];
-export type UndefinedAsOptional<T extends object> = {[K in OptionalKeys<T>]?: Exclude<T[K], 'undefined'>} & {[K in RequiredKeys<T>]: T[K]};
+export type UndefinedAsOptional<T extends object> = {[K in OptionalKeys<T>]?: T[K]} & {[K in RequiredKeys<T>]: T[K]};
 export interface TypeGuard<T> {
     (input: unknown): input is T,
     readonly type?: string,
