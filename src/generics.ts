@@ -7,16 +7,19 @@ export type ValueOf<T> = T[keyof T];
 export type SetItem<T> = T extends Set<infer I> ? I : never;
 export type MapKey<T> = T extends Map<infer I, unknown> ? I : never;
 export type MapValue<T> = T extends Map<unknown, infer I> ? I : never;
-export type ArrayItem<T> = T extends Array<infer I> ? I : never;
+export type ArrayItem<T extends Array<unknown>> = T[number];
 export interface Callable<Return = unknown> {
     (...args: Array<unknown>): Return,
 }
+export type RequiredKeys<T> = {[P in keyof T]: undefined extends T[P] ? never : P}[keyof T];
+export type OptionalKeys<T> = {[P in keyof T]: undefined extends T[P] ? P : never}[keyof T];
+export type UndefinedAsOptional<T> = T extends object ? {[K in OptionalKeys<T>]?: Exclude<T[K], 'undefined'>} & {[K in RequiredKeys<T>]: T[K]} : T;
 export interface TypeGuard<T> {
     (input: unknown): input is T,
     readonly type?: string,
 }
-export type DefinedType<T> = T extends Definition<infer S> ? S : never;
-export type GuardedType<T> = T extends TypeGuard<infer S> ? S : never;
+export type DefinedType<T> = T extends Definition<infer S> ? UndefinedAsOptional<S> : never;
+export type GuardedType<T> = T extends TypeGuard<infer S> ? UndefinedAsOptional<S> : never;
 export interface Dictionary<T> extends Record<string, T> {}
 export type DefinitionObject<T> = {
     [K in keyof T]: Definition<T[K]>;
