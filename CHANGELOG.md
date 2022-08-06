@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.4.9 (2022-08-06)
+## v0.4.10 (2022-08-06)
 
 ### Features
 
@@ -9,11 +9,16 @@
 
 ### Bug Fixes
 
+- GuardedType breaks Nominal ([f69998d](https://github.com/nlibjs/typing/commit/f69998dc7d33e15e957c461c4bb488eaa6022a61))
 - ArrayItem ([af51aea](https://github.com/nlibjs/typing/commit/af51aeafeb1210642fe4c3198ffd4be885d22101))
 - HttpsUrlString rejects urls with port ([5ba7c74](https://github.com/nlibjs/typing/commit/5ba7c740db011848a2115dc5c9de32dfe16619bc))
 - default to cjs ([360a8b8](https://github.com/nlibjs/typing/commit/360a8b837a6379dfb0f110605f45853b29133a38))
 - main ([0426c2c](https://github.com/nlibjs/typing/commit/0426c2c0fad0c76a4914ad02f620a55479e09abf))
 - index ([49b04ca](https://github.com/nlibjs/typing/commit/49b04ca927c4e8fe0630dbf114753b3c860905f1))
+
+### Tests
+
+- add tests for generics ([8282d5e](https://github.com/nlibjs/typing/commit/8282d5ee9ec18070b594b32b5356c34299f2f3c0))
 
 ### Dependency Upgrades
 
