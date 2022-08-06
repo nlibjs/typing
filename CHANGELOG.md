@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.4.8 (2022-07-29)
+## v0.4.9 (2022-08-06)
 
 ### Features
 
@@ -9,6 +9,7 @@
 
 ### Bug Fixes
 
+- ArrayItem ([af51aea](https://github.com/nlibjs/typing/commit/af51aeafeb1210642fe4c3198ffd4be885d22101))
 - HttpsUrlString rejects urls with port ([5ba7c74](https://github.com/nlibjs/typing/commit/5ba7c740db011848a2115dc5c9de32dfe16619bc))
 - default to cjs ([360a8b8](https://github.com/nlibjs/typing/commit/360a8b837a6379dfb0f110605f45853b29133a38))
 - main ([0426c2c](https://github.com/nlibjs/typing/commit/0426c2c0fad0c76a4914ad02f620a55479e09abf))
