@@ -43,7 +43,7 @@
         "postversion:amend": "git commit -m \"$(git log -1 --format=%s)\" --amend"
     },
     "devDependencies": {
-        "@nlib/changelog": "0.2.1",
+        "@nlib/changelog": "0.2.2",
         "@nlib/eslint-config": "3.19.4",
         "@nlib/esmify": "0.3.0",
         "@nlib/githooks": "0.1.0",
