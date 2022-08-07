@@ -42,7 +42,7 @@
         "version:add": "git add ."
     },
     "devDependencies": {
-        "@nlib/changelog": "0.2.2",
+        "@nlib/changelog": "0.2.3",
         "@nlib/eslint-config": "3.19.4",
         "@nlib/esmify": "0.3.0",
         "@nlib/githooks": "0.1.0",
