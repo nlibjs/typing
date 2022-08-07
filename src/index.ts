@@ -7,6 +7,7 @@ export * from './generics';
 export * from './getType';
 export * from './parseIpv4Address';
 export * from './parseIpv6Address';
+export * from './splitString';
 export * from './testValue';
 export * from './is/Array';
 export * from './is/Base64String';
