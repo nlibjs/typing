@@ -37,7 +37,7 @@
         "build:esm:tsc": "tsc --project tsconfig.esm.json",
         "build:esm:esmify": "nlib-esmify \"./esm/**/*\"",
         "build:cjs": "tsc --project tsconfig.cjs.json",
-        "version": "run-s version:*",
+        "version": "run-s build:index version:*",
         "version:changelog": "nlib-changelog --output CHANGELOG.md",
         "version:add": "git add ."
     },
