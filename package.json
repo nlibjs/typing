@@ -37,10 +37,9 @@
         "build:esm:tsc": "tsc --project tsconfig.esm.json",
         "build:esm:esmify": "nlib-esmify \"./esm/**/*\"",
         "build:cjs": "tsc --project tsconfig.cjs.json",
-        "postversion": "run-s postversion:*",
-        "postversion:changelog": "nlib-changelog --output CHANGELOG.md",
-        "postversion:add": "git add .",
-        "postversion:amend": "git commit -m \"$(git log -1 --format=%s)\" --amend"
+        "version": "run-s version:*",
+        "version:changelog": "nlib-changelog --output CHANGELOG.md",
+        "version:add": "git add ."
     },
     "devDependencies": {
         "@nlib/changelog": "0.2.2",
