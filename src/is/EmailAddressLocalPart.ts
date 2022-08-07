@@ -1,5 +1,4 @@
 import {createTypeChecker} from '../createTypeChecker';
-import {isString} from './String';
 import {
     AMPERSAND,
     APOSTROPHE,
@@ -26,6 +25,7 @@ import {
     isCapitalLatinCodePoint,
     listCodePoints,
 } from '../codePoints';
+import {isString} from './String';
 
 /**
  * https://www.rfc-editor.org/rfc/rfc5322.html#section-3.4.1

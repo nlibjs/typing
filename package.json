@@ -91,6 +91,14 @@
                 "rules": {
                     "max-lines-per-function": "off"
                 }
+            },
+            {
+                "files": [
+                    "src/is/*"
+                ],
+                "rules": {
+                    "import/no-relative-parent-imports": "off"
+                }
             }
         ]
     },
