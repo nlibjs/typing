@@ -1,14 +1,18 @@
 # Changelog
 
-## v0.4.10 (2022-08-06)
+## v0.4.11 (2022-08-07)
 
 ### Features
 
+- add splitString ([1fb7a2a](https://github.com/nlibjs/typing/commit/1fb7a2aec97e62858b3210f1812a8ce2959c4a39))
 - add TypedArray ([572fef4](https://github.com/nlibjs/typing/commit/572fef4828e9f811a7a0e380d877bc9390b3839e))
 - add UrlHostString ([2761747](https://github.com/nlibjs/typing/commit/276174700345d974414e4fea24e8b339f3ac6b78))
 
 ### Bug Fixes
 
+- postversion not works ([637b293](https://github.com/nlibjs/typing/commit/637b293a42d8e396512ea351cec67c16a186ad4c))
+- eslint errors ([6ea9234](https://github.com/nlibjs/typing/commit/6ea9234eee8ea05aed334a6ed4deb8cf74a43bf5))
+- skip Exclude ([6f8fb81](https://github.com/nlibjs/typing/commit/6f8fb81dca3c127fa99b24c9e07e0296e7d596bb))
 - GuardedType breaks Nominal ([f69998d](https://github.com/nlibjs/typing/commit/f69998dc7d33e15e957c461c4bb488eaa6022a61))
 - ArrayItem ([af51aea](https://github.com/nlibjs/typing/commit/af51aeafeb1210642fe4c3198ffd4be885d22101))
 - HttpsUrlString rejects urls with port ([5ba7c74](https://github.com/nlibjs/typing/commit/5ba7c740db011848a2115dc5c9de32dfe16619bc))
@@ -22,6 +26,9 @@
 
 ### Dependency Upgrades
 
+- @nlib/changelog:0.2.2→0.2.3 ([4819ed5](https://github.com/nlibjs/typing/commit/4819ed55f22e540a51a257857cc975f5ad067f28))
+- @nlib/changelog:0.2.1→0.2.2 ([3280766](https://github.com/nlibjs/typing/commit/328076626e7a24c3bec6d3c9d8dffaac05e88d81))
+- @nlib/eslint-config:3.18.0→3.19.4 ([8e251da](https://github.com/nlibjs/typing/commit/8e251da491179a415442f7c57148a368078afea8))
 - @nlib/esmify:0.2.0→0.3.0 ([2dc52da](https://github.com/nlibjs/typing/commit/2dc52da316e1e2371c1181260b342c0218595bc5))
 - @nlib/esmify:0.1.5→0.2.0 ([01cc232](https://github.com/nlibjs/typing/commit/01cc2329300ab6be62b8e0e9e4ffd49fd033b6b9))
 - @nlib/esmify:0.1.4→0.1.5 ([056f3d0](https://github.com/nlibjs/typing/commit/056f3d0c06b0cf34cf306371d50f83db765cec94))
