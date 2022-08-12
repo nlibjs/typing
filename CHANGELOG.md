@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.4.12 (2022-08-12)
+
+### Features
+
+- add Merge<A, B> ([a7a1b25](https://github.com/nlibjs/typing/commit/a7a1b25a4f51a96e6e2ca7beb8677b327d44155f))
+
+
 ## v0.4.11 (2022-08-07)
 
 ### Features
