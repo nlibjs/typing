@@ -1,4 +1,4 @@
-import type {DefinedType, GuardedType, Nominal, TypeGuard, UndefinedAsOptional} from './generics';
+import type {DefinedType, GuardedType, Merge, Nominal, TypeGuard, UndefinedAsOptional} from './generics';
 import {isPositiveSafeInteger} from './is/PositiveSafeInteger';
 import {isString} from './is/String';
 
@@ -38,4 +38,13 @@ test('Nominal', () => {
     const price = 123 as Price2;
     const product: Defined = {price, name: 'product'};
     expect(product).toBe(product);
+});
+
+test('Merge', () => {
+    interface Type {
+        A: {a: number},
+        B: {b: string},
+    }
+    const c: Merge<Type['A'], Type['B']> = {a: 1, b: '1'};
+    expect(c.a).toBe(1);
 });
