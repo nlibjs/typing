@@ -43,7 +43,6 @@ export type Definition<T = unknown> =
 // eslint-disable-next-line @typescript-eslint/sort-type-union-intersection-members
 | RegExp
 | TypeGuard<T>
-| TypeChecker<T>
 | DefinitionObject<T>
 | DefinitionEnum<T>
 | DefinitionCandidates<T>
