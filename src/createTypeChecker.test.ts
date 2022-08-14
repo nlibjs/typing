@@ -89,10 +89,10 @@ test('should exposes its definition', () => {
         b: is$String,
     });
     const d = {...isFoo.definition};
-    expect(testValue(d.a, '')).toBe(true);
-    expect(testValue(d.b, '')).toBe(true);
-    expect(testValue(d.a, 1)).toBe(false);
-    expect(testValue(d.b, 1)).toBe(false);
+    expect(testValue('', d.a)).toBe(true);
+    expect(testValue('', d.b)).toBe(true);
+    expect(testValue(1, d.a)).toBe(false);
+    expect(testValue(1, d.b)).toBe(false);
 });
 
 test('should clone definition', () => {
