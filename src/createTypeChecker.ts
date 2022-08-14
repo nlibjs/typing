@@ -1,82 +1,83 @@
+/* eslint-disable func-style */
 import {cacheResult} from './cacheResult.private';
-import {
-    arrayDefinitionStore,
-    definitionStore,
-    dictionaryDefinitionStore,
-    isTypeChecker,
-    optionalDefinitionStore,
-} from './definition.private';
-import type {Definition, TypeChecker} from './generics';
+import {cloneDefinition} from './cloneDefinition';
+import {arrayDefinitionStore, dictionaryDefinitionStore, optionalDefinitionStore} from './definition.private';
+import type {Definition, DefinitionCandidates, DefinitionConditions, DefinitionEnum, DefinitionObject, KeyValuePair, TypeChecker, TypeGuard} from './generics';
 import {ModuleError} from './ModuleError.private';
-import {is$Array, is$Object, is$String} from './primitive.private';
+import {is$Array, is$Object, is$String, is$TypeChecker} from './primitive.private';
 import {testValue} from './testValue';
 
-// eslint-disable-next-line @typescript-eslint/unbound-method
-const defineProperties = Object.defineProperties as <T, P>(
-    object: T,
-    props: {[K in keyof P]: {get: () => P[K]} | {value: P[K]}},
-) => P & T;
+const {entries, defineProperties} = Object as {
+    entries: <T>(object: T) => Array<KeyValuePair<T>>,
+    defineProperties: <T, P>(
+        object: T,
+        props: {[K in keyof P]: {get: () => P[K]} | {value: P[K]}},
+    ) => P & T,
+};
 
-const entries = Object.entries as <T>(object: T) => Array<[keyof T, T[keyof T]]>;
-
+export function createTypeChecker<T extends string, N extends string = string>(type: N, definition: RegExp): TypeChecker<T, N, RegExp>;
+export function createTypeChecker<T, N extends string = string>(type: N, definition: DefinitionEnum<T>): TypeChecker<T, N, DefinitionEnum<T>>;
+export function createTypeChecker<T, N extends string = string>(type: N, definition: DefinitionCandidates<T>): TypeChecker<T, N, DefinitionCandidates<T>>;
+export function createTypeChecker<T, N extends string = string>(type: N, definition: DefinitionConditions<T>): TypeChecker<T, N, DefinitionConditions<T>>;
+export function createTypeChecker<T, N extends string = string>(type: N, definition: TypeGuard<T>): TypeChecker<T, N, TypeGuard<T>>;
+export function createTypeChecker<T, N extends string = string>(type: N, definition: DefinitionObject<T>): TypeChecker<T, N, DefinitionObject<T>>;
 // eslint-disable-next-line max-lines-per-function
-export const createTypeChecker = <T, N extends string = string>(
-    type: N,
-    definition: Exclude<Definition<T>, TypeChecker<T>>,
-): TypeChecker<T, N> => {
+export function createTypeChecker<T, N extends string = string, D extends Definition<T> = Definition<T>>(type: N, definition: D): TypeChecker<T, N, D> {
     if (!type) {
         throw new ModuleError({code: 'NoTypeName', data: {type, definition}});
     }
-    if (isTypeChecker(definition)) {
+    if (is$TypeChecker(definition)) {
         throw new ModuleError({
             code: 'UselessWrapping',
             message: `UselessWrapping: ${type}(${definition.name})`,
             data: {type, definition},
         });
     }
-    const typeChecker: TypeChecker<T, N> = defineProperties(
+    const typeChecker = defineProperties(
         (input: unknown): input is T => testValue<T>(input, definition),
         {
             type: {value: type},
             name: {value: `is${type}`},
             array: {
                 get: cacheResult(() => {
-                    const arrayTypeChecker = createTypeChecker<Array<T>, `${N}Array`>(
-                        `${type}Array`,
+                    const checker = createTypeChecker<Array<T>, `Array<${N}>`>(
+                        `Array<${type}>`,
                         (input: unknown): input is Array<T> => {
                             return is$Array(input) && input.every((item) => typeChecker(item));
                         },
                     );
-                    arrayDefinitionStore.set(arrayTypeChecker, definition);
-                    return arrayTypeChecker;
+                    arrayDefinitionStore.set(checker, definition);
+                    return checker;
                 }),
             },
             optional: {
                 get: cacheResult(() => {
-                    const optionalTypeChecker = createTypeChecker(
+                    const checker = createTypeChecker<T | undefined, `${N}?`>(
                         `${type}?`,
                         (input: unknown): input is T | undefined => {
                             return input === undefined || typeChecker(input);
                         },
                     );
-                    optionalDefinitionStore.set(optionalTypeChecker, definition);
-                    return optionalTypeChecker;
+                    optionalDefinitionStore.set(checker, definition);
+                    return checker;
                 }),
             },
             dictionary: {
                 get: cacheResult(() => {
-                    const dictionaryTypeChecker = createTypeChecker(
+                    const checker = createTypeChecker<Record<string, T>, `Record<string, ${N}>`>(
                         `Record<string, ${type}>`,
                         (input: unknown): input is Record<string, T> => {
                             return is$Object(input) && entries(input).every(([key, value]) => is$String(key) && typeChecker(value));
                         },
                     );
-                    dictionaryDefinitionStore.set(dictionaryTypeChecker, definition);
-                    return dictionaryTypeChecker;
+                    dictionaryDefinitionStore.set(checker, definition);
+                    return checker;
                 }),
+            },
+            definition: {
+                get: () => cloneDefinition<D>(definition) as D,
             },
         },
     );
-    definitionStore.set(typeChecker, definition);
     return typeChecker;
-};
+}
