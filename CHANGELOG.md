@@ -1,5 +1,28 @@
 # Changelog
 
+## v0.5.0 (2022-08-14)
+
+### Features
+
+- TypeChecker exposes definition ([853b67a](https://github.com/nlibjs/typing/commit/853b67a422ab215dd0f44fb36c865915d72b5d66))
+- add KeyValuePair ([3cc8e16](https://github.com/nlibjs/typing/commit/3cc8e16871f3adf8d9f701f423bb02a6193d4337))
+
+### Tests
+
+- fix arguments ([99e3c57](https://github.com/nlibjs/typing/commit/99e3c570e219a1d8b4b02aacda94ba0f87542950))
+- test exposed definitions ([01229bf](https://github.com/nlibjs/typing/commit/01229bfe4cd4203c35c4df3b12280104849ed1b8))
+- test exposed definitions ([cbced9e](https://github.com/nlibjs/typing/commit/cbced9e6170a90aa1c9c21c3ac28a1f4abdddd2b))
+
+### Code Refactoring
+
+- omit TypeChecker<T> from Definition<T> ([aa0c25f](https://github.com/nlibjs/typing/commit/aa0c25f6ae8c2143e4fb6c0c411e95b4c4d8a33b))
+- Iterable → Set ([fd08d7e](https://github.com/nlibjs/typing/commit/fd08d7edba2e438bf6bd0446b9a478a55f74f6ee))
+- omit <T> ([e843502](https://github.com/nlibjs/typing/commit/e843502335788bf203eb84538ef3bf50990d2f6f))
+- Object methods ([bc61ca8](https://github.com/nlibjs/typing/commit/bc61ca81894272124f3f40158378cd59ff2d3174))
+- Iterable → Set ([68916de](https://github.com/nlibjs/typing/commit/68916de699d8c893258c72c6f4155b8dfe36cf2f))
+- normalize set ([517dbe2](https://github.com/nlibjs/typing/commit/517dbe248df200b72d5d72b90c2a1dd3cc213ad8))
+
+
 ## v0.4.12 (2022-08-12)
 
 ### Features
