@@ -1,3 +1,4 @@
+/* eslint-disable func-style */
 import {cacheResult} from './cacheResult.private';
 import {
     arrayDefinitionStore,
@@ -20,10 +21,10 @@ const {entries, defineProperties} = Object as {
 };
 
 // eslint-disable-next-line max-lines-per-function
-export const createTypeChecker = <T, N extends string = string>(
+export function createTypeChecker<T, N extends string = string>(
     type: N,
     definition: Exclude<Definition<T>, TypeChecker<T>>,
-): TypeChecker<T, N> => {
+): TypeChecker<T, N> {
     if (!type) {
         throw new ModuleError({code: 'NoTypeName', data: {type, definition}});
     }
@@ -79,4 +80,4 @@ export const createTypeChecker = <T, N extends string = string>(
     );
     definitionStore.set(typeChecker, definition);
     return typeChecker;
-};
+}

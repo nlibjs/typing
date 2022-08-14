@@ -52,7 +52,7 @@ const concat = <T>(
 };
 
 const stringifyIterableDefinitions = function* <T>(
-    definitions: Iterable<Definition<T>>,
+    definitions: Set<Definition<T>>,
     indent: string,
     ancestors: Array<Definition<T>>,
     prefix: string,
