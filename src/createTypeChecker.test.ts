@@ -102,3 +102,24 @@ test('should clone definition', () => {
     });
     expect(isFoo.definition).not.toBe(isFoo.definition);
 });
+
+test('should be able to extend definition', () => {
+    const isFoo = createTypeChecker('Foo', {
+        a: is$String,
+        b: is$String,
+    });
+    const isBar = createTypeChecker('Bar', {
+        ...isFoo.definition,
+        c: is$String,
+        d: is$String,
+    });
+    const d = {...isBar.definition};
+    expect(testValue('', d.a)).toBe(true);
+    expect(testValue('', d.b)).toBe(true);
+    expect(testValue('', d.c)).toBe(true);
+    expect(testValue('', d.d)).toBe(true);
+    expect(testValue(1, d.a)).toBe(false);
+    expect(testValue(1, d.b)).toBe(false);
+    expect(testValue(1, d.c)).toBe(false);
+    expect(testValue(1, d.d)).toBe(false);
+});
