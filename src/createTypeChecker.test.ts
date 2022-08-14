@@ -83,7 +83,6 @@ test('cannot clone a checker', () => {
     }).toThrow();
 });
 
-
 test('should exposes its definition', () => {
     const isFoo = createTypeChecker('Foo', {
         a: is$String,
@@ -94,4 +93,12 @@ test('should exposes its definition', () => {
     expect(testValue(d.b, '')).toBe(true);
     expect(testValue(d.a, 1)).toBe(false);
     expect(testValue(d.b, 1)).toBe(false);
+});
+
+test('should clone definition', () => {
+    const isFoo = createTypeChecker('Foo', {
+        a: is$String,
+        b: is$String,
+    });
+    expect(isFoo.definition).not.toBe(isFoo.definition);
 });
