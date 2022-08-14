@@ -1,14 +1,26 @@
-import {DefinitionCandidatesSet, DefinitionConditionsSet, DefinitionEnumSet} from './definition.private';
+import {DefinitionCandidatesSet, DefinitionConditionsSet, DefinitionEnumSet, isDefinitionCandidatesSet, isDefinitionConditionsSet} from './definition.private';
 import type {Definition} from './generics';
 
 export const definition = {
-    enum: <T>(...data: Array<T>): DefinitionEnumSet<T> => {
-        return new DefinitionEnumSet<T>(data);
+    enum: <T>(...values: Array<T>): DefinitionEnumSet<T> => {
+        return new DefinitionEnumSet<T>(values);
     },
-    some: <T>(...data: Array<Definition<T>>): DefinitionCandidatesSet<T> => {
-        return new DefinitionCandidatesSet<T>(data);
+    some: <T>(...definitions: Array<Definition<T>>): DefinitionCandidatesSet<T> => {
+        const set = new DefinitionCandidatesSet<T>();
+        for (const d1 of definitions) {
+            for (const d2 of isDefinitionCandidatesSet(d1) ? [...d1] : [d1]) {
+                set.add(d2);
+            }
+        }
+        return set;
     },
-    every: <T>(...data: Array<Definition<T>>): DefinitionConditionsSet<T> => {
-        return new DefinitionConditionsSet<T>(data);
+    every: <T>(...definitions: Array<Definition<T>>): DefinitionConditionsSet<T> => {
+        const set = new DefinitionConditionsSet<T>();
+        for (const d1 of definitions) {
+            for (const d2 of isDefinitionConditionsSet(d1) ? [...d1] : [d1]) {
+                set.add(d2);
+            }
+        }
+        return set;
     },
 };
