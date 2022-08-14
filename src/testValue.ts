@@ -15,25 +15,20 @@ export const testValue = <T>(input: unknown, definition: Definition<T>): input i
     if (is$RegExp(definition)) {
         return is$String(input) && definition.test(input);
     }
-    if (isDefinitionEnumSet<T>(definition)) {
-        for (const value of definition) {
-            if (value === input) {
+    if (isDefinitionEnumSet(definition)) {
+        return definition.has(input as T);
+    }
+    if (isDefinitionCandidatesSet(definition)) {
+        for (const candidate of definition) {
+            if (testValue(input, candidate)) {
                 return true;
             }
         }
         return false;
     }
-    if (isDefinitionCandidatesSet<T>(definition)) {
+    if (isDefinitionConditionsSet(definition)) {
         for (const candidate of definition) {
-            if (testValue<T>(input, candidate)) {
-                return true;
-            }
-        }
-        return false;
-    }
-    if (isDefinitionConditionsSet<T>(definition)) {
-        for (const candidate of definition) {
-            if (!testValue<Partial<T>>(input, candidate)) {
+            if (!testValue(input, candidate)) {
                 return false;
             }
         }
@@ -41,7 +36,7 @@ export const testValue = <T>(input: unknown, definition: Definition<T>): input i
     }
     if (is$Object(input)) {
         for (const key of keys(definition)) {
-            if (!testValue<T[keyof T]>(input[String(key)], definition[key])) {
+            if (!testValue(input[key as string], definition[key])) {
                 return false;
             }
         }
