@@ -11,12 +11,13 @@ import {ModuleError} from './ModuleError.private';
 import {is$Array, is$Object, is$String} from './primitive.private';
 import {testValue} from './testValue';
 
-// eslint-disable-next-line @typescript-eslint/unbound-method
-const defineProperties = Object.defineProperties as <T, P>(
-    object: T,
-    props: {[K in keyof P]: {get: () => P[K]} | {value: P[K]}},
-) => P & T;
-const entries = Object.entries as <T>(object: T) => KeyValuePair<T>;
+const {entries, defineProperties} = Object as {
+    entries: <T>(object: T) => Array<KeyValuePair<T>>,
+    defineProperties: <T, P>(
+        object: T,
+        props: {[K in keyof P]: {get: () => P[K]} | {value: P[K]}},
+    ) => P & T,
+};
 
 // eslint-disable-next-line max-lines-per-function
 export const createTypeChecker = <T, N extends string = string>(
