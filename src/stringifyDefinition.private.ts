@@ -3,9 +3,8 @@ import {
     isDefinitionEnumSet,
     isDefinitionCandidatesSet,
     isDefinitionConditionsSet,
-    isTypeChecker,
 } from './definition.private';
-import {is$Function} from './primitive.private';
+import {is$Function, is$TypeChecker} from './primitive.private';
 
 const keys = Object.keys as <T>(value: T) => Array<keyof T>;
 
@@ -22,7 +21,7 @@ const stringify = function* (
 ): Generator<string> {
     if (ancestors.includes(definition)) {
         yield `${indent}(circular)\n`;
-    } else if (isTypeChecker(definition)) {
+    } else if (is$TypeChecker(definition)) {
         yield `${indent}${definition.type}\n`;
     } else if (is$Function(definition)) {
         yield `${indent}${definition.toString()}`;

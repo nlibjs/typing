@@ -13,12 +13,10 @@ import {
     isDefinitionConditionsSet,
     arrayDefinitionStore,
     optionalDefinitionStore,
-    definitionStore,
-    isTypeChecker,
 } from './definition.private';
 import {stringifyDefinition} from './stringifyDefinition.private';
 import {ModuleError} from './ModuleError.private';
-import {is$Array, is$Function, is$Object, is$RegExp, is$String} from './primitive.private';
+import {is$Array, is$Function, is$Object, is$RegExp, is$String, is$TypeChecker} from './primitive.private';
 import {testValue} from './testValue';
 
 export interface CheckErrorFailedResult {
@@ -150,30 +148,26 @@ const checkArrayDefinitionError = (
 
 const getTypeCheckerDefinitionError = (
     input: unknown,
-    definition: TypeChecker<unknown>,
+    typeChecker: TypeChecker<unknown>,
     path: string,
 ): CheckErrorResult => {
-    let def = arrayDefinitionStore.get(definition);
-    if (def) {
+    let definition = arrayDefinitionStore.get(typeChecker);
+    if (definition) {
         if (is$Array(input)) {
-            return checkArrayDefinitionError(input, def, path);
+            return checkArrayDefinitionError(input, definition, path);
         } else {
             return {input, definition, path, message: 'The input is not an array.'};
         }
     }
-    def = optionalDefinitionStore.get(definition);
-    if (def) {
+    definition = optionalDefinitionStore.get(typeChecker);
+    if (definition) {
         if (input === undefined) {
             return null;
         } else {
-            return getTypeError(input, def, path);
+            return getTypeError(input, definition, path);
         }
     }
-    def = definitionStore.get(definition);
-    if (def) {
-        return getTypeError(input, def, path);
-    }
-    throw new ModuleError({code: 'NoDefinition'});
+    return getTypeError(input, typeChecker.definition, path);
 };
 
 const getRegExpDefinitionError = (
@@ -198,11 +192,11 @@ export const getTypeError = (
     if (!path) {
         return {input, definition, path, message: 'The type has no path.'};
     }
+    if (is$TypeChecker(definition)) {
+        return getTypeCheckerDefinitionError(input, definition, path);
+    }
     if (is$RegExp(definition)) {
         return getRegExpDefinitionError(input, definition, path);
-    }
-    if (isTypeChecker(definition)) {
-        return getTypeCheckerDefinitionError(input, definition, path);
     }
     if (is$Function(definition)) {
         return getDefinitionFunctionError(input, definition, path);

@@ -14,9 +14,6 @@ export const isDefinitionEnumSet = <T>(input: Definition<T>): input is Definitio
 export const isDefinitionCandidatesSet = <T>(input: Definition<T>): input is DefinitionCandidates<T> => input instanceof DefinitionCandidatesSet;
 export const isDefinitionConditionsSet = <T>(input: Definition<T>): input is DefinitionConditions<T> => input instanceof DefinitionConditionsSet;
 
-export const definitionStore = new WeakMap<TypeChecker<unknown>, Definition>();
 export const arrayDefinitionStore = new WeakMap<TypeChecker<unknown>, Definition>();
 export const optionalDefinitionStore = new WeakMap<TypeChecker<unknown>, Definition>();
 export const dictionaryDefinitionStore = new WeakMap<TypeChecker<unknown>, Definition>();
-
-export const isTypeChecker = (input: unknown): input is TypeChecker<unknown> => definitionStore.has(input as TypeChecker<unknown>);

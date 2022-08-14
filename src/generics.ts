@@ -18,10 +18,7 @@ export type UndefinedAsOptional<T extends object> = {[K in OptionalKeys<T>]?: T[
 export type Merge<A, B> = {
     [K in keyof A | keyof B]: K extends keyof B ? B[K] : K extends keyof A ? A[K] : never;
 };
-export interface TypeGuard<T> {
-    (input: unknown): input is T,
-    readonly type?: string,
-}
+export type TypeGuard<T> = (input: unknown) => input is T;
 type ProcessUndefined<T> = T extends {__brand: string} ? T : T extends object ? UndefinedAsOptional<T> : T;
 export type DefinedType<T> = T extends Definition<infer S> ? ProcessUndefined<S> : never;
 export type GuardedType<T> = T extends TypeGuard<infer S> ? ProcessUndefined<S> : never;
@@ -29,12 +26,13 @@ export interface Dictionary<T> extends Record<string, T> {}
 export type DefinitionObject<T> = {
     [K in keyof T]: Definition<T[K]>;
 };
-export interface TypeChecker<T, N extends string = string> extends TypeGuard<T> {
+export interface TypeChecker<T, N extends string = string, D extends Definition<T> = Definition<T>> extends TypeGuard<T> {
     readonly name: string,
     readonly type: N,
-    readonly array: TypeChecker<Array<T>>,
-    readonly optional: TypeChecker<T | undefined>,
-    readonly dictionary: TypeChecker<Record<string, T>>,
+    readonly array: TypeChecker<Array<T>, `Array<${N}>`, TypeGuard<Array<T>>>,
+    readonly optional: TypeChecker<T | undefined, `${N}?`, TypeGuard<T | undefined>>,
+    readonly dictionary: TypeChecker<Record<string, T>, `Record<string, ${N}>`, TypeGuard<Record<string, T>>>,
+    readonly definition: D,
 }
 export interface DefinitionEnum<T> extends Set<T> {}
 export interface DefinitionCandidates<T> extends Set<Definition<T>> {}
