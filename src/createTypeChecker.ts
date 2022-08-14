@@ -6,7 +6,7 @@ import {
     isTypeChecker,
     optionalDefinitionStore,
 } from './definition.private';
-import type {Definition, TypeChecker} from './generics';
+import type {Definition, KeyValuePair, TypeChecker} from './generics';
 import {ModuleError} from './ModuleError.private';
 import {is$Array, is$Object, is$String} from './primitive.private';
 import {testValue} from './testValue';
@@ -16,8 +16,7 @@ const defineProperties = Object.defineProperties as <T, P>(
     object: T,
     props: {[K in keyof P]: {get: () => P[K]} | {value: P[K]}},
 ) => P & T;
-
-const entries = Object.entries as <T>(object: T) => Array<[keyof T, T[keyof T]]>;
+const entries = Object.entries as <T>(object: T) => KeyValuePair<T>;
 
 // eslint-disable-next-line max-lines-per-function
 export const createTypeChecker = <T, N extends string = string>(
