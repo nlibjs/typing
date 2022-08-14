@@ -36,9 +36,9 @@ export interface TypeChecker<T, N extends string = string> extends TypeGuard<T> 
     readonly optional: TypeChecker<T | undefined>,
     readonly dictionary: TypeChecker<Record<string, T>>,
 }
-export interface DefinitionEnum<T> extends Iterable<T> {}
-export interface DefinitionCandidates<T> extends Iterable<Definition<T>> {}
-export interface DefinitionConditions<T> extends Iterable<Definition<Partial<T>>> {}
+export interface DefinitionEnum<T> extends Set<T> {}
+export interface DefinitionCandidates<T> extends Set<Definition<T>> {}
+export interface DefinitionConditions<T> extends Set<Definition<Partial<T>>> {}
 export type Definition<T = unknown> =
 // eslint-disable-next-line @typescript-eslint/sort-type-union-intersection-members
 | RegExp
