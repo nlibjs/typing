@@ -8,6 +8,8 @@ for (const {key, input, expected} of listCheckerTests(
     'PositiveInteger',
     'PositiveFloat',
     'PositiveUnsafeInteger',
+    'HttpResponseStatusCodeOk',
+    'HttpResponseStatusCodeNotFound',
 )) {
     test(`${key} → ${expected}`, () => {
         expect(isNonNegativeFiniteNumber(input)).toBe(expected);

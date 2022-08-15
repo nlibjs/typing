@@ -76,6 +76,8 @@ const typeCheckerTestValues = {
     BigInt64Array: new BigInt64Array([1n, 2n, 3n]),
     HttpMethodGet: 'GET',
     HttpMethodOptions: 'OPTIONS',
+    HttpResponseStatusCodeOk: 200,
+    HttpResponseStatusCodeNotFound: 404,
 };
 type TestKey = keyof typeof typeCheckerTestValues;
 export const listCheckerTests = function* (...trueKeys: Array<TestKey>) {
