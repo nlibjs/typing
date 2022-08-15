@@ -19,6 +19,7 @@ export * from './is/EmailAddress';
 export * from './is/EmailAddressLocalPart';
 export * from './is/FiniteNumber';
 export * from './is/Function';
+export * from './is/HttpMethod';
 export * from './is/HttpsUrlString';
 export * from './is/Ipv4Address';
 export * from './is/Ipv6Address';

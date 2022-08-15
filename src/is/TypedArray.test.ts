@@ -3,7 +3,7 @@ import {isBigInt64Array, isBigUint64Array, isFloat32Array, isFloat64Array, isInt
 
 describe(isUint8Array.name, () => {
     for (const {key, input, expected} of listCheckerTests('Uint8Array')) {
-        it(`${key} → ${expected}`, () => {
+        test(`${key} → ${expected}`, () => {
             expect(isUint8Array(input)).toBe(expected);
         });
     }
@@ -11,7 +11,7 @@ describe(isUint8Array.name, () => {
 
 describe(isUint8ClampedArray.name, () => {
     for (const {key, input, expected} of listCheckerTests('Uint8ClampedArray')) {
-        it(`${key} → ${expected}`, () => {
+        test(`${key} → ${expected}`, () => {
             expect(isUint8ClampedArray(input)).toBe(expected);
         });
     }
@@ -19,7 +19,7 @@ describe(isUint8ClampedArray.name, () => {
 
 describe(isUint16Array.name, () => {
     for (const {key, input, expected} of listCheckerTests('Uint16Array')) {
-        it(`${key} → ${expected}`, () => {
+        test(`${key} → ${expected}`, () => {
             expect(isUint16Array(input)).toBe(expected);
         });
     }
@@ -27,7 +27,7 @@ describe(isUint16Array.name, () => {
 
 describe(isUint32Array.name, () => {
     for (const {key, input, expected} of listCheckerTests('Uint32Array')) {
-        it(`${key} → ${expected}`, () => {
+        test(`${key} → ${expected}`, () => {
             expect(isUint32Array(input)).toBe(expected);
         });
     }
@@ -35,7 +35,7 @@ describe(isUint32Array.name, () => {
 
 describe(isInt8Array.name, () => {
     for (const {key, input, expected} of listCheckerTests('Int8Array')) {
-        it(`${key} → ${expected}`, () => {
+        test(`${key} → ${expected}`, () => {
             expect(isInt8Array(input)).toBe(expected);
         });
     }
@@ -43,7 +43,7 @@ describe(isInt8Array.name, () => {
 
 describe(isInt16Array.name, () => {
     for (const {key, input, expected} of listCheckerTests('Int16Array')) {
-        it(`${key} → ${expected}`, () => {
+        test(`${key} → ${expected}`, () => {
             expect(isInt16Array(input)).toBe(expected);
         });
     }
@@ -51,7 +51,7 @@ describe(isInt16Array.name, () => {
 
 describe(isInt32Array.name, () => {
     for (const {key, input, expected} of listCheckerTests('Int32Array')) {
-        it(`${key} → ${expected}`, () => {
+        test(`${key} → ${expected}`, () => {
             expect(isInt32Array(input)).toBe(expected);
         });
     }
@@ -59,7 +59,7 @@ describe(isInt32Array.name, () => {
 
 describe(isFloat32Array.name, () => {
     for (const {key, input, expected} of listCheckerTests('Float32Array')) {
-        it(`${key} → ${expected}`, () => {
+        test(`${key} → ${expected}`, () => {
             expect(isFloat32Array(input)).toBe(expected);
         });
     }
@@ -67,7 +67,7 @@ describe(isFloat32Array.name, () => {
 
 describe(isFloat64Array.name, () => {
     for (const {key, input, expected} of listCheckerTests('Float64Array')) {
-        it(`${key} → ${expected}`, () => {
+        test(`${key} → ${expected}`, () => {
             expect(isFloat64Array(input)).toBe(expected);
         });
     }
@@ -75,7 +75,7 @@ describe(isFloat64Array.name, () => {
 
 describe(isBigUint64Array.name, () => {
     for (const {key, input, expected} of listCheckerTests('BigUint64Array')) {
-        it(`${key} → ${expected}`, () => {
+        test(`${key} → ${expected}`, () => {
             expect(isBigUint64Array(input)).toBe(expected);
         });
     }
@@ -83,7 +83,7 @@ describe(isBigUint64Array.name, () => {
 
 describe(isBigInt64Array.name, () => {
     for (const {key, input, expected} of listCheckerTests('BigInt64Array')) {
-        it(`${key} → ${expected}`, () => {
+        test(`${key} → ${expected}`, () => {
             expect(isBigInt64Array(input)).toBe(expected);
         });
     }

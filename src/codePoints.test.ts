@@ -7,7 +7,7 @@ describe(toSmallLatinCodePoint.name, () => {
         [LATIN_SMALL_LETTER_Z, LATIN_SMALL_LETTER_Z],
     ];
     for (const [input, expected] of tests) {
-        it(`${input} → ${expected}`, () => {
+        test(`${input} → ${expected}`, () => {
             expect(toSmallLatinCodePoint(input)).toBe(expected);
         });
     }
@@ -20,7 +20,7 @@ describe(listCodePoints.name, () => {
         ['𠮟る𩸽😭', [0x20B9F, 0x308B, 0x29E3D, 0x1F62D]],
     ];
     for (const [input, expected] of tests) {
-        it(`${input} → ${expected.join(',')}`, () => {
+        test(`${input} → ${expected.join(',')}`, () => {
             const generator = listCodePoints(input);
             for (const value of expected) {
                 expect(generator.next()).toMatchObject({value});
