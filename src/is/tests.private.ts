@@ -74,6 +74,8 @@ const typeCheckerTestValues = {
     Float64Array: new Float64Array([1, 2, 3]),
     BigUint64Array: new BigUint64Array([1n, 2n, 3n]),
     BigInt64Array: new BigInt64Array([1n, 2n, 3n]),
+    HttpMethodGet: 'GET',
+    HttpMethodOptions: 'OPTIONS',
 };
 type TestKey = keyof typeof typeCheckerTestValues;
 export const listCheckerTests = function* (...trueKeys: Array<TestKey>) {

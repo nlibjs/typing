@@ -10,6 +10,8 @@ describe(isBase64String.name, () => {
         'Digits64',
         'Localhost',
         'NonEmptyString',
+        'HttpMethodGet',
+        'HttpMethodOptions',
     )) {
         it(`${key} → ${expected}`, () => {
             expect(isBase64String(input)).toBe(expected);

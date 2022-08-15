@@ -21,6 +21,8 @@ describe(isEmailAddressLocalPart.name, () => {
         'InvalidIPv4',
         'Base64',
         'Base64Url',
+        'HttpMethodGet',
+        'HttpMethodOptions',
     )) {
         it(`${key} → ${expected}`, () => {
             expect(isEmailAddressLocalPart(input)).toBe(expected);

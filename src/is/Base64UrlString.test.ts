@@ -12,6 +12,8 @@ describe(isBase64UrlString.name, () => {
         'NonEmptyString',
         'UUID',
         'NonUUID',
+        'HttpMethodGet',
+        'HttpMethodOptions',
     )) {
         it(`${key} → ${expected}`, () => {
             expect(isBase64UrlString(input)).toBe(expected);

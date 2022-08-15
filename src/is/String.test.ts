@@ -43,6 +43,8 @@ describe(isString.name, () => {
         'InvalidHttpUrl',
         'Base64',
         'Base64Url',
+        'HttpMethodGet',
+        'HttpMethodOptions',
     )) {
         it(`${key} → ${expected}`, () => {
             expect(isString(input)).toBe(expected);
