@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.5.1 (2022-08-15)
+
+### Tests
+
+- extension of definitions ([13dff11](https://github.com/nlibjs/typing/commit/13dff11502331c01c1e598a73443e843ca43d70e))
+
+### Code Refactoring
+
+- omit empty object from UndefinedAsOptional ([192a521](https://github.com/nlibjs/typing/commit/192a521085d8539724244161a3b01cfa16ddbb90))
+
+### Dependency Upgrades
+
+- eslint:8.21.0→8.22.0 eslint-plugin-jest:26.7.0→26.8.2 ([fd891ae](https://github.com/nlibjs/typing/commit/fd891ae182a37a76ca3c84e0425a144934f693a4))
+
+
 ## v0.5.0 (2022-08-14)
 
 ### Features
