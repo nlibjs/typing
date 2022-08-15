@@ -14,7 +14,12 @@ export interface Callable<Return = unknown> {
 }
 export type RequiredKeys<T> = {[P in keyof T]: undefined extends T[P] ? never : P}[keyof T];
 export type OptionalKeys<T> = {[P in keyof T]: undefined extends T[P] ? P : never}[keyof T];
-export type UndefinedAsOptional<T extends object> = {[K in OptionalKeys<T>]?: T[K]} & {[K in RequiredKeys<T>]: T[K]};
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type UndefinedAsOptional<T extends object> = OptionalKeys<T> extends never ? {[K in RequiredKeys<T>]: T[K]}
+    : (
+        RequiredKeys<T> extends never ? {[K in OptionalKeys<T>]?: T[K]}
+        : {[K in OptionalKeys<T>]?: T[K]} & {[K in RequiredKeys<T>]: T[K]}
+    );
 export type Merge<A, B> = {
     [K in keyof A | keyof B]: K extends keyof B ? B[K] : K extends keyof A ? A[K] : never;
 };
