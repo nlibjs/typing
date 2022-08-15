@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.5.2 (2022-08-15)
+
+### Features
+
+- add HttpResponseStatusCode ([43fd68f](https://github.com/nlibjs/typing/commit/43fd68fca60c099989d3be48168e66170a400964))
+- add HttpMethod ([c972737](https://github.com/nlibjs/typing/commit/c9727373e06bc39e0584f4adf104961e37ea190d))
+
+### Code Refactoring
+
+- simplify tests ([5512a3a](https://github.com/nlibjs/typing/commit/5512a3abea5dd51aa2b94ecd5746addeaf91d9e8))
+
+
 ## v0.5.1 (2022-08-15)
 
 ### Tests
