@@ -6,6 +6,7 @@ export * from './definition';
 export * from './ensure';
 export * from './generics';
 export * from './getType';
+export * from './object';
 export * from './parseIpv4Address';
 export * from './parseIpv6Address';
 export * from './splitString';
