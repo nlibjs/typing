@@ -8,7 +8,7 @@ export type SetItem<T> = T extends Set<infer I> ? I : never;
 export type MapKey<T> = T extends Map<infer I, unknown> ? I : never;
 export type MapValue<T> = T extends Map<unknown, infer I> ? I : never;
 export type ArrayItem<T extends Array<unknown>> = T[number];
-export type KeyValuePair<T, K extends keyof T = keyof T> = [K, T[K]];
+export type KeyValuePair<T, K extends keyof T = Extract<keyof T, string>> = [K, T[K]];
 export interface Callable<Return = unknown> {
     (...args: Array<unknown>): Return,
 }
