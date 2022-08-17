@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.5.3 (2022-08-17)
+
+### Features
+
+- add keys, values, entries ([1dc7c27](https://github.com/nlibjs/typing/commit/1dc7c2709efed5311dc70cf69be0c9e670904660))
+
+
 ## v0.5.2 (2022-08-15)
 
 ### Features
