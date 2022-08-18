@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.5.4 (2022-08-18)
+
+### Bug Fixes
+
+- apply UndefinedAsOptional recursively ([27de2ce](https://github.com/nlibjs/typing/commit/27de2ce31467ccf50e3b2c9e517295e6f4046543))
+
+
 ## v0.5.3 (2022-08-17)
 
 ### Features
