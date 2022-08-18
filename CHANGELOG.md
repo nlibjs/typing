@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.5.6 (2022-08-18)
+
+### Bug Fixes
+
+- missing ProcessUndefined ([d242522](https://github.com/nlibjs/typing/commit/d242522049d79bbfca42b7fd601702c172119d6c))
+
+
 ## v0.5.5 (2022-08-18)
 
 ### Bug Fixes
