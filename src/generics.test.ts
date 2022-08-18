@@ -1,6 +1,8 @@
+import {createTypeChecker} from './createTypeChecker';
 import type {DefinedType, GuardedType, Merge, Nominal, TypeGuard, UndefinedAsOptional} from './generics';
 import {isPositiveSafeInteger} from './is/PositiveSafeInteger';
 import {isString} from './is/String';
+import {definition} from './definition';
 
 test('UndefinedAsOptional', () => {
     interface A1 {
@@ -14,12 +16,12 @@ test('UndefinedAsOptional', () => {
 });
 
 test('Defined', () => {
-    const definition = {
+    const definitions = {
         foo: isString,
         bar: isPositiveSafeInteger.optional,
     };
     // const a1: A1 = {foo: 'foo'};
-    type A2 = DefinedType<typeof definition>;
+    type A2 = DefinedType<typeof definitions>;
     const a2: A2 = {foo: 'foo'};
     expect(a2).toBe(a2);
 });
@@ -50,9 +52,22 @@ test('Merge', () => {
 });
 
 test('DefinedType', () => {
-    const definition = {a1: {a2: isString.optional}};
-    type D = DefinedType<typeof definition>;
-    /** a2 is optional */
+    const isA2 = createTypeChecker('A2', definition.enum<'a2'>('a2'));
+    const isA3 = createTypeChecker(
+        'A3',
+        (input: unknown): input is ['a3'] => Array.isArray(input) && input[0] === 'a3',
+    );
+    const definitions = {
+        a1: {a1: isString.optional},
+        a2: {a2: isA2.array},
+        a3: {a3: isA3},
+    };
+    type D = DefinedType<typeof definitions>;
+    /** a1 is optional */
     const a: D['a1'] = {};
     expect(a).toBeTruthy();
+    const b: D['a2'] = {a2: ['a2']};
+    expect(b).toBeTruthy();
+    const c: D['a3'] = {a3: ['a3']};
+    expect(c).toBeTruthy();
 });
