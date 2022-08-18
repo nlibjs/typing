@@ -48,3 +48,11 @@ test('Merge', () => {
     const c: Merge<Type['A'], Type['B']> = {a: 1, b: '1'};
     expect(c.a).toBe(1);
 });
+
+test('DefinedType', () => {
+    const definition = {a1: {a2: isString.optional}};
+    type D = DefinedType<typeof definition>;
+    /** a2 is optional */
+    const a: D['a1'] = {};
+    expect(a).toBeTruthy();
+});

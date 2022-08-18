@@ -14,15 +14,15 @@ export interface Callable<Return = unknown> {
 }
 export type RequiredKeys<T> = {[P in keyof T]: undefined extends T[P] ? never : P}[keyof T];
 export type OptionalKeys<T> = {[P in keyof T]: undefined extends T[P] ? P : never}[keyof T];
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type UndefinedAsOptional<T extends object> = OptionalKeys<T> extends never ? {[K in RequiredKeys<T>]: T[K]}
-    : (
-        RequiredKeys<T> extends never ? {[K in OptionalKeys<T>]?: T[K]}
-        : {[K in OptionalKeys<T>]?: T[K]} & {[K in RequiredKeys<T>]: T[K]}
-    );
 export type Merge<A, B> = {
     [K in keyof A | keyof B]: K extends keyof B ? B[K] : K extends keyof A ? A[K] : never;
 };
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type UndefinedAsOptional<T extends object> = OptionalKeys<T> extends never ? {[K in RequiredKeys<T>]: ProcessUndefined<T[K]>}
+    : (
+        RequiredKeys<T> extends never ? {[K in OptionalKeys<T>]?: ProcessUndefined<T[K]>}
+        : {[K in OptionalKeys<T>]?: ProcessUndefined<T[K]>} & {[K in RequiredKeys<T>]: ProcessUndefined<T[K]>}
+    );
 export type TypeGuard<T> = (input: unknown) => input is T;
 type ProcessUndefined<T> = T extends {__brand: string} ? T : T extends object ? UndefinedAsOptional<T> : T;
 export type DefinedType<T> = T extends Definition<infer S> ? ProcessUndefined<S> : never;
