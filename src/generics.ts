@@ -25,9 +25,9 @@ export type UndefinedAsOptional<T extends object> = OptionalKeys<T> extends neve
     );
 export type TypeGuard<T> = (input: unknown) => input is T;
 type ProcessUndefined<T> = T extends bigint | number | string | symbol | {__brand: string} | null | undefined ? T
-    : T extends Array<infer S> ? Array<S>
-    : T extends Set<infer S> ? Set<S>
-    : T extends Map<infer S, infer V> ? Map<S, V>
+    : T extends Array<infer S> ? Array<ProcessUndefined<S>>
+    : T extends Set<infer S> ? Set<ProcessUndefined<S>>
+    : T extends Map<infer S, infer V> ? Map<S, ProcessUndefined<V>>
     : T extends object ? UndefinedAsOptional<T> : T;
 export type DefinedType<T> = T extends Definition<infer S> ? ProcessUndefined<S> : never;
 export type GuardedType<T> = T extends TypeGuard<infer S> ? ProcessUndefined<S> : never;
