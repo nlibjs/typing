@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.5.5 (2022-08-18)
+
+### Bug Fixes
+
+- skip Array<T> ([fc70088](https://github.com/nlibjs/typing/commit/fc700880c9052f6512db75b6b3b6ef68944c9179))
+
+
 ## v0.5.4 (2022-08-18)
 
 ### Bug Fixes
