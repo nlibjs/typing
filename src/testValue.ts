@@ -1,8 +1,8 @@
 import type {Definition} from './generics';
 import {
-    isDefinitionEnumSet,
-    isDefinitionCandidatesSet,
-    isDefinitionConditionsSet,
+    isDefinitionEnum,
+    isDefinitionCandidates,
+    isDefinitionConditions,
 } from './definition.private';
 import {is$Object, is$String, is$RegExp} from './primitive.private';
 
@@ -15,10 +15,10 @@ export const testValue = <T>(input: unknown, definition: Definition<T>): input i
     if (is$RegExp(definition)) {
         return is$String(input) && definition.test(input);
     }
-    if (isDefinitionEnumSet(definition)) {
+    if (isDefinitionEnum(definition)) {
         return definition.has(input as T);
     }
-    if (isDefinitionCandidatesSet(definition)) {
+    if (isDefinitionCandidates(definition)) {
         for (const candidate of definition) {
             if (testValue(input, candidate)) {
                 return true;
@@ -26,7 +26,7 @@ export const testValue = <T>(input: unknown, definition: Definition<T>): input i
         }
         return false;
     }
-    if (isDefinitionConditionsSet(definition)) {
+    if (isDefinitionConditions(definition)) {
         for (const candidate of definition) {
             if (!testValue(input, candidate)) {
                 return false;

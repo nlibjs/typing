@@ -1,6 +1,7 @@
 /* eslint-disable func-style */
-import {DefinitionCandidatesSet, DefinitionConditionsSet, DefinitionEnumSet, isDefinitionCandidatesSet, isDefinitionConditionsSet, isDefinitionEnumSet} from './definition.private';
-import type {DefinitionCandidates, DefinitionConditions, DefinitionEnum, DefinitionObject, TypeGuard} from './generics';
+import {isDefinitionCandidates, isDefinitionConditions, isDefinitionEnum} from './definition.private';
+import {DefinitionCandidates, DefinitionConditions, DefinitionEnum} from './generics';
+import type {DefinitionObject, TypeGuard} from './generics';
 import {is$RegExp} from './primitive.private';
 
 export function cloneDefinition(definition: RegExp): RegExp;
@@ -16,14 +17,14 @@ export function cloneDefinition<T>(definition: DefinitionCandidates<T> | Definit
     if (is$RegExp(definition)) {
         return new RegExp(definition);
     }
-    if (isDefinitionEnumSet(definition)) {
-        return new DefinitionEnumSet(definition);
+    if (isDefinitionEnum(definition)) {
+        return new DefinitionEnum(definition);
     }
-    if (isDefinitionCandidatesSet(definition)) {
-        return new DefinitionCandidatesSet(definition);
+    if (isDefinitionCandidates(definition)) {
+        return new DefinitionCandidates(definition);
     }
-    if (isDefinitionConditionsSet(definition)) {
-        return new DefinitionConditionsSet(definition);
+    if (isDefinitionConditions(definition)) {
+        return new DefinitionConditions(definition);
     }
     return {...definition};
 }

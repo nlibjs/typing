@@ -1,7 +1,9 @@
+import {testValue} from './testValue';
 import {createTypeChecker} from './createTypeChecker';
 import type {DefinedType, GuardedType, Merge, Nominal, TypeGuard, UndefinedAsOptional} from './generics';
 import {isPositiveSafeInteger} from './is/PositiveSafeInteger';
 import {isString} from './is/String';
+import {isNegativeSafeInteger} from './is/NegativeSafeInteger';
 import {definition} from './definition';
 
 test('UndefinedAsOptional', () => {
@@ -51,23 +53,40 @@ test('Merge', () => {
     expect(c.a).toBe(1);
 });
 
-test('DefinedType', () => {
-    const isA2 = createTypeChecker('A2', definition.enum<'a2'>('a2'));
-    const isA3 = createTypeChecker(
-        'A3',
-        (input: unknown): input is ['a3'] => Array.isArray(input) && input[0] === 'a3',
-    );
-    const definitions = {
-        a1: {a1: isString.optional},
-        a2: {a2: isA2.array},
-        a3: {a3: isA3},
-    };
+test('DefinedType (optional string)', () => {
+    const definitions = {a: {value: isString.optional}};
     type D = DefinedType<typeof definitions>;
     /** a1 is optional */
-    const a: D['a1'] = {};
-    expect(a).toBeTruthy();
-    const b: D['a2'] = {a2: ['a2']};
-    expect(b).toBeTruthy();
-    const c: D['a3'] = {a3: ['a3']};
-    expect(c).toBeTruthy();
+    const a: D['a'] = {};
+    expect(testValue(a, definitions.a)).toBe(true);
+});
+
+test('DefinedType (array of template string)', () => {
+    const isA = createTypeChecker('A', definition.enum<'a'>('a'));
+    const definitions = {a: {value: isA.array}};
+    type D = DefinedType<typeof definitions>;
+    const a: D['a'] = {value: ['a', 'a']};
+    expect(testValue(a, definitions.a)).toBe(true);
+});
+
+test('DefinedType (tuple)', () => {
+    const isA = createTypeChecker(
+        'A',
+        (input: unknown): input is ['a'] => Array.isArray(input) && input[0] === 'a',
+    );
+    const definitions = {a: {value: isA}};
+    type D = DefinedType<typeof definitions>;
+    const a: D['a'] = {value: ['a']};
+    expect(testValue(a, definitions.a)).toBe(true);
+});
+
+test('DefinedType (definition.some)', () => {
+    const definitions = {
+        a: {value: definition.some(isPositiveSafeInteger, isNegativeSafeInteger)},
+    };
+    type D = DefinedType<typeof definitions>;
+    const a: D['a'] = {value: 123};
+    /** a.value is a number */
+    a.value.toFixed(0);
+    expect(testValue(a, definitions.a)).toBe(true);
 });

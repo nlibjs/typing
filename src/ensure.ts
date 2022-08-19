@@ -8,9 +8,9 @@ import type {
     Definition,
 } from './generics';
 import {
-    isDefinitionEnumSet,
-    isDefinitionCandidatesSet,
-    isDefinitionConditionsSet,
+    isDefinitionEnum,
+    isDefinitionCandidates,
+    isDefinitionConditions,
     arrayDefinitionStore,
     optionalDefinitionStore,
 } from './definition.private';
@@ -201,13 +201,13 @@ export const getTypeError = (
     if (is$Function(definition)) {
         return getDefinitionFunctionError(input, definition, path);
     }
-    if (isDefinitionEnumSet(definition)) {
+    if (isDefinitionEnum(definition)) {
         return getDefinitionEnumError(input, definition, path);
     }
-    if (isDefinitionCandidatesSet(definition)) {
+    if (isDefinitionCandidates(definition)) {
         return getDefinitionCandidatesError(input, definition, path);
     }
-    if (isDefinitionConditionsSet(definition)) {
+    if (isDefinitionConditions(definition)) {
         return getDefinitionConditionsError(input, definition, path);
     }
     return getDefinitionObjectError(input, definition, path);
