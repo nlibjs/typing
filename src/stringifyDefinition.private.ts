@@ -1,8 +1,8 @@
 import type {Definition} from './generics';
 import {
-    isDefinitionEnumSet,
-    isDefinitionCandidatesSet,
-    isDefinitionConditionsSet,
+    isDefinitionEnum,
+    isDefinitionCandidates,
+    isDefinitionConditions,
 } from './definition.private';
 import {is$Function, is$TypeChecker} from './primitive.private';
 
@@ -25,11 +25,11 @@ const stringify = function* (
         yield `${indent}${definition.type}\n`;
     } else if (is$Function(definition)) {
         yield `${indent}${definition.toString()}`;
-    } else if (isDefinitionEnumSet(definition)) {
+    } else if (isDefinitionEnum(definition)) {
         yield `${indent}${[...definition].map((value) => JSON.stringify(value)).join('|')}`;
-    } else if (isDefinitionCandidatesSet(definition)) {
+    } else if (isDefinitionCandidates(definition)) {
         yield* stringifyIterableDefinitions(definition, indent, ancestors, 'Some');
-    } else if (isDefinitionConditionsSet(definition)) {
+    } else if (isDefinitionConditions(definition)) {
         yield* stringifyIterableDefinitions(definition, indent, ancestors, 'Every');
     } else {
         yield `${indent}{\n`;

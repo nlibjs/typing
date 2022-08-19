@@ -25,10 +25,14 @@ export type UndefinedAsOptional<T extends object> = OptionalKeys<T> extends neve
     );
 export type TypeGuard<T> = (input: unknown) => input is T;
 type ProcessUndefined<T> = T extends bigint | number | string | symbol | {__brand: string} | null | undefined ? T
+    : T extends DefinitionEnum<infer S> ? ProcessUndefined<S>
+    : T extends DefinitionCandidates<infer S> ? ProcessUndefined<S>
+    : T extends DefinitionConditions<infer S> ? ProcessUndefined<S>
     : T extends Array<infer S> ? Array<ProcessUndefined<S>>
     : T extends Set<infer S> ? Set<ProcessUndefined<S>>
     : T extends Map<infer S, infer V> ? Map<S, ProcessUndefined<V>>
-    : T extends object ? UndefinedAsOptional<T> : T;
+    : T extends object ? UndefinedAsOptional<T>
+    : T;
 export type DefinedType<T> = T extends Definition<infer S> ? ProcessUndefined<S> : never;
 export type GuardedType<T> = T extends TypeGuard<infer S> ? ProcessUndefined<S> : never;
 export interface Dictionary<T> extends Record<string, T> {}
@@ -43,9 +47,10 @@ export interface TypeChecker<T, N extends string = string, D extends Definition<
     readonly dictionary: TypeChecker<Record<string, T>, `Record<string, ${N}>`, TypeGuard<Record<string, T>>>,
     readonly definition: D,
 }
-export interface DefinitionEnum<T> extends Set<T> {}
-export interface DefinitionCandidates<T> extends Set<Definition<T>> {}
-export interface DefinitionConditions<T> extends Set<Definition<Partial<T>>> {}
+export class DefinitionEnum<T> extends Set<T> {}
+export class DefinitionCandidates<T> extends Set<Definition<T>> {}
+export class DefinitionConditions<T> extends Set<Definition<Partial<T>>> {}
+
 export type Definition<T = unknown> =
 // eslint-disable-next-line @typescript-eslint/sort-type-union-intersection-members
 | RegExp
