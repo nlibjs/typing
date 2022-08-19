@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.5.7 (2022-08-19)
+
+### Bug Fixes
+
+- ProcessUndefined for definition.enum/some/every ([f139147](https://github.com/nlibjs/typing/commit/f139147157cb16c1458330c2588d1b639237e590))
+
+### Documentation
+
+- update README ([8397347](https://github.com/nlibjs/typing/commit/8397347f8dac8783b856de80a3eacf79e53d5082))
+
+
 ## v0.5.6 (2022-08-18)
 
 ### Bug Fixes
