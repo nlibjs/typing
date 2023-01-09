@@ -25,7 +25,7 @@ const stringify = function* (
         yield `${indent}${definition.type}\n`;
     } else if (is$Function(definition)) {
         yield `${indent}${definition.toString()}`;
-    } else if (isDefinitionEnum(definition)) {
+    } else if (isDefinitionEnum<unknown>(definition)) {
         yield `${indent}${[...definition].map((value) => JSON.stringify(value)).join('|')}`;
     } else if (isDefinitionCandidates(definition)) {
         yield* stringifyIterableDefinitions(definition, indent, ancestors, 'Some');
