@@ -52,10 +52,4 @@ export class DefinitionCandidates<T> extends Set<Definition<T>> {}
 export class DefinitionConditions<T> extends Set<Definition<Partial<T>>> {}
 
 export type Definition<T = unknown> =
-// eslint-disable-next-line @typescript-eslint/sort-type-union-intersection-members
-| RegExp
-| TypeGuard<T>
-| DefinitionObject<T>
-| DefinitionEnum<T>
-| DefinitionCandidates<T>
-| DefinitionConditions<T>;
+DefinitionCandidates<T> | DefinitionConditions<T> | DefinitionEnum<T> | DefinitionObject<T> | RegExp | TypeGuard<T>;

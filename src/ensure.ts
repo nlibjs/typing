@@ -198,10 +198,10 @@ export const getTypeError = (
     if (is$RegExp(definition)) {
         return getRegExpDefinitionError(input, definition, path);
     }
-    if (is$Function(definition)) {
+    if ((is$Function as TypeGuard<TypeChecker<unknown> | TypeGuard<unknown>>)(definition)) {
         return getDefinitionFunctionError(input, definition, path);
     }
-    if (isDefinitionEnum(definition)) {
+    if (isDefinitionEnum<unknown>(definition)) {
         return getDefinitionEnumError(input, definition, path);
     }
     if (isDefinitionCandidates(definition)) {
