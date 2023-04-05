@@ -1,21 +1,21 @@
 import {listCheckerTests} from './tests.private';
-import {isBase64String} from './Base64String';
+import {isAlphaNumericString} from './AlphaNumericString';
 
 for (const {key, input, expected} of listCheckerTests(
-    'Base64',
-    'CapitalLatin',
-    'SmallLatin',
-    'Digits65',
-    'Digits64',
-    'Localhost',
+    'EmptyString',
     'NonEmptyString',
+    'SmallLatin',
+    'CapitalLatin',
     'HttpMethodGet',
     'HttpMethodOptions',
+    'Localhost',
+    'Digits64',
+    'Digits65',
     'Hex',
     'SmallHex',
     'CapitalHex',
 )) {
     test(`${key} → ${expected}`, () => {
-        expect(isBase64String(input)).toBe(expected);
+        expect(isAlphaNumericString(input)).toBe(expected);
     });
 }
