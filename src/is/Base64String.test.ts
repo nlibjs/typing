@@ -11,6 +11,9 @@ for (const {key, input, expected} of listCheckerTests(
     'NonEmptyString',
     'HttpMethodGet',
     'HttpMethodOptions',
+    'Hex',
+    'SmallHex',
+    'CapitalHex',
 )) {
     test(`${key} → ${expected}`, () => {
         expect(isBase64String(input)).toBe(expected);

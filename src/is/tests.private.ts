@@ -78,6 +78,9 @@ const typeCheckerTestValues = {
     HttpMethodOptions: 'OPTIONS',
     HttpResponseStatusCodeOk: 200,
     HttpResponseStatusCodeNotFound: 404,
+    SmallHex: '0123456789abcdef',
+    CapitalHex: '0123456789ABCDEF',
+    Hex: '0123456789ABCDEFabcdef',
 };
 type TestKey = keyof typeof typeCheckerTestValues;
 export const listCheckerTests = function* (...trueKeys: Array<TestKey>) {
