@@ -213,23 +213,29 @@ export const getTypeError = (
     return getDefinitionObjectError(input, definition, path);
 };
 
-export const ensure = <T>(
+export function ensure<T>(input: unknown, definition: Definition<T>): T;
+export function ensure<T, S>(input: unknown, definition: Definition<T>, fallbackValue: S): S | T;
+// eslint-disable-next-line func-style
+export function ensure<T, S>(
     input: unknown,
     definition: Definition<T>,
-    path = '_',
-): T => {
+    fallbackValue?: S,
+) {
     if (testValue(input, definition)) {
         return input;
     }
-    const error: CheckErrorResult = getTypeError(input, definition, path) || {
-        input,
-        definition,
-        path,
-        message: 'The input doesn\'t match to the definition.',
-    };
-    throw new ModuleError({
-        code: 'TypeCheckError',
-        message: stringifyError(error),
-        data: error,
-    });
-};
+    if (fallbackValue === undefined) {
+        const error: CheckErrorResult = getTypeError(input, definition, '_') || {
+            input,
+            definition,
+            path: '_',
+            message: 'The input doesn\'t match to the definition.',
+        };
+        throw new ModuleError({
+            code: 'TypeCheckError',
+            message: `TypeCheckError: ${stringifyError(error)}`,
+            data: error,
+        });
+    }
+    return fallbackValue;
+}
