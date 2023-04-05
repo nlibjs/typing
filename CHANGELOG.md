@@ -1,5 +1,43 @@
 # Changelog
 
+## v1.0.0 (2023-04-05)
+
+### Breaking Changes
+
+- change ensure()'s 3rd parameter from path:string to fallbackValue:S ([bd3023a](https://github.com/nlibjs/typing/commit/bd3023a30774ab0cd00088b85ee3ff3159211e31))
+
+### Features
+
+- add AlphaNumericString ([4aa3efe](https://github.com/nlibjs/typing/commit/4aa3efebf839b2a73493c4074c795999f1494231))
+- add LatinString ([971d1b4](https://github.com/nlibjs/typing/commit/971d1b477342163fe1cd027448ba4123648ce8fe))
+- add CapitalLatinString ([0458396](https://github.com/nlibjs/typing/commit/0458396cd671a0a9dde919954423ac5358c1fa04))
+- add SmallLatinString ([d5557c5](https://github.com/nlibjs/typing/commit/d5557c5882c1affff78e135387ec3105dc70af5e))
+- add NumberString ([ab8d0e7](https://github.com/nlibjs/typing/commit/ab8d0e7608a6463ba03774717da711b54fa61f2d))
+- add CapitalHexString ([c09fe39](https://github.com/nlibjs/typing/commit/c09fe396344e4f3af9723343304a0cb73357b29c))
+- add SmallHexString ([44529b4](https://github.com/nlibjs/typing/commit/44529b4d863e66cf98e009f0cd3110f996ea44c9))
+
+### Bug Fixes
+
+- type errors ([58f427a](https://github.com/nlibjs/typing/commit/58f427a95d7887651946c39d63ad8096fa71b788))
+- author.url ([2cb6042](https://github.com/nlibjs/typing/commit/2cb6042bcd8bc096550e13c5de6b182c82b9ecda))
+- FUNDING.yml ([6049aea](https://github.com/nlibjs/typing/commit/6049aea4a3c59cec3d057b06412c3c3cea43c907))
+
+### Tests
+
+- update tests ([1637cdc](https://github.com/nlibjs/typing/commit/1637cdc530798ddfcb49bc536dd35d7a8c42a8cb))
+
+### Styles
+
+- fix an eslint error ([045d2b5](https://github.com/nlibjs/typing/commit/045d2b505057d610999a6b528163a1afd52378f4))
+
+### Dependency Upgrades
+
+- ts-jest:29.0.5→29.1.0 typescript:4.9.5→5.0.3 ([c00194c](https://github.com/nlibjs/typing/commit/c00194cc39f0cd58514c17eb685abf5e961e52ff))
+- upgrade dependencies ([a609e4e](https://github.com/nlibjs/typing/commit/a609e4eed8f9bc135a78631e8c431f6c718971ab))
+- @nlib/eslint-config:3.19.5→3.19.6 ([5b718a3](https://github.com/nlibjs/typing/commit/5b718a3d51c08c98cd849564ef4ffc2741a5901a))
+- @types/jest:28.1.8→29.2.5 eslint-plugin-jest:26.9.0→27.2.1 jest:28.1.3→29.3.1 ts-jest:28.0.8→29.0.3 typescript:4.7.4→4.9.4 ([7bf1d6f](https://github.com/nlibjs/typing/commit/7bf1d6fca065b8056798b070bbc3afb1b5394ffd))
+
+
 ## v0.5.7 (2022-08-19)
 
 ### Bug Fixes
