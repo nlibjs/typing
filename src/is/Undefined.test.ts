@@ -1,8 +1,8 @@
-import {listCheckerTests} from './tests.private';
-import {isUndefined} from './Undefined';
+import { listCheckerTests } from './tests.private';
+import { isUndefined } from './Undefined';
 
-for (const {key, input, expected} of listCheckerTests('Undefined')) {
-    test(`${key} → ${expected}`, () => {
-        expect(isUndefined(input)).toBe(expected);
-    });
+for (const { key, input, expected } of listCheckerTests('Undefined')) {
+  test(`${key} → ${expected}`, () => {
+    expect(isUndefined(input)).toBe(expected);
+  });
 }

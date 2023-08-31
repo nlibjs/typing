@@ -1,13 +1,15 @@
-import {createTypeChecker} from '../createTypeChecker';
+import { createTypeChecker } from '../createTypeChecker';
 
-const {prototype: {toString}} = Object;
+const {
+  prototype: { toString },
+} = Object;
 
 const isDate = createTypeChecker(
-    'Date',
-    (input: unknown): input is Date => toString.call(input) === '[object Date]',
+  'Date',
+  (input: unknown): input is Date => toString.call(input) === '[object Date]',
 );
 
 export const isValidDate = createTypeChecker(
-    'ValidDate',
-    (input: unknown): input is Date => isDate(input) && 0 < input.getTime(),
+  'ValidDate',
+  (input: unknown): input is Date => isDate(input) && 0 < input.getTime(),
 );

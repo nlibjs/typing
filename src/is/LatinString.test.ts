@@ -1,16 +1,16 @@
-import {listCheckerTests} from './tests.private';
-import {isLatinString} from './LatinString';
+import { listCheckerTests } from './tests.private';
+import { isLatinString } from './LatinString';
 
-for (const {key, input, expected} of listCheckerTests(
-    'EmptyString',
-    'NonEmptyString',
-    'SmallLatin',
-    'CapitalLatin',
-    'HttpMethodGet',
-    'HttpMethodOptions',
-    'Localhost',
+for (const { key, input, expected } of listCheckerTests(
+  'EmptyString',
+  'NonEmptyString',
+  'SmallLatin',
+  'CapitalLatin',
+  'HttpMethodGet',
+  'HttpMethodOptions',
+  'Localhost',
 )) {
-    test(`${key} → ${expected}`, () => {
-        expect(isLatinString(input)).toBe(expected);
-    });
+  test(`${key} → ${expected}`, () => {
+    expect(isLatinString(input)).toBe(expected);
+  });
 }
