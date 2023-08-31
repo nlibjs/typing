@@ -37,6 +37,7 @@ await Promise.all(
     let code = await fs.readFile(from, 'utf8');
     code = code.replace(/\.m([jt])s(['"])/g, '.c$1s$2');
     await fs.writeFile(to, code);
+    await fs.unlink(from);
     console.info('renamed', to.pathname.slice(cjsDir.pathname.length));
   }),
 );
