@@ -1,0 +1,20 @@
+import { listCheckerTests } from './tests.private.mjs';
+import {
+  isSmallLatinString,
+  SmallLatinCharacters,
+} from './SmallLatinString.mjs';
+
+test('SmallLatinCharacters', () => {
+  expect(isSmallLatinString(SmallLatinCharacters)).toBe(true);
+});
+
+for (const { key, input, expected } of listCheckerTests(
+  'EmptyString',
+  'NonEmptyString',
+  'SmallLatin',
+  'Localhost',
+)) {
+  test(`${key} → ${expected}`, () => {
+    expect(isSmallLatinString(input)).toBe(expected);
+  });
+}
