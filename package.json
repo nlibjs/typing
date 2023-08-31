@@ -72,7 +72,7 @@
     "overrides": [
       {
         "files": [
-          "*.test.ts"
+          "*.test.mts"
         ],
         "plugins": [
           "jest"
