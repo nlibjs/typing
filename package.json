@@ -12,14 +12,9 @@
   },
   "homepage": "https://github.com/nlibjs/typing",
   "repository": "https://github.com/nlibjs/typing",
-  "type": "commonjs",
-  "main": "./cjs/index.js",
-  "exports": {
-    "import": "./esm/index.mjs",
-    "require": "./cjs/index.js"
-  },
+  "type": "module",
+  "main": "./esm/index.mjs",
   "files": [
-    "cjs",
     "esm",
     "!**/*.test.*"
   ],
@@ -29,17 +24,13 @@
     "test:jest": "jest",
     "lint": "eslint src",
     "build": "run-s build:*",
-    "build:index": "npx @nlib/indexen --output src/index.ts \"./**/*.ts\"",
-    "build:esm": "run-s build:esm:*",
-    "build:esm:tsc": "tsc --project tsconfig.esm.json",
-    "build:esm:esmify": "npx @nlib/esmify \"./esm/**/*\"",
-    "build:cjs": "tsc --project tsconfig.cjs.json",
+    "build:index": "npx @nlib/indexen --output src/index.mts \"./**/*.mts\"",
+    "build:esm": "tsc",
     "version": "npx @nlib/changelog --output CHANGELOG.md && git add CHANGELOG.md"
   },
   "devDependencies": {
     "@nlib/changelog": "0.3.1",
     "@nlib/eslint-config": "3.20.1",
-    "@nlib/esmify": "0.3.3",
     "@nlib/githooks": "0.2.0",
     "@nlib/indexen": "0.2.9",
     "@nlib/lint-commit": "1.0.1",
