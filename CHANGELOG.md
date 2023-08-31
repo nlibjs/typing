@@ -1,5 +1,34 @@
 # Changelog
 
+## v1.1.0 (2023-08-31)
+
+### Features
+
+- build cjs modules ([1b3dac4](https://github.com/nlibjs/typing/commit/1b3dac4b39c68cd33434967de527e6c4f6e3a0fe))
+
+### Code Refactoring
+
+- rename files from .ts to .mts ([946436e](https://github.com/nlibjs/typing/commit/946436e9b5bbe2c4d874a0e23dc726dfa72f9d8d))
+
+### Documentation
+
+- update a badge ([3bcbce2](https://github.com/nlibjs/typing/commit/3bcbce22929efd256bd401859613f22db0c77c35))
+
+### Build System
+
+- remove cjs exports ([336eeda](https://github.com/nlibjs/typing/commit/336eeda68976a16a621e431d2c695f98bdfc8b82))
+
+### Continuous Integration
+
+- use node v20 ([0819505](https://github.com/nlibjs/typing/commit/0819505fd6d95b040c7a8129ee96eb1c00056338))
+
+### Dependency Upgrades
+
+- @nlib/eslint-config:3.19.6→3.20.1 ([105016f](https://github.com/nlibjs/typing/commit/105016f3a874174f3cb87d9e890d9a4adfe14579))
+- typescript:5.1.6→5.2.2 ([d3c2c52](https://github.com/nlibjs/typing/commit/d3c2c520dbeb5698d3c8426f3d293b7aa892e6e0))
+- @nlib/indexen:0.2.7→0.2.9 ([a7a3f28](https://github.com/nlibjs/typing/commit/a7a3f2880eca5985cdababa150c53eed55e67969))
+- @nlib/changelog:0.3.0→0.3.1 ([f2c3d09](https://github.com/nlibjs/typing/commit/f2c3d09e25282cf828914b01404914416787c02b))
+
 ## v1.0.0 (2023-04-05)
 
 ### Breaking Changes
@@ -37,7 +66,6 @@
 - @nlib/eslint-config:3.19.5→3.19.6 ([5b718a3](https://github.com/nlibjs/typing/commit/5b718a3d51c08c98cd849564ef4ffc2741a5901a))
 - @types/jest:28.1.8→29.2.5 eslint-plugin-jest:26.9.0→27.2.1 jest:28.1.3→29.3.1 ts-jest:28.0.8→29.0.3 typescript:4.7.4→4.9.4 ([7bf1d6f](https://github.com/nlibjs/typing/commit/7bf1d6fca065b8056798b070bbc3afb1b5394ffd))
 
-
 ## v0.5.7 (2022-08-19)
 
 ### Bug Fixes
@@ -48,13 +76,11 @@
 
 - update README ([8397347](https://github.com/nlibjs/typing/commit/8397347f8dac8783b856de80a3eacf79e53d5082))
 
-
 ## v0.5.6 (2022-08-18)
 
 ### Bug Fixes
 
 - missing ProcessUndefined ([d242522](https://github.com/nlibjs/typing/commit/d242522049d79bbfca42b7fd601702c172119d6c))
-
 
 ## v0.5.5 (2022-08-18)
 
@@ -62,20 +88,17 @@
 
 - skip Array<T> ([fc70088](https://github.com/nlibjs/typing/commit/fc700880c9052f6512db75b6b3b6ef68944c9179))
 
-
 ## v0.5.4 (2022-08-18)
 
 ### Bug Fixes
 
 - apply UndefinedAsOptional recursively ([27de2ce](https://github.com/nlibjs/typing/commit/27de2ce31467ccf50e3b2c9e517295e6f4046543))
 
-
 ## v0.5.3 (2022-08-17)
 
 ### Features
 
 - add keys, values, entries ([1dc7c27](https://github.com/nlibjs/typing/commit/1dc7c2709efed5311dc70cf69be0c9e670904660))
-
 
 ## v0.5.2 (2022-08-15)
 
@@ -87,7 +110,6 @@
 ### Code Refactoring
 
 - simplify tests ([5512a3a](https://github.com/nlibjs/typing/commit/5512a3abea5dd51aa2b94ecd5746addeaf91d9e8))
-
 
 ## v0.5.1 (2022-08-15)
 
@@ -102,7 +124,6 @@
 ### Dependency Upgrades
 
 - eslint:8.21.0→8.22.0 eslint-plugin-jest:26.7.0→26.8.2 ([fd891ae](https://github.com/nlibjs/typing/commit/fd891ae182a37a76ca3c84e0425a144934f693a4))
-
 
 ## v0.5.0 (2022-08-14)
 
@@ -126,13 +147,11 @@
 - Iterable → Set ([68916de](https://github.com/nlibjs/typing/commit/68916de699d8c893258c72c6f4155b8dfe36cf2f))
 - normalize set ([517dbe2](https://github.com/nlibjs/typing/commit/517dbe248df200b72d5d72b90c2a1dd3cc213ad8))
 
-
 ## v0.4.12 (2022-08-12)
 
 ### Features
 
 - add Merge<A, B> ([a7a1b25](https://github.com/nlibjs/typing/commit/a7a1b25a4f51a96e6e2ca7beb8677b327d44155f))
-
 
 ## v0.4.11 (2022-08-07)
 
@@ -167,20 +186,17 @@
 - @nlib/esmify:0.1.5→0.2.0 ([01cc232](https://github.com/nlibjs/typing/commit/01cc2329300ab6be62b8e0e9e4ffd49fd033b6b9))
 - @nlib/esmify:0.1.4→0.1.5 ([056f3d0](https://github.com/nlibjs/typing/commit/056f3d0c06b0cf34cf306371d50f83db765cec94))
 
-
 ## v0.4.2 (2022-07-28)
 
 ### Bug Fixes
 
 - build command ([42a5c40](https://github.com/nlibjs/typing/commit/42a5c40d0aff52d4d8da92060f82bfc2bd0c1245))
 
-
 ## v0.4.1 (2022-07-28)
 
 ### Dependency Upgrades
 
 - @nlib/esmify:0.1.2→0.1.4 ([f8fff72](https://github.com/nlibjs/typing/commit/f8fff7297717b79d12a0610f7be3122812501d85))
-
 
 ## v0.4.0 (2022-07-28)
 
@@ -202,13 +218,11 @@
 - @types/eslint:8.4.2→8.4.5 @types/jest:27.5.0→28.1.6 ([6571782](https://github.com/nlibjs/typing/commit/65717822a81d7524582ef6bea4a5609bede4dd4c))
 - @nlib/changelog:0.1.11→0.2.1 @nlib/eslint-config:3.17.30→3.18.0 @nlib/indexen:0.1.2→0.2.2 @nlib/lint-commit:0.1.8→0.2.0 ([802189d](https://github.com/nlibjs/typing/commit/802189dfc5dec102b58bb0513cea3de4d112ce24))
 
-
 ## v0.3.4 (2022-02-27)
 
 ### Bug Fixes
 
 - skip indexen in the build steps ([3a77e34](https://github.com/nlibjs/typing/commit/3a77e34af5a5cd80421a9146d981529b1e39a17e))
-
 
 ## v0.3.3 (2022-02-27)
 
@@ -216,13 +230,11 @@
 
 - update index ([53eb5c8](https://github.com/nlibjs/typing/commit/53eb5c824d2c347955bf04ba18cae030eef8121d))
 
-
 ## v0.3.2 (2022-02-27)
 
 ### Features
 
 - add the second parameter N: TypeChecker<T, N> ([7e0d32b](https://github.com/nlibjs/typing/commit/7e0d32b57e67fb5bfffde6337b3cb8c39246be4a))
-
 
 ## v0.3.1 (2022-02-26)
 
@@ -235,7 +247,6 @@
 ### Tests
 
 - fix tests for string ([e5c4aeb](https://github.com/nlibjs/typing/commit/e5c4aebc1ac8dd46421adac89b4ae4d3ec7033d1))
-
 
 ## v0.3.0 (2022-02-26)
 
@@ -259,7 +270,6 @@
 - check end ([54b3e86](https://github.com/nlibjs/typing/commit/54b3e86d42baa4cad8b3562a99a5c0acc8407aa0))
 - add some testes for domain name ([656fb46](https://github.com/nlibjs/typing/commit/656fb469b50b5fe8ef80437b7147511e62f71883))
 
-
 ## v0.2.3 (2022-01-12)
 
 ### Bug Fixes
@@ -270,7 +280,6 @@
 
 - install nlib tools ([b5b255b](https://github.com/nlibjs/typing/commit/b5b255bb0fc6ec0d26c04963ad8d2d0b0c793e72))
 - @nlib/eslint-config:3.17.25→3.17.30 @types/eslint:7.28.0→8.2.2 @typescript-eslint/eslint-plugin:4.30.0→5.9.1 @typescript-eslint/parser:4.32.0→5.9.1 ava:3.15.0→4.0.1 eslint:7.32.0→8.6.0 lint-staged:11.1.2→12.1.7 ts-node:10.2.1→10.4.0 typescript:4.4.2→4.5.4 ([4c2fff5](https://github.com/nlibjs/typing/commit/4c2fff5c25316ff757fda3facc338d7000e47cb9))
-
 
 ## v0.2.2 (2021-09-06)
 
@@ -287,7 +296,6 @@
 
 - @nlib/test:3.18.8→4.0.0 ([0391ce1](https://github.com/nlibjs/typing/commit/0391ce1250fc7438096b3bd86857afd11ee51409))
 - @nlib/test:3.18.7→3.18.8 ([7e45327](https://github.com/nlibjs/typing/commit/7e45327d12f1b0fb35d3696bad8ac079a10892ce))
-
 
 ## v0.2.1 (2021-09-05)
 
@@ -321,7 +329,6 @@
 - update build flow ([dc10290](https://github.com/nlibjs/typing/commit/dc10290ca5910b357f4a4e53c073339b1776acf4))
 - uninstall @nlib/changelog @nlib/lint-commit ([e6a7d79](https://github.com/nlibjs/typing/commit/e6a7d798389dbcc0a64152c27cef78a665a60092))
 
-
 ## v0.2.0 (2020-10-04)
 
 ### Breaking Changes
@@ -343,7 +350,6 @@
 
 - upgrade dependencies ([b9db243](https://github.com/nlibjs/typing/commit/b9db243521a3b4ac9a57a9158841f2cd89780467))
 
-
 ## v0.0.4 (2020-09-01)
 
 ### Bug Fixes
@@ -354,20 +360,17 @@
 
 - skip .js tests ([a3a6a5d](https://github.com/nlibjs/typing/commit/a3a6a5de8e3fa1c9fa98732b0f815f3da10cb633))
 
-
 ## v0.0.3 (2020-08-30)
 
 ### Bug Fixes
 
 - index ([1e34fdb](https://github.com/nlibjs/typing/commit/1e34fdb84004b184132044c8921f1919f19e1213))
 
-
 ## v0.0.2 (2020-08-30)
 
 ### Bug Fixes
 
 - index ([904a943](https://github.com/nlibjs/typing/commit/904a943f5f13cd9afab19c57b6fa43d10022cd2e))
-
 
 ## v0.0.1 (2020-08-30)
 
@@ -382,5 +385,3 @@
 ### Styles
 
 - move dependencies ([130aa4d](https://github.com/nlibjs/typing/commit/130aa4d28116f3c3cf8d976c237b5c03742c5a76))
-
-
