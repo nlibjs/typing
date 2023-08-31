@@ -4,3 +4,4 @@ esm
 cjs
 lib
 coverage
+tsconfig.tsbuildinfo
