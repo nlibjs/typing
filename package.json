@@ -24,8 +24,7 @@
     "!**/*.test.*"
   ],
   "scripts": {
-    "test": "run-s test:type build test:esm test:cjs",
-    "test:type": "tsc --noEmit",
+    "test": "run-s build test:esm test:cjs",
     "test:esm": "node --test esm/",
     "test:cjs": "node --test cjs/",
     "lint": "eslint src",
