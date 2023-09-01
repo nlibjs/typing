@@ -3,7 +3,7 @@
 TypeScript utilities
 
 [![test](https://github.com/nlibjs/typing/actions/workflows/test.yml/badge.svg)](https://github.com/nlibjs/typing/actions/workflows/test.yml)
-[![codecov](https://codecov.io/gh/nlibjs/typing/branch/master/graph/badge.svg)](https://codecov.io/gh/nlibjs/typing)
+[![codecov](https://codecov.io/gh/nlibjs/typing/graph/badge.svg?token=msEnyrNAzF)](https://codecov.io/gh/nlibjs/typing)
 
 ```typescript
 import {
