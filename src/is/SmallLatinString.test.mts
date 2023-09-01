@@ -1,3 +1,5 @@
+import { test } from 'node:test';
+import * as assert from 'node:assert';
 import { listCheckerTests } from './tests.private.mjs';
 import {
   isSmallLatinString,
@@ -5,7 +7,7 @@ import {
 } from './SmallLatinString.mjs';
 
 test('SmallLatinCharacters', () => {
-  expect(isSmallLatinString(SmallLatinCharacters)).toBe(true);
+  assert.equal(isSmallLatinString(SmallLatinCharacters), true);
 });
 
 for (const { key, input, expected } of listCheckerTests(
@@ -15,6 +17,6 @@ for (const { key, input, expected } of listCheckerTests(
   'Localhost',
 )) {
   test(`${key} → ${expected}`, () => {
-    expect(isSmallLatinString(input)).toBe(expected);
+    assert.equal(isSmallLatinString(input), expected);
   });
 }

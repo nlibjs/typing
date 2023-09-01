@@ -1,3 +1,5 @@
+import { test } from 'node:test';
+import * as assert from 'node:assert';
 import { listCheckerTests } from './tests.private.mjs';
 import { isNonPositiveSafeInteger } from './NonPositiveSafeInteger.mjs';
 
@@ -8,6 +10,6 @@ for (const { key, input, expected } of listCheckerTests(
   'NegativeInteger',
 )) {
   test(`${key} → ${expected}`, () => {
-    expect(isNonPositiveSafeInteger(input)).toBe(expected);
+    assert.equal(isNonPositiveSafeInteger(input), expected);
   });
 }

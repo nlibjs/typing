@@ -1,3 +1,5 @@
+import { test } from 'node:test';
+import * as assert from 'node:assert';
 import { listCheckerTests } from './tests.private.mjs';
 import { isBase64UrlString } from './Base64UrlString.mjs';
 
@@ -18,6 +20,6 @@ for (const { key, input, expected } of listCheckerTests(
   'CapitalHex',
 )) {
   test(`${key} → ${expected}`, () => {
-    expect(isBase64UrlString(input)).toBe(expected);
+    assert.equal(isBase64UrlString(input), expected);
   });
 }

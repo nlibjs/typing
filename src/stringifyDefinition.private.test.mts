@@ -1,3 +1,5 @@
+import { test } from 'node:test';
+import * as assert from 'node:assert';
 import { definition } from './definition.mjs';
 import type { Definition } from './generics.mjs';
 import { isString } from './is/String.mjs';
@@ -7,37 +9,40 @@ import { stringifyDefinition } from './stringifyDefinition.private.mjs';
 const isNumber = (input: unknown) => typeof input === 'number';
 
 test('should stringify the function', () => {
-  expect(stringifyDefinition(isNumber)).toBe(
+  assert.equal(
+    stringifyDefinition(isNumber),
     "(input) => typeof input === 'number'",
   );
 });
 
 test('should return the name', () => {
-  expect(stringifyDefinition(isString)).toBe('String');
+  assert.equal(stringifyDefinition(isString), 'String');
 });
 
 test('should stringify enum', () => {
-  expect(stringifyDefinition(definition.enum<number | string>(1, '2'))).toBe(
+  assert.equal(
+    stringifyDefinition(definition.enum<number | string>(1, '2')),
     '1|"2"',
   );
 });
 
 test('should stringify an object definition', () => {
-  expect(stringifyDefinition({ id: isString, name: isString })).toBe(
+  assert.equal(
+    stringifyDefinition({ id: isString, name: isString }),
     ['{', '  id: String,', '  name: String,', '}'].join('\n'),
   );
 });
 
 test('should stringify dictionary', () => {
-  expect(stringifyDefinition(isString.dictionary)).toBe(
+  assert.equal(
+    stringifyDefinition(isString.dictionary),
     'Record<string, String>',
   );
 });
 
 test('should stringify AND', () => {
-  expect(
+  assert.equal(
     stringifyDefinition(definition.every({ id: isString }, { id: isUUID })),
-  ).toBe(
     [
       'Every {',
       '  {',
@@ -52,9 +57,8 @@ test('should stringify AND', () => {
 });
 
 test('should stringify OR', () => {
-  expect(
+  assert.equal(
     stringifyDefinition(definition.some({ id: isString }, { id: isUUID })),
-  ).toBe(
     [
       'Some {',
       '  {',
@@ -71,7 +75,8 @@ test('should stringify OR', () => {
 test('should stringify circular definition', () => {
   const def: Record<string, Definition> = { key1: isString };
   def.key2 = def;
-  expect(stringifyDefinition(def)).toBe(
+  assert.equal(
+    stringifyDefinition(def),
     ['{', '  key1: String,', '  key2: (circular),', '}'].join('\n'),
   );
 });

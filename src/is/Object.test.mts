@@ -1,3 +1,5 @@
+import { test } from 'node:test';
+import * as assert from 'node:assert';
 import { listCheckerTests } from './tests.private.mjs';
 import { isObject } from './Object.mjs';
 
@@ -21,6 +23,6 @@ for (const { key, input, expected } of listCheckerTests(
   'BigInt64Array',
 )) {
   test(`${key} → ${expected}`, () => {
-    expect(isObject(input)).toBe(expected);
+    assert.equal(isObject(input), expected);
   });
 }

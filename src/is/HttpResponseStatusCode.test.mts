@@ -1,3 +1,5 @@
+import { test } from 'node:test';
+import * as assert from 'node:assert';
 import { listCheckerTests } from './tests.private.mjs';
 import { isHttpResponseStatusCode } from './HttpResponseStatusCode.mjs';
 
@@ -6,6 +8,6 @@ for (const { key, input, expected } of listCheckerTests(
   'HttpResponseStatusCodeNotFound',
 )) {
   test(`${key} → ${expected}`, () => {
-    expect(isHttpResponseStatusCode(input)).toBe(expected);
+    assert.equal(isHttpResponseStatusCode(input), expected);
   });
 }

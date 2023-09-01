@@ -1,3 +1,5 @@
+import { describe, test } from 'node:test';
+import * as assert from 'node:assert';
 import {
   DIGIT_ONE,
   DIGIT_ZERO,
@@ -17,7 +19,7 @@ describe(toSmallLatinCodePoint.name, () => {
   ];
   for (const [input, expected] of tests) {
     test(`${input} → ${expected}`, () => {
-      expect(toSmallLatinCodePoint(input)).toBe(expected);
+      assert.equal(toSmallLatinCodePoint(input), expected);
     });
   }
 });
@@ -32,9 +34,12 @@ describe(listCodePoints.name, () => {
     test(`${input} → ${expected.join(',')}`, () => {
       const generator = listCodePoints(input);
       for (const value of expected) {
-        expect(generator.next()).toMatchObject({ value });
+        assert.deepStrictEqual(generator.next(), { done: false, value });
       }
-      expect(generator.next()).toMatchObject({ done: true, value: undefined });
+      assert.deepStrictEqual(generator.next(), {
+        done: true,
+        value: undefined,
+      });
     });
   }
 });

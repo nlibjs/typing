@@ -1,3 +1,5 @@
+import { test } from 'node:test';
+import * as assert from 'node:assert';
 import type { Ipv4AddressParseResult } from './parseIpv4Address.mjs';
 import { parseIpv4Address } from './parseIpv4Address.mjs';
 
@@ -13,21 +15,21 @@ const validTests: Array<
 
 for (const [input, expected] of validTests) {
   test(`${JSON.stringify(input)} → ${JSON.stringify(expected)}`, () => {
-    expect(parseIpv4Address(...input)).toMatchObject(expected);
+    assert.deepStrictEqual(parseIpv4Address(...input), expected);
   });
 }
 
 const invalidTests: Array<[Parameters<typeof parseIpv4Address>, RegExp]> = [
-  [[' 255.255.255.256 ', 1], /^InvalidIpv4Octet:/],
-  [[' 255.255.255.1255 ', 1], /^InvalidIpv4Octet:/],
-  [[' 255.255.255.00 ', 1], /^InvalidIpv4Octet:/],
-  [[' 255.255.255 ', 1], /^InvalidIpv4Address:/],
-  [[' 255.255.255. ', 1], /^InvalidIpv4Address:/],
-  [[' 255.255.255.255 ', 0], /^InvalidIpv4Address:/],
+  [[' 255.255.255.256 ', 1], /^Error: InvalidIpv4Octet:/],
+  [[' 255.255.255.1255 ', 1], /^Error: InvalidIpv4Octet:/],
+  [[' 255.255.255.00 ', 1], /^Error: InvalidIpv4Octet:/],
+  [[' 255.255.255 ', 1], /^Error: InvalidIpv4Address:/],
+  [[' 255.255.255. ', 1], /^Error: InvalidIpv4Address:/],
+  [[' 255.255.255.255 ', 0], /^Error: InvalidIpv4Address:/],
 ];
 
 for (const [input, expected] of invalidTests) {
   test(`${JSON.stringify(input)} → Error: ${expected}`, () => {
-    expect(() => parseIpv4Address(...input)).toThrowError(expected);
+    assert.throws(() => parseIpv4Address(...input), expected);
   });
 }

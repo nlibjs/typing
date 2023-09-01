@@ -1,3 +1,5 @@
+import { test } from 'node:test';
+import * as assert from 'node:assert';
 import { listCheckerTests } from './tests.private.mjs';
 import { isDomainName } from './DomainName.mjs';
 
@@ -7,6 +9,6 @@ for (const { key, input, expected } of listCheckerTests(
   'DomainStartsWithDigits',
 )) {
   test(`${key} → ${expected}`, () => {
-    expect(isDomainName(input)).toBe(expected);
+    assert.equal(isDomainName(input), expected);
   });
 }

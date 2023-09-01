@@ -1,3 +1,5 @@
+import { test } from 'node:test';
+import * as assert from 'node:assert';
 import { listCheckerTests } from './tests.private.mjs';
 import { isNumberString } from './NumberString.mjs';
 
@@ -7,6 +9,6 @@ for (const { key, input, expected } of listCheckerTests(
   'Digits64',
 )) {
   test(`${key} → ${expected}`, () => {
-    expect(isNumberString(input)).toBe(expected);
+    assert.equal(isNumberString(input), expected);
   });
 }

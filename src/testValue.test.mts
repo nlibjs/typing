@@ -1,5 +1,7 @@
+import { test } from 'node:test';
+import * as assert from 'node:assert';
 import { testValue } from './testValue.mjs';
 
 test('return false if the definition is null', () => {
-  expect(testValue(1, null as never)).toBe(false);
+  assert.equal(testValue(1, null as never), false);
 });

@@ -1,44 +1,46 @@
+import { describe, test } from 'node:test';
+import * as assert from 'node:assert';
 import { entries, keys, values } from './object.mjs';
 
 describe(keys.name, () => {
-  it('should return keys of an object', () => {
+  test('should return keys of an object', () => {
     const source = { a: 1, b: 2 };
     const result = keys(source);
-    expect(result).toMatchObject(['a', 'b']);
+    assert.deepStrictEqual(result, ['a', 'b']);
   });
-  it('should return keys of an array', () => {
+  test('should return keys of an array', () => {
     const source = ['a', 'b'];
     const result = keys(source);
-    expect(result).toMatchObject(['0', '1']);
+    assert.deepStrictEqual(result, ['0', '1']);
   });
 });
 
 describe(values.name, () => {
-  it('should return values of an object', () => {
+  test('should return values of an object', () => {
     const source = { a: 1, b: 2 };
     const result = values(source);
-    expect(result).toMatchObject([1, 2]);
+    assert.deepStrictEqual(result, [1, 2]);
   });
-  it('should return values of an array', () => {
+  test('should return values of an array', () => {
     const source = ['a', 'b'];
     const result = values(source);
-    expect(result).toMatchObject(['a', 'b']);
+    assert.deepStrictEqual(result, ['a', 'b']);
   });
 });
 
 describe(entries.name, () => {
-  it('should return entries of an object', () => {
+  test('should return entries of an object', () => {
     const source = { a: 1, b: 2 };
     const result = entries(source);
-    expect(result).toMatchObject([
+    assert.deepStrictEqual(result, [
       ['a', 1],
       ['b', 2],
     ]);
   });
-  it('should return entries of an array', () => {
+  test('should return entries of an array', () => {
     const source = ['a', 'b'];
     const result = entries(source);
-    expect(result).toMatchObject([
+    assert.deepStrictEqual(result, [
       ['0', 'a'],
       ['1', 'b'],
     ]);

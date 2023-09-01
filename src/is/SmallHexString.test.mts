@@ -1,3 +1,5 @@
+import { test } from 'node:test';
+import * as assert from 'node:assert';
 import { listCheckerTests } from './tests.private.mjs';
 import { isSmallHexString } from './SmallHexString.mjs';
 
@@ -8,6 +10,6 @@ for (const { key, input, expected } of listCheckerTests(
   'SmallHex',
 )) {
   test(`${key} → ${expected}`, () => {
-    expect(isSmallHexString(input)).toBe(expected);
+    assert.equal(isSmallHexString(input), expected);
   });
 }

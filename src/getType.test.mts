@@ -1,3 +1,5 @@
+import { test } from 'node:test';
+import * as assert from 'node:assert';
 import { getType } from './getType.mjs';
 
 const tests: Array<[unknown, string]> = [
@@ -16,6 +18,6 @@ const tests: Array<[unknown, string]> = [
 ];
 for (const [value, expected] of tests) {
   test(`${value} → ${expected}`, () => {
-    expect(getType(value)).toBe(expected);
+    assert.equal(getType(value), expected);
   });
 }
