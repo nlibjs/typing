@@ -1,3 +1,5 @@
+import { test } from 'node:test';
+import * as assert from 'node:assert';
 import { testValue } from './testValue.mjs';
 import { createTypeChecker } from './createTypeChecker.mjs';
 import type {
@@ -21,7 +23,7 @@ test('UndefinedAsOptional', () => {
   // const a1: A1 = {foo: 'foo'};
   type A2 = UndefinedAsOptional<A1>;
   const a2: A2 = { foo: 'foo' };
-  expect(a2).toBe(a2);
+  assert.deepStrictEqual(a2, a2);
 });
 
 test('Defined', () => {
@@ -32,7 +34,7 @@ test('Defined', () => {
   // const a1: A1 = {foo: 'foo'};
   type A2 = DefinedType<typeof definitions>;
   const a2: A2 = { foo: 'foo' };
-  expect(a2).toBe(a2);
+  assert.deepStrictEqual(a2, a2);
 });
 
 test('Nominal', () => {
@@ -49,7 +51,7 @@ test('Nominal', () => {
   type Defined = DefinedType<typeof productDefinition>;
   const price = 123 as Price2;
   const product: Defined = { price, name: 'product' };
-  expect(product).toBe(product);
+  assert.deepStrictEqual(product, product);
 });
 
 test('Merge', () => {
@@ -58,7 +60,7 @@ test('Merge', () => {
     B: { b: string };
   }
   const c: Merge<Type['A'], Type['B']> = { a: 1, b: '1' };
-  expect(c.a).toBe(1);
+  assert.deepStrictEqual(c.a, 1);
 });
 
 test('DefinedType (optional string)', () => {
@@ -66,7 +68,7 @@ test('DefinedType (optional string)', () => {
   type D = DefinedType<typeof definitions>;
   /** a1 is optional */
   const a: D['a'] = {};
-  expect(testValue(a, definitions.a)).toBe(true);
+  assert.equal(testValue(a, definitions.a), true);
 });
 
 test('DefinedType (array of template string)', () => {
@@ -74,7 +76,7 @@ test('DefinedType (array of template string)', () => {
   const definitions = { a: { value: isA.array } };
   type D = DefinedType<typeof definitions>;
   const a: D['a'] = { value: ['a', 'a'] };
-  expect(testValue(a, definitions.a)).toBe(true);
+  assert.equal(testValue(a, definitions.a), true);
 });
 
 test('DefinedType (tuple)', () => {
@@ -86,7 +88,7 @@ test('DefinedType (tuple)', () => {
   const definitions = { a: { value: isA } };
   type D = DefinedType<typeof definitions>;
   const a: D['a'] = { value: ['a'] };
-  expect(testValue(a, definitions.a)).toBe(true);
+  assert.equal(testValue(a, definitions.a), true);
 });
 
 test('DefinedType (definition.some)', () => {
@@ -97,5 +99,5 @@ test('DefinedType (definition.some)', () => {
   const a: D['a'] = { value: 123 };
   /** a.value is a number */
   a.value.toFixed(0);
-  expect(testValue(a, definitions.a)).toBe(true);
+  assert.equal(testValue(a, definitions.a), true);
 });

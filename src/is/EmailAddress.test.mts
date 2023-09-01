@@ -1,3 +1,5 @@
+import { test } from 'node:test';
+import * as assert from 'node:assert';
 import { listCheckerTests } from './tests.private.mjs';
 import { isEmailAddress } from './EmailAddress.mjs';
 
@@ -7,6 +9,6 @@ for (const { key, input, expected } of listCheckerTests(
   'EmailAddressSymbols',
 )) {
   test(`${key} → ${expected}`, () => {
-    expect(isEmailAddress(input)).toBe(expected);
+    assert.equal(isEmailAddress(input), expected);
   });
 }

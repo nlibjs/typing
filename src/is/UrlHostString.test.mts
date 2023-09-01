@@ -1,3 +1,5 @@
+import { test } from 'node:test';
+import * as assert from 'node:assert';
 import { listCheckerTests } from './tests.private.mjs';
 import { isUrlHostString } from './UrlHostString.mjs';
 
@@ -11,6 +13,6 @@ for (const { key, input, expected } of listCheckerTests(
   'HostIPv6WithPort',
 )) {
   test(`${key} → ${expected}`, () => {
-    expect(isUrlHostString(input)).toBe(expected);
+    assert.equal(isUrlHostString(input), expected);
   });
 }

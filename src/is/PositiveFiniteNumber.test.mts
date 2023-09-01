@@ -1,3 +1,5 @@
+import { test } from 'node:test';
+import * as assert from 'node:assert';
 import { listCheckerTests } from './tests.private.mjs';
 import { isPositiveFiniteNumber } from './PositiveFiniteNumber.mjs';
 
@@ -9,6 +11,6 @@ for (const { key, input, expected } of listCheckerTests(
   'HttpResponseStatusCodeNotFound',
 )) {
   test(`${key} → ${expected}`, () => {
-    expect(isPositiveFiniteNumber(input)).toBe(expected);
+    assert.equal(isPositiveFiniteNumber(input), expected);
   });
 }

@@ -1,3 +1,5 @@
+import { test } from 'node:test';
+import * as assert from 'node:assert';
 import { listCheckerTests } from './tests.private.mjs';
 import { isString } from './String.mjs';
 
@@ -49,6 +51,6 @@ for (const { key, input, expected } of listCheckerTests(
   'CapitalHex',
 )) {
   test(`${key} → ${expected}`, () => {
-    expect(isString(input)).toBe(expected);
+    assert.equal(isString(input), expected);
   });
 }

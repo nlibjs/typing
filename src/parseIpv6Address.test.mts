@@ -1,3 +1,5 @@
+import { test } from 'node:test';
+import * as assert from 'node:assert';
 import type { Ipv6AddressParseResult } from './parseIpv6Address.mjs';
 import { parseIpv6Address } from './parseIpv6Address.mjs';
 
@@ -80,18 +82,21 @@ const validTests: Array<
 
 for (const [input, expected] of validTests) {
   test(`${JSON.stringify(input)} → ${JSON.stringify(expected)}`, () => {
-    expect(parseIpv6Address(...input)).toMatchObject(expected);
+    assert.deepStrictEqual(parseIpv6Address(...input), expected);
   });
 }
 
 const invalidTests: Array<[Parameters<typeof parseIpv6Address>, RegExp]> = [
-  [[' GBCD:EF01:2345:6789:ABCD:EF01:2345:6789 ', 1], /^InvalidIpv6Address:/],
-  [[' 2001:db8::aaaa::1 ', 1], /^DuplicatedCompressor:/],
-  [[' ABCD:EF01:2345:6789:ABCD:EF01:2345: ', 1], /^InvalidIpv6Address:/],
+  [
+    [' GBCD:EF01:2345:6789:ABCD:EF01:2345:6789 ', 1],
+    /^Error: InvalidIpv6Address:/,
+  ],
+  [[' 2001:db8::aaaa::1 ', 1], /^Error: DuplicatedCompressor:/],
+  [[' ABCD:EF01:2345:6789:ABCD:EF01:2345: ', 1], /^Error: InvalidIpv6Address:/],
 ];
 
 for (const [input, expected] of invalidTests) {
   test(`${JSON.stringify(input)} → Error: ${expected}`, () => {
-    expect(() => parseIpv6Address(...input)).toThrowError(expected);
+    assert.throws(() => parseIpv6Address(...input), expected);
   });
 }

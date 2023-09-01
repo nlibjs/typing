@@ -1,3 +1,5 @@
+import { test } from 'node:test';
+import * as assert from 'node:assert';
 import {
   CapitalLatinCharacters,
   isCapitalLatinString,
@@ -5,7 +7,7 @@ import {
 import { listCheckerTests } from './tests.private.mjs';
 
 test('CapitalLatinCharacters', () => {
-  expect(isCapitalLatinString(CapitalLatinCharacters)).toBe(true);
+  assert.equal(isCapitalLatinString(CapitalLatinCharacters), true);
 });
 
 for (const { key, input, expected } of listCheckerTests(
@@ -15,6 +17,6 @@ for (const { key, input, expected } of listCheckerTests(
   'HttpMethodOptions',
 )) {
   test(`${key} → ${expected}`, () => {
-    expect(isCapitalLatinString(input)).toBe(expected);
+    assert.equal(isCapitalLatinString(input), expected);
   });
 }

@@ -1,3 +1,5 @@
+import { test } from 'node:test';
+import * as assert from 'node:assert';
 import { listCheckerTests } from './tests.private.mjs';
 import { isEmailAddressLocalPart } from './EmailAddressLocalPart.mjs';
 
@@ -27,6 +29,6 @@ for (const { key, input, expected } of listCheckerTests(
   'CapitalHex',
 )) {
   test(`${key} → ${expected}`, () => {
-    expect(isEmailAddressLocalPart(input)).toBe(expected);
+    assert.equal(isEmailAddressLocalPart(input), expected);
   });
 }

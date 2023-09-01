@@ -1,3 +1,5 @@
+import { test } from 'node:test';
+import * as assert from 'node:assert';
 import { listCheckerTests } from './tests.private.mjs';
 import { isSafeInteger } from './SafeInteger.mjs';
 
@@ -11,6 +13,6 @@ for (const { key, input, expected } of listCheckerTests(
   'HttpResponseStatusCodeNotFound',
 )) {
   test(`${key} → ${expected}`, () => {
-    expect(isSafeInteger(input)).toBe(expected);
+    assert.equal(isSafeInteger(input), expected);
   });
 }

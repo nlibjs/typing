@@ -1,3 +1,5 @@
+import { test } from 'node:test';
+import * as assert from 'node:assert';
 import { listCheckerTests } from './tests.private.mjs';
 import { isHttpMethod } from './HttpMethod.mjs';
 
@@ -6,6 +8,6 @@ for (const { key, input, expected } of listCheckerTests(
   'HttpMethodOptions',
 )) {
   test(`${key} → ${expected}`, () => {
-    expect(isHttpMethod(input)).toBe(expected);
+    assert.equal(isHttpMethod(input), expected);
   });
 }

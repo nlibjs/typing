@@ -1,3 +1,5 @@
+import { test } from 'node:test';
+import * as assert from 'node:assert';
 import { isString } from './is/String.mjs';
 import { createTypeChecker } from './createTypeChecker.mjs';
 import { definition } from './definition.mjs';
@@ -5,51 +7,38 @@ import { isNull } from './is/Null.mjs';
 import { is$String } from './primitive.private.mjs';
 import { testValue } from './testValue.mjs';
 
-const catchError = (fn: () => void) => {
-  try {
-    fn();
-    return null;
-  } catch (error) {
-    return error;
-  }
-};
-
 test('Name is required', () => {
-  expect(
-    catchError(() => {
-      createTypeChecker('', is$String);
-    }),
-  ).toMatchObject({ code: 'NoTypeName' });
+  assert.throws(() => createTypeChecker('', is$String), { code: 'NoTypeName' });
 });
 
 test('should create a checker from values', () => {
   const isEnum = createTypeChecker('Enum', definition.enum(1, 2));
-  expect(isEnum(1)).toBe(true);
-  expect(isEnum(2)).toBe(true);
-  expect(isEnum(3)).toBe(false);
+  assert.equal(isEnum(1), true);
+  assert.equal(isEnum(2), true);
+  assert.equal(isEnum(3), false);
 });
 
 test('should create an array checker', () => {
-  expect(isString.array(['a', 'b'])).toBe(true);
-  expect(isString.array(['a', 1])).toBe(false);
+  assert.equal(isString.array(['a', 'b']), true);
+  assert.equal(isString.array(['a', 1]), false);
 });
 
 test('should create an optional checker', () => {
-  expect(isString.optional('a')).toBe(true);
-  expect(isString.optional(undefined)).toBe(true);
-  expect(isString.optional(1)).toBe(false);
+  assert.equal(isString.optional('a'), true);
+  assert.equal(isString.optional(undefined), true);
+  assert.equal(isString.optional(1), false);
 });
 
 test('should create a dictionary checker', () => {
-  expect(isString.dictionary({ a: 'a', b: 'b' })).toBe(true);
-  expect(isString.dictionary({ a: 'a', b: 1 })).toBe(false);
+  assert.equal(isString.dictionary({ a: 'a', b: 'b' }), true);
+  assert.equal(isString.dictionary({ a: 'a', b: 1 }), false);
 });
 
 test('should create a OR checker from definitions', () => {
   const isSome = createTypeChecker('Some', definition.some(isString, isNull));
-  expect(isSome('1')).toBe(true);
-  expect(isSome(null)).toBe(true);
-  expect(isSome(1)).toBe(false);
+  assert.equal(isSome('1'), true);
+  assert.equal(isSome(null), true);
+  assert.equal(isSome(1), false);
 });
 
 test('should create a AND checker from definitions', () => {
@@ -59,9 +48,9 @@ test('should create a AND checker from definitions', () => {
       `${input}`.includes('a'),
     ),
   );
-  expect(isEvery('1a')).toBe(true);
-  expect(isEvery('11')).toBe(false);
-  expect(isEvery(['a'])).toBe(false);
+  assert.equal(isEvery('1a'), true);
+  assert.equal(isEvery('11'), false);
+  assert.equal(isEvery(['a']), false);
 });
 
 test('should create an object checker from definitions', () => {
@@ -69,22 +58,20 @@ test('should create an object checker from definitions', () => {
     a: isString,
     b: isNull,
   });
-  expect(isObject({ a: '', b: null })).toBe(true);
-  expect(isObject({ a: '', b: 1 })).toBe(false);
-  expect(isObject(1)).toBe(false);
+  assert.equal(isObject({ a: '', b: null }), true);
+  assert.equal(isObject({ a: '', b: 1 }), false);
+  assert.equal(isObject(1), false);
 });
 
 test('should create a RegExp checker from definitions', () => {
   const isHexColor = createTypeChecker('HexColor', /^#[0-9a-f]{6}$/);
-  expect(isHexColor('#000000')).toBe(true);
-  expect(isHexColor('#00000g')).toBe(false);
-  expect(isHexColor('#abcdef')).toBe(true);
+  assert.equal(isHexColor('#000000'), true);
+  assert.equal(isHexColor('#00000g'), false);
+  assert.equal(isHexColor('#abcdef'), true);
 });
 
 test('cannot clone a checker', () => {
-  expect(() => {
-    createTypeChecker('String2', isString);
-  }).toThrow();
+  assert.throws(() => createTypeChecker('String2', isString));
 });
 
 test('should exposes its definition', () => {
@@ -93,10 +80,10 @@ test('should exposes its definition', () => {
     b: is$String,
   });
   const d = { ...isFoo.definition };
-  expect(testValue('', d.a)).toBe(true);
-  expect(testValue('', d.b)).toBe(true);
-  expect(testValue(1, d.a)).toBe(false);
-  expect(testValue(1, d.b)).toBe(false);
+  assert.equal(testValue('', d.a), true);
+  assert.equal(testValue('', d.b), true);
+  assert.equal(testValue(1, d.a), false);
+  assert.equal(testValue(1, d.b), false);
 });
 
 test('should clone definition', () => {
@@ -104,7 +91,7 @@ test('should clone definition', () => {
     a: is$String,
     b: is$String,
   });
-  expect(isFoo.definition).not.toBe(isFoo.definition);
+  assert.notEqual(isFoo.definition, isFoo.definition);
 });
 
 test('should be able to extend definition', () => {
@@ -118,12 +105,12 @@ test('should be able to extend definition', () => {
     d: is$String,
   });
   const d = { ...isBar.definition };
-  expect(testValue('', d.a)).toBe(true);
-  expect(testValue('', d.b)).toBe(true);
-  expect(testValue('', d.c)).toBe(true);
-  expect(testValue('', d.d)).toBe(true);
-  expect(testValue(1, d.a)).toBe(false);
-  expect(testValue(1, d.b)).toBe(false);
-  expect(testValue(1, d.c)).toBe(false);
-  expect(testValue(1, d.d)).toBe(false);
+  assert.equal(testValue('', d.a), true);
+  assert.equal(testValue('', d.b), true);
+  assert.equal(testValue('', d.c), true);
+  assert.equal(testValue('', d.d), true);
+  assert.equal(testValue(1, d.a), false);
+  assert.equal(testValue(1, d.b), false);
+  assert.equal(testValue(1, d.c), false);
+  assert.equal(testValue(1, d.d), false);
 });

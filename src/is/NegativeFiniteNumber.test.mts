@@ -1,3 +1,5 @@
+import { test } from 'node:test';
+import * as assert from 'node:assert';
 import { listCheckerTests } from './tests.private.mjs';
 import { isNegativeFiniteNumber } from './NegativeFiniteNumber.mjs';
 
@@ -7,6 +9,6 @@ for (const { key, input, expected } of listCheckerTests(
   'NegativeFloat',
 )) {
   test(`${key} → ${expected}`, () => {
-    expect(isNegativeFiniteNumber(input)).toBe(expected);
+    assert.equal(isNegativeFiniteNumber(input), expected);
   });
 }
