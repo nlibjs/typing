@@ -7,7 +7,7 @@ const hasNameAndVersion = {
 	version: isString,
 };
 
-const packageJsonUrl = new URL("package.json", import.meta.url);
+const packageJsonUrl = new URL("../package.json", import.meta.url);
 const packageJson = await fs
 	.readFile(packageJsonUrl, "utf-8")
 	.then((json) => ensure(JSON.parse(json), hasNameAndVersion));
