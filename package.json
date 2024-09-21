@@ -13,10 +13,10 @@
 	"homepage": "https://github.com/nlibjs/typing",
 	"repository": "https://github.com/nlibjs/typing",
 	"type": "module",
-	"main": "./esm/index.mjs",
+	"main": "./esm/mod.mjs",
 	"exports": {
-		"import": "./esm/index.mjs",
-		"require": "./cjs/index.cjs"
+		"import": "./esm/mod.mjs",
+		"require": "./cjs/mod.cjs"
 	},
 	"files": [
 		"cjs",
@@ -27,7 +27,7 @@
 		"test": "tsm-test src",
 		"lint": "biome lint",
 		"build": "run-s build:*",
-		"build:index": "npx @nlib/indexen --output src/index.mts \"./**/*.mts\"",
+		"build:index": "npx @nlib/indexen --output src/mod.mts \"./**/*.mts\"",
 		"build:esm": "tsc --project tsconfig.esm.json",
 		"build:cjs": "run-s build:cjs:*",
 		"build:cjs:tsc": "tsc --project tsconfig.cjs.json",
