@@ -24,7 +24,9 @@
 		"!**/*.test.*"
 	],
 	"scripts": {
-		"test": "tsm-test src",
+		"test": "run-s test:*",
+		"test:type": "tsc",
+		"test:unit": "tsm-test src",
 		"lint": "biome lint",
 		"build": "run-s build:*",
 		"build:index": "node --import=@nlib/tsm cli-generate-index.ts",
