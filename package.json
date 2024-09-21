@@ -31,7 +31,11 @@
 		"build:temp": "node --import=@nlib/tsm cli-temp.ts",
 		"build:esm": "tsc --project tsconfig.esm.json",
 		"build:cjs": "tsc --project tsconfig.cjs.json",
-		"version": "npx @nlib/changelog --output CHANGELOG.md && git add CHANGELOG.md"
+		"version": "run-s version:*",
+		"version:changelog": "npx @nlib/changelog --output CHANGELOG.md",
+		"version:add-changelog": "git add CHANGELOG.md",
+		"version:sync-version": "node --import=@nlib/tsm cli-sync-version.ts",
+		"version:add-jsr": "git add jsr.json"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.2",
