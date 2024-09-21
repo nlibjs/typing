@@ -3,7 +3,11 @@ import * as assert from "node:assert";
 import { listCheckerTests } from "./tests.private.ts";
 import { isUUID } from "./UUID.ts";
 
-for (const { key, input, expected } of listCheckerTests("UUID")) {
+for (const { key, input, expected } of listCheckerTests(
+	"UUIDLowercase",
+	"UUIDUppercase",
+	"UUIDMixedcase",
+)) {
 	test(`${key} → ${expected}`, () => {
 		assert.equal(isUUID(input), expected);
 	});

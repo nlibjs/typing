@@ -5,7 +5,9 @@ import { isEmailAddressLocalPart } from "./EmailAddressLocalPart.ts";
 
 for (const { key, input, expected } of listCheckerTests(
 	"NonEmptyString",
-	"UUID",
+	"UUIDLowercase",
+	"UUIDUppercase",
+	"UUIDMixedcase",
 	"NonUUID",
 	"Localhost",
 	"ExampleDotCom",
