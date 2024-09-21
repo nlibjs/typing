@@ -1,8 +1,12 @@
 {
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
-		"outDir": "esm"
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
+		"outDir": "esm",
+		"noEmit": false,
+		"allowImportingTsExtensions": false
 	},
-	"include": ["./src/**/*.mts"],
+	"include": ["./temp/**/*.ts"],
 	"exclude": ["**/*.test.*"]
 }

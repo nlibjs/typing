@@ -13,10 +13,10 @@
 	"homepage": "https://github.com/nlibjs/typing",
 	"repository": "https://github.com/nlibjs/typing",
 	"type": "module",
-	"main": "./esm/index.mjs",
+	"main": "./esm/mod.js",
 	"exports": {
-		"import": "./esm/index.mjs",
-		"require": "./cjs/index.cjs"
+		"import": "./esm/mod.js",
+		"require": "./cjs/mod.js"
 	},
 	"files": [
 		"cjs",
@@ -27,12 +27,15 @@
 		"test": "tsm-test src",
 		"lint": "biome lint",
 		"build": "run-s build:*",
-		"build:index": "npx @nlib/indexen --output src/index.mts \"./**/*.mts\"",
+		"build:index": "node --import=@nlib/tsm cli-generate-index.ts",
+		"build:temp": "node --import=@nlib/tsm cli-temp.ts",
 		"build:esm": "tsc --project tsconfig.esm.json",
-		"build:cjs": "run-s build:cjs:*",
-		"build:cjs:tsc": "tsc --project tsconfig.cjs.json",
-		"build:cjs:rename": "node --import=@nlib/tsm cli-rename-cjs.mts",
-		"version": "npx @nlib/changelog --output CHANGELOG.md && git add CHANGELOG.md"
+		"build:cjs": "tsc --project tsconfig.cjs.json",
+		"version": "run-s version:*",
+		"version:changelog": "npx @nlib/changelog --output CHANGELOG.md",
+		"version:add-changelog": "git add CHANGELOG.md",
+		"version:sync-version": "node --import=@nlib/tsm cli-sync-version.ts",
+		"version:add-jsr": "git add jsr.json"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.2",

@@ -3,8 +3,10 @@
 	"compilerOptions": {
 		"module": "CommonJS",
 		"moduleResolution": "Node",
-		"outDir": "cjs"
+		"outDir": "cjs",
+		"noEmit": false,
+		"allowImportingTsExtensions": false
 	},
-	"include": ["./src/**/*.mts"],
+	"include": ["./temp/**/*.ts"],
 	"exclude": ["**/*.test.*"]
 }

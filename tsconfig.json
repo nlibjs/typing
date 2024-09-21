@@ -1,16 +1,17 @@
 {
 	"compilerOptions": {
 		"target": "ESNext",
-		"module": "NodeNext",
+		"module": "ESNext",
 		"moduleResolution": "NodeNext",
 		"strict": true,
-		"resolveJsonModule": true,
 		"removeComments": true,
 		"declaration": true,
 		"sourceMap": false,
 		"noFallthroughCasesInSwitch": true,
 		"noImplicitReturns": true,
 		"noUnusedLocals": true,
-		"noUnusedParameters": true
+		"noUnusedParameters": true,
+		"noEmit": true,
+		"allowImportingTsExtensions": true
 	}
 }
