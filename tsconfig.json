@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"target": "ESNext",
-		"module": "ESNext",
+		"module": "NodeNext",
 		"moduleResolution": "NodeNext",
 		"strict": true,
 		"removeComments": true,
@@ -13,5 +13,6 @@
 		"noUnusedParameters": true,
 		"noEmit": true,
 		"allowImportingTsExtensions": true
-	}
+	},
+	"include": ["./src/**/*.ts"]
 }

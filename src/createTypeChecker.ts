@@ -33,93 +33,76 @@ const { entries, defineProperties } = Object as {
 	) => P & T;
 };
 
-export function createTypeChecker<T extends string, N extends string = string>(
-	type: N,
+export function createTypeChecker<T extends string>(
 	definition: RegExp,
-): TypeChecker<T, N, RegExp>;
-export function createTypeChecker<T, N extends string = string>(
-	type: N,
+): TypeChecker<T, RegExp>;
+export function createTypeChecker<T>(
 	definition: DefinitionEnum<T>,
-): TypeChecker<T, N, DefinitionEnum<T>>;
-export function createTypeChecker<T, N extends string = string>(
-	type: N,
+): TypeChecker<T, DefinitionEnum<T>>;
+export function createTypeChecker<T>(
 	definition: DefinitionCandidates<T>,
-): TypeChecker<T, N, DefinitionCandidates<T>>;
-export function createTypeChecker<T, N extends string = string>(
-	type: N,
+): TypeChecker<T, DefinitionCandidates<T>>;
+export function createTypeChecker<T>(
 	definition: DefinitionConditions<T>,
-): TypeChecker<T, N, DefinitionConditions<T>>;
-export function createTypeChecker<T, N extends string = string>(
-	type: N,
+): TypeChecker<T, DefinitionConditions<T>>;
+export function createTypeChecker<T>(
 	definition: TypeGuard<T>,
-): TypeChecker<T, N, TypeGuard<T>>;
-export function createTypeChecker<T, N extends string = string>(
-	type: N,
+): TypeChecker<T, TypeGuard<T>>;
+export function createTypeChecker<T>(
 	definition: DefinitionObject<T>,
-): TypeChecker<T, N, DefinitionObject<T>>;
+): TypeChecker<T, DefinitionObject<T>>;
 // eslint-disable-next-line max-lines-per-function
-export function createTypeChecker<
-	T,
-	N extends string = string,
-	D extends Definition<T> = Definition<T>,
->(type: N, definition: D): TypeChecker<T, N, D> {
-	if (!type) {
-		throw new ModuleError({ code: "NoTypeName", data: { type, definition } });
-	}
+export function createTypeChecker<T, D extends Definition<T> = Definition<T>>(
+	definition: D,
+): TypeChecker<T, D> {
 	if (is$TypeChecker(definition)) {
 		throw new ModuleError({
 			code: "UselessWrapping",
-			message: `UselessWrapping: ${type}(${definition.name})`,
-			data: { type, definition },
+			message: `UselessWrapping: (${definition.name})`,
+			data: definition,
 		});
 	}
 	const typeChecker = defineProperties(
 		(input: unknown): input is T => testValue<T>(input, definition),
 		{
-			type: { value: type },
-			name: { value: `is${type}` },
 			array: {
 				get: cacheResult(() => {
-					const checker = createTypeChecker<Array<T>, `Array<${N}>`>(
-						`Array<${type}>`,
-						(input: unknown): input is Array<T> => {
-							return (
-								is$Array(input) && input.every((item) => typeChecker(item))
-							);
-						},
+					const checker = createTypeChecker<Array<T>>(
+						(input: unknown): input is Array<T> =>
+							is$Array(input) && input.every((item) => typeChecker(item)),
 					);
+					defineProperties(checker, {
+						derived: { get: () => ["array", definition] },
+					});
 					arrayDefinitionStore.set(checker, definition);
 					return checker;
 				}),
 			},
 			optional: {
 				get: cacheResult(() => {
-					const checker = createTypeChecker<T | undefined, `${N}?`>(
-						`${type}?`,
-						(input: unknown): input is T | undefined => {
-							return input === undefined || typeChecker(input);
-						},
+					const checker = createTypeChecker<T | undefined>(
+						(input: unknown): input is T | undefined =>
+							input === undefined || typeChecker(input),
 					);
+					defineProperties(checker, {
+						derived: { get: () => ["optional", definition] },
+					});
 					optionalDefinitionStore.set(checker, definition);
 					return checker;
 				}),
 			},
 			dictionary: {
 				get: cacheResult(() => {
-					const checker = createTypeChecker<
-						Record<string, T>,
-						`Record<string, ${N}>`
-					>(
-						`Record<string, ${type}>`,
-						(input: unknown): input is Record<string, T> => {
-							return (
-								is$Object(input) &&
-								entries(input).every(
-									([key, value]) => is$String(key) && typeChecker(value),
-								)
-							);
-						},
+					const checker = createTypeChecker<Record<string, T>>(
+						(input: unknown): input is Record<string, T> =>
+							is$Object(input) &&
+							entries(input).every(
+								([key, value]) => is$String(key) && typeChecker(value),
+							),
 					);
+					defineProperties(checker, {
+						derived: { get: () => ["dictionary", definition] },
+					});
 					dictionaryDefinitionStore.set(checker, definition);
 					return checker;
 				}),

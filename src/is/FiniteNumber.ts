@@ -3,6 +3,5 @@ import type { TypeChecker, TypeGuard } from "../generics.ts";
 
 export const isFiniteNumber: TypeChecker<
 	number,
-	"FiniteNumber",
 	TypeGuard<number>
-> = createTypeChecker("FiniteNumber", Number.isFinite as TypeGuard<number>);
+> = createTypeChecker(Number.isFinite as TypeGuard<number>);

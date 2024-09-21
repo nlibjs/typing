@@ -4,6 +4,5 @@ import { is$Array } from "../primitive.private.ts";
 
 export const isArray: TypeChecker<
 	unknown[],
-	"Array",
 	TypeGuard<unknown[]>
-> = createTypeChecker("Array", is$Array);
+> = createTypeChecker(is$Array);

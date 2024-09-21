@@ -4,6 +4,5 @@ import { is$Object } from "../primitive.private.ts";
 
 export const isObject: TypeChecker<
 	Record<string, unknown>,
-	"Object",
 	TypeGuard<Record<string, unknown>>
-> = createTypeChecker("Object", is$Object);
+> = createTypeChecker(is$Object);

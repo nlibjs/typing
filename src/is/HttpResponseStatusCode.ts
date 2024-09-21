@@ -69,9 +69,7 @@ export const HttpStatusCode = {
 export type HttpResponseStatusCode = ValueOf<typeof HttpStatusCode>;
 export const isHttpResponseStatusCode: TypeChecker<
 	HttpResponseStatusCode,
-	string,
 	DefinitionEnum<HttpResponseStatusCode>
 > = createTypeChecker<HttpResponseStatusCode>(
-	"HttpResponseStatusCode",
 	definition.enum(...Object.values(HttpStatusCode)),
 );

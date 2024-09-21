@@ -7,9 +7,8 @@ export type Ipv4Address = Nominal<string, "Ipv4Address">;
 
 export const isIpv4Address: TypeChecker<
 	Ipv4Address,
-	"Ipv4Address",
 	TypeGuard<Ipv4Address>
-> = createTypeChecker("Ipv4Address", (input: unknown): input is Ipv4Address => {
+> = createTypeChecker((input: unknown): input is Ipv4Address => {
 	if (isString(input)) {
 		try {
 			const result = parseIpv4Address(input);
