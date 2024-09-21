@@ -1,6 +1,6 @@
 {
 	"name": "@nlib/typing",
 	"description": "A tool for generating and managing TypeScript type definitions efficiently.",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"exports": "./src/mod.ts"
 }

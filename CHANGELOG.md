@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.0.1 (2024-09-21)
+
+### Continuous Integration
+
+- split ci jobs ([af859fe](https://github.com/nlibjs/typing/commit/af859fe2b7c0e8d2a134dbe96bfebb3e021c1199))
+
+
 ## v2.0.0 (2024-09-21)
 
 ### Breaking Changes
