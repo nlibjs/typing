@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.0.3 (2024-09-21)
+
+### Bug Fixes
+
+- update mod.ts ([6c64214](https://github.com/nlibjs/typing/commit/6c642145fd4b6ccbefb0b8fbc24dd1338cb85268))
+
+
 ## v2.0.2 (2024-09-21)
 
 ### Features
