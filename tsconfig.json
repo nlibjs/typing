@@ -11,9 +11,6 @@
 		"noFallthroughCasesInSwitch": true,
 		"noImplicitReturns": true,
 		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"incremental": true,
-		"outDir": "esm"
-	},
-	"include": ["./src/**/*.mts"]
+		"noUnusedParameters": true
+	}
 }

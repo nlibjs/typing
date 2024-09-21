@@ -24,20 +24,19 @@
 		"!**/*.test.*"
 	],
 	"scripts": {
-		"test": "run-s build test:esm test:cjs",
-		"test:esm": "node --test esm/",
-		"test:cjs": "node --test cjs/",
+		"test": "tsm-test src",
 		"lint": "biome lint",
 		"build": "run-s build:*",
 		"build:index": "npx @nlib/indexen --output src/index.mts \"./**/*.mts\"",
-		"build:esm": "tsc",
+		"build:esm": "tsc --project tsconfig.esm.json",
 		"build:cjs": "run-s build:cjs:*",
 		"build:cjs:tsc": "tsc --project tsconfig.cjs.json",
-		"build:cjs:rename": "node rename-cjs.mjs",
+		"build:cjs:rename": "node --import=@nlib/tsm cli-rename-cjs.mts",
 		"version": "npx @nlib/changelog --output CHANGELOG.md && git add CHANGELOG.md"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.2",
+		"@nlib/tsm": "1.0.0",
 		"@types/node": "22.5.5",
 		"npm-run-all": "4.1.5",
 		"typescript": "5.4.5"
