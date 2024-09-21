@@ -1,10 +1,14 @@
 import { createTypeChecker } from "../createTypeChecker.ts";
-import type { Nominal } from "../generics.ts";
+import type { Nominal, TypeChecker, TypeGuard } from "../generics.ts";
 import { isString } from "./String.ts";
 import { isUrlHostString } from "./UrlHostString.ts";
 
 export type HttpsUrlString = Nominal<string, "HttpsUrlString">;
-export const isHttpsUrlString = createTypeChecker(
+export const isHttpsUrlString: TypeChecker<
+	HttpsUrlString,
+	"HttpsUrlString",
+	TypeGuard<HttpsUrlString>
+> = createTypeChecker(
 	"HttpsUrlString",
 	(input: unknown): input is HttpsUrlString => {
 		if (isString(input) && input.startsWith("https://")) {

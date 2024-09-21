@@ -1,12 +1,16 @@
 import { createTypeChecker } from "../createTypeChecker.ts";
-import type { Nominal } from "../generics.ts";
+import type { Nominal, TypeChecker, TypeGuard } from "../generics.ts";
 import { isDomainName } from "./DomainName.ts";
 import { isEmailAddressLocalPart } from "./EmailAddressLocalPart.ts";
 import { isString } from "./String.ts";
 
 export type EmailAddress = Nominal<string, "EmailAddress">;
 
-export const isEmailAddress = createTypeChecker(
+export const isEmailAddress: TypeChecker<
+	EmailAddress,
+	"EmailAddress",
+	TypeGuard<EmailAddress>
+> = createTypeChecker(
 	"EmailAddress",
 	(input: unknown): input is EmailAddress => {
 		if (!isString(input)) {

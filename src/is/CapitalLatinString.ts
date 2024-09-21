@@ -1,9 +1,13 @@
 import { createTypeChecker } from "../createTypeChecker.ts";
-import type { Nominal } from "../generics.ts";
+import type { Nominal, TypeChecker } from "../generics.ts";
 
 export const CapitalLatinCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 export type CapitalLatinString = Nominal<string, "CapitalLatinString">;
-export const isCapitalLatinString = createTypeChecker<
+export const isCapitalLatinString: TypeChecker<
 	CapitalLatinString,
-	"CapitalLatinString"
->("CapitalLatinString", new RegExp(`^[${CapitalLatinCharacters}]*$`));
+	"CapitalLatinString",
+	RegExp
+> = createTypeChecker<CapitalLatinString, "CapitalLatinString">(
+	"CapitalLatinString",
+	new RegExp(`^[${CapitalLatinCharacters}]*$`),
+);

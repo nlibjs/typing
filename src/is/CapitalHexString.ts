@@ -1,8 +1,12 @@
 import { createTypeChecker } from "../createTypeChecker.ts";
-import type { Nominal } from "../generics.ts";
+import type { Nominal, TypeChecker } from "../generics.ts";
 
 export type CapitalHexString = Nominal<string, "CapitalHexString">;
-export const isCapitalHexString = createTypeChecker<
+export const isCapitalHexString: TypeChecker<
 	CapitalHexString,
-	"CapitalHexString"
->("CapitalHexString", /^[0-9A-F]*$/);
+	"CapitalHexString",
+	RegExp
+> = createTypeChecker<CapitalHexString, "CapitalHexString">(
+	"CapitalHexString",
+	/^[0-9A-F]*$/,
+);

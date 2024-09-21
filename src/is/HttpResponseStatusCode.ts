@@ -1,6 +1,6 @@
 import { createTypeChecker } from "../createTypeChecker.ts";
 import { definition } from "../definition.ts";
-import type { ValueOf } from "../generics.ts";
+import type { DefinitionEnum, TypeChecker, ValueOf } from "../generics.ts";
 
 export const HttpStatusCode = {
 	Continue: 100,
@@ -67,8 +67,11 @@ export const HttpStatusCode = {
 	NetworkAuthenticationRequired: 511,
 } as const;
 export type HttpResponseStatusCode = ValueOf<typeof HttpStatusCode>;
-export const isHttpResponseStatusCode =
-	createTypeChecker<HttpResponseStatusCode>(
-		"HttpResponseStatusCode",
-		definition.enum(...Object.values(HttpStatusCode)),
-	);
+export const isHttpResponseStatusCode: TypeChecker<
+	HttpResponseStatusCode,
+	string,
+	DefinitionEnum<HttpResponseStatusCode>
+> = createTypeChecker<HttpResponseStatusCode>(
+	"HttpResponseStatusCode",
+	definition.enum(...Object.values(HttpStatusCode)),
+);

@@ -1,7 +1,8 @@
 import { createTypeChecker } from "../createTypeChecker.ts";
-import type { TypeGuard } from "../generics.ts";
+import type { TypeChecker, TypeGuard } from "../generics.ts";
 
-export const isFiniteNumber = createTypeChecker(
+export const isFiniteNumber: TypeChecker<
+	number,
 	"FiniteNumber",
-	Number.isFinite as TypeGuard<number>,
-);
+	TypeGuard<number>
+> = createTypeChecker("FiniteNumber", Number.isFinite as TypeGuard<number>);

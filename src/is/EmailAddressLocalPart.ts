@@ -26,6 +26,7 @@ import {
 	listCodePoints,
 } from "../codePoints.ts";
 import { isString } from "./String.ts";
+import type { TypeChecker, TypeGuard } from "../generics.ts";
 
 /**
  * https://www.rfc-editor.org/rfc/rfc5322.html#section-3.4.1
@@ -63,7 +64,11 @@ const isAtomText = (codePoint: number): boolean =>
 	isDigitCodePoint(codePoint) ||
 	allowedNonAlphaNumerics.has(codePoint);
 
-export const isEmailAddressLocalPart = createTypeChecker(
+export const isEmailAddressLocalPart: TypeChecker<
+	string,
+	"EmailAddressLocalPart",
+	TypeGuard<string>
+> = createTypeChecker(
 	"EmailAddressLocalPart",
 	(input: unknown): input is string => {
 		if (!isString(input)) {

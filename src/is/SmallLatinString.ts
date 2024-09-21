@@ -1,9 +1,13 @@
 import { createTypeChecker } from "../createTypeChecker.ts";
-import type { Nominal } from "../generics.ts";
+import type { Nominal, TypeChecker } from "../generics.ts";
 
 export const SmallLatinCharacters = "abcdefghijklmnopqrstuvwxyz";
 export type SmallLatinString = Nominal<string, "SmallLatinString">;
-export const isSmallLatinString = createTypeChecker<
+export const isSmallLatinString: TypeChecker<
 	SmallLatinString,
-	"SmallLatinString"
->("SmallLatinString", /^[a-z]*$/);
+	"SmallLatinString",
+	RegExp
+> = createTypeChecker<SmallLatinString, "SmallLatinString">(
+	"SmallLatinString",
+	/^[a-z]*$/,
+);

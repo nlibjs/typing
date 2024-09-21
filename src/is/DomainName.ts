@@ -6,7 +6,7 @@ import {
 	listCodePoints,
 } from "../codePoints.ts";
 import { createTypeChecker } from "../createTypeChecker.ts";
-import type { Nominal } from "../generics.ts";
+import type { Nominal, TypeChecker, TypeGuard } from "../generics.ts";
 import { isString } from "./String.ts";
 
 /**
@@ -20,33 +20,34 @@ import { isString } from "./String.ts";
  */
 export type DomainName = Nominal<string, "DomainName">;
 
-export const isDomainName = createTypeChecker(
+export const isDomainName: TypeChecker<
+	DomainName,
 	"Domain",
-	(input: unknown): input is DomainName => {
-		if (!isString(input)) {
-			return false;
-		}
-		/** Initial value is hyphen to return false for .example.com */
-		let lastCodePoint = HYPHEN_MINUS;
-		let currentLabelIsValid = false;
-		let labelCount = 1;
-		for (const codePoint of listCodePoints(input)) {
-			if (codePoint === FULL_STOP) {
-				if (!currentLabelIsValid || lastCodePoint === HYPHEN_MINUS) {
-					return false;
-				}
-				currentLabelIsValid = false;
-				labelCount += 1;
-			} else if (isSmallLatinCodePoint(codePoint)) {
-				currentLabelIsValid = true;
-			} else if (codePoint !== HYPHEN_MINUS && !isDigitCodePoint(codePoint)) {
+	TypeGuard<DomainName>
+> = createTypeChecker("Domain", (input: unknown): input is DomainName => {
+	if (!isString(input)) {
+		return false;
+	}
+	/** Initial value is hyphen to return false for .example.com */
+	let lastCodePoint = HYPHEN_MINUS;
+	let currentLabelIsValid = false;
+	let labelCount = 1;
+	for (const codePoint of listCodePoints(input)) {
+		if (codePoint === FULL_STOP) {
+			if (!currentLabelIsValid || lastCodePoint === HYPHEN_MINUS) {
 				return false;
 			}
-			lastCodePoint = codePoint;
-		}
-		if (lastCodePoint === FULL_STOP || lastCodePoint === HYPHEN_MINUS) {
+			currentLabelIsValid = false;
+			labelCount += 1;
+		} else if (isSmallLatinCodePoint(codePoint)) {
+			currentLabelIsValid = true;
+		} else if (codePoint !== HYPHEN_MINUS && !isDigitCodePoint(codePoint)) {
 			return false;
 		}
-		return 1 < labelCount;
-	},
-);
+		lastCodePoint = codePoint;
+	}
+	if (lastCodePoint === FULL_STOP || lastCodePoint === HYPHEN_MINUS) {
+		return false;
+	}
+	return 1 < labelCount;
+});
