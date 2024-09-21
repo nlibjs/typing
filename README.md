@@ -4,6 +4,7 @@ TypeScript utilities
 
 [![test](https://github.com/nlibjs/typing/actions/workflows/test.yml/badge.svg)](https://github.com/nlibjs/typing/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/nlibjs/typing/graph/badge.svg?token=msEnyrNAzF)](https://codecov.io/gh/nlibjs/typing)
+[![JSR](https://jsr.io/badges/@nlib/typing)](https://jsr.io/@nlib/typing)
 
 ```typescript
 import {
