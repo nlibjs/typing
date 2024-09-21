@@ -1,5 +1,32 @@
 # Changelog
 
+## v2.0.0 (2024-09-21)
+
+### Breaking Changes
+
+- delete some string checkers ([aad6ee1](https://github.com/nlibjs/typing/commit/aad6ee1ff44c9bc640114e6962e33492349c7776))
+- delete the first argument of createTypeChecker ([3155873](https://github.com/nlibjs/typing/commit/3155873a8fba43f69a0c7d90679f1cc39b69b667))
+
+### Tests
+
+- add test:type ([1b68a98](https://github.com/nlibjs/typing/commit/1b68a981b0e7387ec9da20ea5e3e81b9f69392ec))
+
+### Styles
+
+- type explicitly ([282f9f2](https://github.com/nlibjs/typing/commit/282f9f2cd524f303f900890113d1ae14e881fd97))
+
+### Documentation
+
+- add a doc for module ([a3f1f5d](https://github.com/nlibjs/typing/commit/a3f1f5d6aed04a77ada15e300e6f94051dff213f))
+- add a badge ([60e0338](https://github.com/nlibjs/typing/commit/60e0338420e516d8b3091aacbb2b30d926a1162b))
+- update the sample code ([b725a59](https://github.com/nlibjs/typing/commit/b725a59406ed84304da78f026fe61ad4677934e2))
+
+### Continuous Integration
+
+- add --provenance ([1df7952](https://github.com/nlibjs/typing/commit/1df7952a1539878e039784fe8d5ab61ecb874e83))
+- add TestPublish job ([4549422](https://github.com/nlibjs/typing/commit/45494227aee121c2a47dde80901a2b1b262925bb))
+
+
 ## v1.1.1 (2024-09-21)
 
 ### Features
