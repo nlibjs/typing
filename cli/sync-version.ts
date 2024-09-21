@@ -1,6 +1,6 @@
 import * as fs from "node:fs/promises";
-import { ensure } from "./src/ensure.ts";
-import { isString } from "./src/is/String.ts";
+import { ensure } from "../src/ensure.ts";
+import { isString } from "../src/is/String.ts";
 
 const hasNameAndVersion = {
 	name: isString,
