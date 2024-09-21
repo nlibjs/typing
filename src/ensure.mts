@@ -174,17 +174,15 @@ const getTypeCheckerDefinitionError = (
 	if (definition) {
 		if (is$Array(input)) {
 			return checkArrayDefinitionError(input, definition, path);
-		} else {
-			return { input, definition, path, message: "The input is not an array." };
 		}
+		return { input, definition, path, message: "The input is not an array." };
 	}
 	definition = optionalDefinitionStore.get(typeChecker);
 	if (definition) {
 		if (input === undefined) {
 			return null;
-		} else {
-			return getTypeError(input, definition, path);
 		}
+		return getTypeError(input, definition, path);
 	}
 	return getTypeError(input, typeChecker.definition, path);
 };

@@ -1,12 +1,9 @@
 import { createTypeChecker } from "../createTypeChecker.mjs";
-
-const {
-	prototype: { toString },
-} = Object;
+import { getType } from "../getType.mjs";
 
 const isDate = createTypeChecker(
 	"Date",
-	(input: unknown): input is Date => toString.call(input) === "[object Date]",
+	(input: unknown): input is Date => getType(input) === "Date",
 );
 
 export const isValidDate = createTypeChecker(

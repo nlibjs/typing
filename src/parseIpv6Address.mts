@@ -117,9 +117,8 @@ export const parseIpv6Address = (
 				throw new Error(
 					`DuplicatedCompressor: ${input.slice(start, group.end)}`,
 				);
-			} else {
-				compressorIndex = groups.length;
 			}
+			compressorIndex = groups.length;
 		} else {
 			end = group.end;
 			const length = groups.push(value);
@@ -130,7 +129,8 @@ export const parseIpv6Address = (
 					start,
 					end,
 				};
-			} else if (length === 8) {
+			}
+			if (length === 8) {
 				return {
 					groups: groups as Ipv6AddressGroups,
 					start,

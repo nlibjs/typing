@@ -12,9 +12,7 @@ export type KeyValuePair<T, K extends keyof T = Extract<keyof T, string>> = [
 	K,
 	T[K],
 ];
-export interface Callable<Return = unknown> {
-	(...args: Array<unknown>): Return;
-}
+export type Callable<Return = unknown> = (...args: Array<unknown>) => Return;
 export type RequiredKeys<T> = {
 	[P in keyof T]: undefined extends T[P] ? never : P;
 }[keyof T];
