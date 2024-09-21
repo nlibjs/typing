@@ -4,7 +4,7 @@ import { isString } from "./String.ts";
 
 export type UUID = Nominal<string, "UUID">;
 export const UUIDRegExp =
-	/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+	/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export const isUUID: TypeChecker<UUID, TypeGuard<UUID>> = createTypeChecker(
 	function is$UUID(input: unknown): input is UUID {

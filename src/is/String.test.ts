@@ -6,7 +6,9 @@ import { isString } from "./String.ts";
 for (const { key, input, expected } of listCheckerTests(
 	"EmptyString",
 	"NonEmptyString",
-	"UUID",
+	"UUIDLowercase",
+	"UUIDUppercase",
+	"UUIDMixedcase",
 	"NonUUID",
 	"Localhost",
 	"ExampleDotCom",
