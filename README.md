@@ -14,7 +14,7 @@ import {
 } from '@nlib/typing';
 
 /** createTypeChecker defines a schema */
-const isMyObject = createTypeChecker('MyObject', {
+const isMyObject = createTypeChecker({
   id: isString,
   name: isString,
   age: isNonNegativeSafeInteger,
@@ -44,14 +44,14 @@ const dictionary = {
 };
 isMyObject.dictionary(dictionary); // → true
 
-const isMyObject2 = createTypeChecker('MyObject', {
+const isMyObject2 = createTypeChecker({
   title: isString,
   /** object is {id: string, name: string, age: number} | undefined */
   object: isMyObject.optional,
 });
 
 /** You can extend an existing schema */
-const isExtendedMyObject = createTypeChecker('ExtendedMyObject', {
+const isExtendedMyObject = createTypeChecker({
   ...isMyObject.definition,
   description: isString,
 });
