@@ -1,5 +1,21 @@
 # Changelog
 
+## v2.0.2 (2024-09-21)
+
+### Features
+
+- add isUUIDUppercase ([ee2efb6](https://github.com/nlibjs/typing/commit/ee2efb6639f001cc684731e8421b99e32b0a1692))
+- add isUUIDLowercase ([96cde9a](https://github.com/nlibjs/typing/commit/96cde9ac2c0226bb15c977447393b297095f2417))
+
+### Bug Fixes
+
+- isUUID allows mixed cases ([64abb92](https://github.com/nlibjs/typing/commit/64abb92ae24d9f1426c7c7db2ba04f4456014ccc))
+
+### Continuous Integration
+
+- add write access to the id-token permission ([1462b89](https://github.com/nlibjs/typing/commit/1462b8917db2a0e82bdd9d6b33d5c46117ab2c9e))
+
+
 ## v2.0.1 (2024-09-21)
 
 ### Continuous Integration
