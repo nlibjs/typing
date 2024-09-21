@@ -1,14 +1,14 @@
-import { test } from 'node:test';
-import * as assert from 'node:assert';
-import { listCheckerTests } from './tests.private.mjs';
-import { isPositiveSafeInteger } from './PositiveSafeInteger.mjs';
+import { test } from "node:test";
+import * as assert from "node:assert";
+import { listCheckerTests } from "./tests.private.mjs";
+import { isPositiveSafeInteger } from "./PositiveSafeInteger.mjs";
 
 for (const { key, input, expected } of listCheckerTests(
-  'PositiveInteger',
-  'HttpResponseStatusCodeOk',
-  'HttpResponseStatusCodeNotFound',
+	"PositiveInteger",
+	"HttpResponseStatusCodeOk",
+	"HttpResponseStatusCodeNotFound",
 )) {
-  test(`${key} → ${expected}`, () => {
-    assert.equal(isPositiveSafeInteger(input), expected);
-  });
+	test(`${key} → ${expected}`, () => {
+		assert.equal(isPositiveSafeInteger(input), expected);
+	});
 }

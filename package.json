@@ -1,84 +1,49 @@
 {
-  "name": "@nlib/typing",
-  "publishConfig": {
-    "access": "public"
-  },
-  "version": "1.1.0",
-  "license": "Apache-2.0",
-  "author": {
-    "name": "Kei Ito",
-    "email": "kei.itof@gmail.com",
-    "url": "https://gojabako.zone"
-  },
-  "homepage": "https://github.com/nlibjs/typing",
-  "repository": "https://github.com/nlibjs/typing",
-  "type": "module",
-  "main": "./esm/index.mjs",
-  "exports": {
-    "import": "./esm/index.mjs",
-    "require": "./cjs/index.cjs"
-  },
-  "files": [
-    "cjs",
-    "esm",
-    "!**/*.test.*"
-  ],
-  "scripts": {
-    "test": "run-s build test:esm test:cjs",
-    "test:esm": "node --test esm/",
-    "test:cjs": "node --test cjs/",
-    "lint": "eslint src",
-    "build": "run-s build:*",
-    "build:index": "npx @nlib/indexen --output src/index.mts \"./**/*.mts\"",
-    "build:esm": "tsc",
-    "build:cjs": "run-s build:cjs:*",
-    "build:cjs:tsc": "tsc --project tsconfig.cjs.json",
-    "build:cjs:rename": "node rename-cjs.mjs",
-    "version": "npx @nlib/changelog --output CHANGELOG.md && git add CHANGELOG.md"
-  },
-  "devDependencies": {
-    "@nlib/changelog": "0.3.1",
-    "@nlib/eslint-config": "3.20.2",
-    "@nlib/githooks": "0.2.0",
-    "@nlib/indexen": "0.2.9",
-    "@nlib/lint-commit": "1.0.1",
-    "eslint": "8.57.1",
-    "eslint-plugin-jest": "27.9.0",
-    "lint-staged": "14.0.1",
-    "npm-run-all": "4.1.5",
-    "prettier": "3.3.3",
-    "typescript": "5.4.5"
-  },
-  "eslintConfig": {
-    "extends": [
-      "@nlib/eslint-config"
-    ],
-    "overrides": [
-      {
-        "files": [
-          "src/is/*"
-        ],
-        "rules": {
-          "import/no-relative-parent-imports": "off"
-        }
-      },
-      {
-        "files": [
-          "*.test.mts"
-        ],
-        "rules": {
-          "@typescript-eslint/no-floating-promises": "off"
-        }
-      }
-    ]
-  },
-  "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown",
-    "**/*.*(m|c)+(j|t)s*(x)": "eslint"
-  },
-  "renovate": {
-    "extends": [
-      "github>nlibjs/renovate-config"
-    ]
-  }
+	"name": "@nlib/typing",
+	"publishConfig": {
+		"access": "public"
+	},
+	"version": "1.1.0",
+	"license": "Apache-2.0",
+	"author": {
+		"name": "Kei Ito",
+		"email": "kei.itof@gmail.com",
+		"url": "https://gojabako.zone"
+	},
+	"homepage": "https://github.com/nlibjs/typing",
+	"repository": "https://github.com/nlibjs/typing",
+	"type": "module",
+	"main": "./esm/index.mjs",
+	"exports": {
+		"import": "./esm/index.mjs",
+		"require": "./cjs/index.cjs"
+	},
+	"files": [
+		"cjs",
+		"esm",
+		"!**/*.test.*"
+	],
+	"scripts": {
+		"test": "tsm-test src",
+		"lint": "biome lint",
+		"build": "run-s build:*",
+		"build:index": "npx @nlib/indexen --output src/index.mts \"./**/*.mts\"",
+		"build:esm": "tsc --project tsconfig.esm.json",
+		"build:cjs": "run-s build:cjs:*",
+		"build:cjs:tsc": "tsc --project tsconfig.cjs.json",
+		"build:cjs:rename": "node --import=@nlib/tsm cli-rename-cjs.mts",
+		"version": "npx @nlib/changelog --output CHANGELOG.md && git add CHANGELOG.md"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.9.2",
+		"@nlib/tsm": "1.0.0",
+		"@types/node": "22.5.5",
+		"npm-run-all": "4.1.5",
+		"typescript": "5.6.2"
+	},
+	"renovate": {
+		"extends": [
+			"github>nlibjs/renovate-config"
+		]
+	}
 }

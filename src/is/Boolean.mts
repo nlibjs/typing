@@ -1,6 +1,6 @@
-import { createTypeChecker } from '../createTypeChecker.mjs';
+import { createTypeChecker } from "../createTypeChecker.mjs";
 
 export const isBoolean = createTypeChecker(
-  'Boolean',
-  (input: unknown): input is boolean => typeof input === 'boolean',
+	"Boolean",
+	(input: unknown): input is boolean => typeof input === "boolean",
 );
