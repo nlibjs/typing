@@ -8,8 +8,8 @@ import {
 	LATIN_CAPITAL_LETTER_F,
 	LATIN_SMALL_LETTER_A,
 	listCodePoints,
-} from "./codePoints.mjs";
-import { listIpv4Octets } from "./parseIpv4Address.mjs";
+} from "./codePoints.ts";
+import { listIpv4Octets } from "./parseIpv4Address.ts";
 
 /**
  * https://tools.ietf.org/html/rfc5952

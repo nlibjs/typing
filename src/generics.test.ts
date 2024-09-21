@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import * as assert from "node:assert";
-import { testValue } from "./testValue.mjs";
-import { createTypeChecker } from "./createTypeChecker.mjs";
+import { testValue } from "./testValue.ts";
+import { createTypeChecker } from "./createTypeChecker.ts";
 import type {
 	DefinedType,
 	GuardedType,
@@ -9,11 +9,11 @@ import type {
 	Nominal,
 	TypeGuard,
 	UndefinedAsOptional,
-} from "./generics.mjs";
-import { isPositiveSafeInteger } from "./is/PositiveSafeInteger.mjs";
-import { isString } from "./is/String.mjs";
-import { isNegativeSafeInteger } from "./is/NegativeSafeInteger.mjs";
-import { definition } from "./definition.mjs";
+} from "./generics.ts";
+import { isPositiveSafeInteger } from "./is/PositiveSafeInteger.ts";
+import { isString } from "./is/String.ts";
+import { isNegativeSafeInteger } from "./is/NegativeSafeInteger.ts";
+import { definition } from "./definition.ts";
 
 test("UndefinedAsOptional", () => {
 	interface A1 {

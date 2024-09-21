@@ -3,8 +3,8 @@ import * as assert from "node:assert";
 import {
 	CapitalLatinCharacters,
 	isCapitalLatinString,
-} from "./CapitalLatinString.mjs";
-import { listCheckerTests } from "./tests.private.mjs";
+} from "./CapitalLatinString.ts";
+import { listCheckerTests } from "./tests.private.ts";
 
 test("CapitalLatinCharacters", () => {
 	assert.equal(isCapitalLatinString(CapitalLatinCharacters), true);

@@ -1,11 +1,11 @@
 /* eslint-disable func-style */
-import { cacheResult } from "./cacheResult.private.mjs";
-import { cloneDefinition } from "./cloneDefinition.mjs";
+import { cacheResult } from "./cacheResult.private.ts";
+import { cloneDefinition } from "./cloneDefinition.ts";
 import {
 	arrayDefinitionStore,
 	dictionaryDefinitionStore,
 	optionalDefinitionStore,
-} from "./definition.private.mjs";
+} from "./definition.private.ts";
 import type {
 	Definition,
 	DefinitionCandidates,
@@ -15,15 +15,15 @@ import type {
 	KeyValuePair,
 	TypeChecker,
 	TypeGuard,
-} from "./generics.mjs";
-import { ModuleError } from "./ModuleError.private.mjs";
+} from "./generics.ts";
+import { ModuleError } from "./ModuleError.private.ts";
 import {
 	is$Array,
 	is$Object,
 	is$String,
 	is$TypeChecker,
-} from "./primitive.private.mjs";
-import { testValue } from "./testValue.mjs";
+} from "./primitive.private.ts";
+import { testValue } from "./testValue.ts";
 
 const { entries, defineProperties } = Object as {
 	entries: <T>(object: T) => Array<KeyValuePair<T>>;

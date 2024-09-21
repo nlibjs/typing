@@ -6,16 +6,16 @@ import type {
 	DefinitionObject,
 	TypeChecker,
 	Definition,
-} from "./generics.mjs";
+} from "./generics.ts";
 import {
 	isDefinitionEnum,
 	isDefinitionCandidates,
 	isDefinitionConditions,
 	arrayDefinitionStore,
 	optionalDefinitionStore,
-} from "./definition.private.mjs";
-import { stringifyDefinition } from "./stringifyDefinition.private.mjs";
-import { ModuleError } from "./ModuleError.private.mjs";
+} from "./definition.private.ts";
+import { stringifyDefinition } from "./stringifyDefinition.private.ts";
+import { ModuleError } from "./ModuleError.private.ts";
 import {
 	is$Array,
 	is$Function,
@@ -23,8 +23,8 @@ import {
 	is$RegExp,
 	is$String,
 	is$TypeChecker,
-} from "./primitive.private.mjs";
-import { testValue } from "./testValue.mjs";
+} from "./primitive.private.ts";
+import { testValue } from "./testValue.ts";
 
 export interface CheckErrorFailedResult {
 	path: string;

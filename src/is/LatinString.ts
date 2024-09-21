@@ -1,7 +1,7 @@
-import { createTypeChecker } from "../createTypeChecker.mjs";
-import type { Nominal } from "../generics.mjs";
-import { CapitalLatinCharacters } from "./CapitalLatinString.mjs";
-import { SmallLatinCharacters } from "./SmallLatinString.mjs";
+import { createTypeChecker } from "../createTypeChecker.ts";
+import type { Nominal } from "../generics.ts";
+import { CapitalLatinCharacters } from "./CapitalLatinString.ts";
+import { SmallLatinCharacters } from "./SmallLatinString.ts";
 
 export const LatinCharacters = `${SmallLatinCharacters}${CapitalLatinCharacters}`;
 export type LatinString = Nominal<string, "LatinString">;

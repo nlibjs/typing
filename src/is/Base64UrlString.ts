@@ -1,5 +1,5 @@
-import { createTypeChecker } from "../createTypeChecker.mjs";
-import type { Nominal } from "../generics.mjs";
+import { createTypeChecker } from "../createTypeChecker.ts";
+import type { Nominal } from "../generics.ts";
 
 export type Base64UrlString = Nominal<string, "Base64UrlString">;
 export const isBase64UrlString = createTypeChecker<

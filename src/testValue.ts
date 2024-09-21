@@ -1,14 +1,14 @@
-import type { Definition } from "./generics.mjs";
+import type { Definition } from "./generics.ts";
 import {
 	isDefinitionEnum,
 	isDefinitionCandidates,
 	isDefinitionConditions,
-} from "./definition.private.mjs";
-import { is$Object, is$String, is$RegExp } from "./primitive.private.mjs";
+} from "./definition.private.ts";
+import { is$Object, is$String, is$RegExp } from "./primitive.private.ts";
 
 const keys = Object.keys as <T>(value: T) => Array<keyof T>;
 
-export const testValue = <T,>(
+export const testValue = <T>(
 	input: unknown,
 	definition: Definition<T>,
 ): input is T => {

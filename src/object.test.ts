@@ -1,6 +1,6 @@
 import { describe, test } from "node:test";
 import * as assert from "node:assert";
-import { entries, keys, values } from "./object.mjs";
+import { entries, keys, values } from "./object.ts";
 
 describe(keys.name, () => {
 	test("should return keys of an object", () => {

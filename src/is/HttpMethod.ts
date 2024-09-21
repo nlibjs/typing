@@ -1,5 +1,5 @@
-import { definition } from "../definition.mjs";
-import { createTypeChecker } from "../createTypeChecker.mjs";
+import { definition } from "../definition.ts";
+import { createTypeChecker } from "../createTypeChecker.ts";
 
 export type HttpMethod =
 	| "CONNECT"

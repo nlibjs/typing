@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import * as assert from "node:assert";
-import { listCheckerTests } from "./tests.private.mjs";
-import { isFiniteNumber } from "./FiniteNumber.mjs";
+import { listCheckerTests } from "./tests.private.ts";
+import { isFiniteNumber } from "./FiniteNumber.ts";
 
 for (const { key, input, expected } of listCheckerTests(
 	"NegativeUnsafeInteger",

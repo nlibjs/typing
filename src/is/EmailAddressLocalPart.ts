@@ -1,4 +1,4 @@
-import { createTypeChecker } from "../createTypeChecker.mjs";
+import { createTypeChecker } from "../createTypeChecker.ts";
 import {
 	AMPERSAND,
 	APOSTROPHE,
@@ -24,8 +24,8 @@ import {
 	isSmallLatinCodePoint,
 	isCapitalLatinCodePoint,
 	listCodePoints,
-} from "../codePoints.mjs";
-import { isString } from "./String.mjs";
+} from "../codePoints.ts";
+import { isString } from "./String.ts";
 
 /**
  * https://www.rfc-editor.org/rfc/rfc5322.html#section-3.4.1

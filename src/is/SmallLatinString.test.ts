@@ -1,10 +1,10 @@
 import { test } from "node:test";
 import * as assert from "node:assert";
-import { listCheckerTests } from "./tests.private.mjs";
+import { listCheckerTests } from "./tests.private.ts";
 import {
 	isSmallLatinString,
 	SmallLatinCharacters,
-} from "./SmallLatinString.mjs";
+} from "./SmallLatinString.ts";
 
 test("SmallLatinCharacters", () => {
 	assert.equal(isSmallLatinString(SmallLatinCharacters), true);

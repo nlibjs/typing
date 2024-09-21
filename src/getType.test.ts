@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import * as assert from "node:assert";
-import { getType } from "./getType.mjs";
+import { getType } from "./getType.ts";
 
 const tests: Array<[unknown, string]> = [
 	[null, "Null"],

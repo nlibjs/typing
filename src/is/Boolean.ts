@@ -1,4 +1,4 @@
-import { createTypeChecker } from "../createTypeChecker.mjs";
+import { createTypeChecker } from "../createTypeChecker.ts";
 
 export const isBoolean = createTypeChecker(
 	"Boolean",

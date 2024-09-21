@@ -1,10 +1,10 @@
 import { test } from "node:test";
 import * as assert from "node:assert";
-import { definition } from "./definition.mjs";
-import type { Definition } from "./generics.mjs";
-import { isString } from "./is/String.mjs";
-import { isUUID } from "./is/UUID.mjs";
-import { stringifyDefinition } from "./stringifyDefinition.private.mjs";
+import { definition } from "./definition.ts";
+import type { Definition } from "./generics.ts";
+import { isString } from "./is/String.ts";
+import { isUUID } from "./is/UUID.ts";
+import { stringifyDefinition } from "./stringifyDefinition.private.ts";
 
 const isNumber = (input: unknown) => typeof input === "number";
 

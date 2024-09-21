@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import * as assert from "node:assert";
-import { ensure } from "./ensure.mjs";
-import { isString } from "./is/String.mjs";
+import { ensure } from "./ensure.ts";
+import { isString } from "./is/String.ts";
 
 test("throw an error if 3rd is undefined", () => {
 	const regexp = /^Error: TypeCheckError/;

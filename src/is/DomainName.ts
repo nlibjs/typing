@@ -4,10 +4,10 @@ import {
 	isDigitCodePoint,
 	isSmallLatinCodePoint,
 	listCodePoints,
-} from "../codePoints.mjs";
-import { createTypeChecker } from "../createTypeChecker.mjs";
-import type { Nominal } from "../generics.mjs";
-import { isString } from "./String.mjs";
+} from "../codePoints.ts";
+import { createTypeChecker } from "../createTypeChecker.ts";
+import type { Nominal } from "../generics.ts";
+import { isString } from "./String.ts";
 
 /**
  * https://www.rfc-editor.org/rfc/rfc5322.html#section-3.4.1

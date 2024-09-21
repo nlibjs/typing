@@ -1,4 +1,4 @@
-import type { KeyValuePair } from "./generics.mjs";
+import type { KeyValuePair } from "./generics.ts";
 
 interface TypedObject {
 	keys: <T>(objectLike: T) => Array<Extract<keyof T, string>>;

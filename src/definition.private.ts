@@ -2,8 +2,8 @@ import {
 	DefinitionCandidates,
 	DefinitionConditions,
 	DefinitionEnum,
-} from "./generics.mjs";
-import type { Definition, TypeChecker } from "./generics.mjs";
+} from "./generics.ts";
+import type { Definition, TypeChecker } from "./generics.ts";
 
 export const arrayDefinitionStore = new WeakMap<
 	TypeChecker<unknown>,
@@ -18,12 +18,12 @@ export const dictionaryDefinitionStore = new WeakMap<
 	Definition
 >();
 
-export const isDefinitionEnum = <T,>(
+export const isDefinitionEnum = <T>(
 	input: Definition<T>,
 ): input is DefinitionEnum<T> => input instanceof DefinitionEnum;
-export const isDefinitionCandidates = <T,>(
+export const isDefinitionCandidates = <T>(
 	input: Definition<T>,
 ): input is DefinitionCandidates<T> => input instanceof DefinitionCandidates;
-export const isDefinitionConditions = <T,>(
+export const isDefinitionConditions = <T>(
 	input: Definition<T>,
 ): input is DefinitionConditions<T> => input instanceof DefinitionConditions;

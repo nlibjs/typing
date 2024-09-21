@@ -1,8 +1,8 @@
-import { createTypeChecker } from "../createTypeChecker.mjs";
-import type { Nominal } from "../generics.mjs";
-import { isDomainName } from "./DomainName.mjs";
-import { isEmailAddressLocalPart } from "./EmailAddressLocalPart.mjs";
-import { isString } from "./String.mjs";
+import { createTypeChecker } from "../createTypeChecker.ts";
+import type { Nominal } from "../generics.ts";
+import { isDomainName } from "./DomainName.ts";
+import { isEmailAddressLocalPart } from "./EmailAddressLocalPart.ts";
+import { isString } from "./String.ts";
 
 export type EmailAddress = Nominal<string, "EmailAddress">;
 

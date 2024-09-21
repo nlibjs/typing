@@ -1,5 +1,5 @@
-import { createTypeChecker } from "../createTypeChecker.mjs";
-import type { Callable } from "../generics.mjs";
+import { createTypeChecker } from "../createTypeChecker.ts";
+import type { Callable } from "../generics.ts";
 
 export const isFunction = createTypeChecker(
 	"Function",

@@ -1,5 +1,5 @@
-import { createTypeChecker } from "../createTypeChecker.mjs";
-import { isSafeInteger } from "./SafeInteger.mjs";
+import { createTypeChecker } from "../createTypeChecker.ts";
+import { isSafeInteger } from "./SafeInteger.ts";
 
 export const isNegativeSafeInteger = createTypeChecker(
 	"NegativeSafeInteger",

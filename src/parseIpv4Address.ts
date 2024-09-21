@@ -3,7 +3,7 @@ import {
 	DIGIT_ZERO,
 	isDigitCodePoint,
 	listCodePoints,
-} from "./codePoints.mjs";
+} from "./codePoints.ts";
 
 export interface Ipv4AddressOctet {
 	value: number;

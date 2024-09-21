@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import * as assert from "node:assert";
-import { listCheckerTests } from "./tests.private.mjs";
-import { isNonPositiveFiniteNumber } from "./NonPositiveFiniteNumber.mjs";
+import { listCheckerTests } from "./tests.private.ts";
+import { isNonPositiveFiniteNumber } from "./NonPositiveFiniteNumber.ts";
 
 for (const { key, input, expected } of listCheckerTests(
 	"NegativeZero",

@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import * as assert from "node:assert";
-import { listCheckerTests } from "./tests.private.mjs";
-import { isHttpMethod } from "./HttpMethod.mjs";
+import { listCheckerTests } from "./tests.private.ts";
+import { isHttpMethod } from "./HttpMethod.ts";
 
 for (const { key, input, expected } of listCheckerTests(
 	"HttpMethodGet",

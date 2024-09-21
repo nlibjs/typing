@@ -1,9 +1,9 @@
-import { createTypeChecker } from "../createTypeChecker.mjs";
-import type { Nominal } from "../generics.mjs";
-import { isDomainName } from "./DomainName.mjs";
-import { isIpv4Address } from "./Ipv4Address.mjs";
-import { isIpv6Address } from "./Ipv6Address.mjs";
-import { isString } from "./String.mjs";
+import { createTypeChecker } from "../createTypeChecker.ts";
+import type { Nominal } from "../generics.ts";
+import { isDomainName } from "./DomainName.ts";
+import { isIpv4Address } from "./Ipv4Address.ts";
+import { isIpv6Address } from "./Ipv6Address.ts";
+import { isString } from "./String.ts";
 
 export type UrlHostString = Nominal<string, "UrlHostString">;
 

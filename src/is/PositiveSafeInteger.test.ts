@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import * as assert from "node:assert";
-import { listCheckerTests } from "./tests.private.mjs";
-import { isPositiveSafeInteger } from "./PositiveSafeInteger.mjs";
+import { listCheckerTests } from "./tests.private.ts";
+import { isPositiveSafeInteger } from "./PositiveSafeInteger.ts";
 
 for (const { key, input, expected } of listCheckerTests(
 	"PositiveInteger",

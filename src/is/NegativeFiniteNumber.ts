@@ -1,5 +1,5 @@
-import { createTypeChecker } from "../createTypeChecker.mjs";
-import { isFiniteNumber } from "./FiniteNumber.mjs";
+import { createTypeChecker } from "../createTypeChecker.ts";
+import { isFiniteNumber } from "./FiniteNumber.ts";
 
 export const isNegativeFiniteNumber = createTypeChecker(
 	"NegativeFiniteNumber",

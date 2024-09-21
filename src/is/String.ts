@@ -1,4 +1,4 @@
-import { createTypeChecker } from "../createTypeChecker.mjs";
-import { is$String } from "../primitive.private.mjs";
+import { createTypeChecker } from "../createTypeChecker.ts";
+import { is$String } from "../primitive.private.ts";
 
 export const isString = createTypeChecker("String", is$String);

@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import * as assert from "node:assert";
-import { listCheckerTests } from "./tests.private.mjs";
-import { isAlphaNumericString } from "./AlphaNumericString.mjs";
+import { listCheckerTests } from "./tests.private.ts";
+import { isAlphaNumericString } from "./AlphaNumericString.ts";
 
 for (const { key, input, expected } of listCheckerTests(
 	"EmptyString",

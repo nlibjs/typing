@@ -1,5 +1,5 @@
-import { createTypeChecker } from "../createTypeChecker.mjs";
-import type { TypeGuard } from "../generics.mjs";
+import { createTypeChecker } from "../createTypeChecker.ts";
+import type { TypeGuard } from "../generics.ts";
 
 export const isFiniteNumber = createTypeChecker(
 	"FiniteNumber",

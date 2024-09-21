@@ -3,14 +3,14 @@ import {
 	isDefinitionCandidates,
 	isDefinitionConditions,
 	isDefinitionEnum,
-} from "./definition.private.mjs";
+} from "./definition.private.ts";
 import {
 	DefinitionCandidates,
 	DefinitionConditions,
 	DefinitionEnum,
-} from "./generics.mjs";
-import type { DefinitionObject, TypeGuard } from "./generics.mjs";
-import { is$RegExp } from "./primitive.private.mjs";
+} from "./generics.ts";
+import type { DefinitionObject, TypeGuard } from "./generics.ts";
+import { is$RegExp } from "./primitive.private.ts";
 
 export function cloneDefinition(definition: RegExp): RegExp;
 export function cloneDefinition<T>(

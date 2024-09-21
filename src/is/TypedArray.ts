@@ -1,5 +1,5 @@
-import { createTypeChecker } from "../createTypeChecker.mjs";
-import { getType } from "../getType.mjs";
+import { createTypeChecker } from "../createTypeChecker.ts";
+import { getType } from "../getType.ts";
 
 export const isUint8Array = createTypeChecker(
 	"Uint8Array",

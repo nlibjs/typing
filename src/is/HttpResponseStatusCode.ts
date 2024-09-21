@@ -1,6 +1,6 @@
-import { createTypeChecker } from "../createTypeChecker.mjs";
-import { definition } from "../definition.mjs";
-import type { ValueOf } from "../generics.mjs";
+import { createTypeChecker } from "../createTypeChecker.ts";
+import { definition } from "../definition.ts";
+import type { ValueOf } from "../generics.ts";
 
 export const HttpStatusCode = {
 	Continue: 100,

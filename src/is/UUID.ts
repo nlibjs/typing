@@ -1,6 +1,6 @@
-import { createTypeChecker } from "../createTypeChecker.mjs";
-import type { Nominal } from "../generics.mjs";
-import { isString } from "./String.mjs";
+import { createTypeChecker } from "../createTypeChecker.ts";
+import type { Nominal } from "../generics.ts";
+import { isString } from "./String.ts";
 
 export type UUID = Nominal<string, "UUID">;
 export const UUIDRegExp =

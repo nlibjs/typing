@@ -1,4 +1,4 @@
-import { createTypeChecker } from "../createTypeChecker.mjs";
-import { is$Array } from "../primitive.private.mjs";
+import { createTypeChecker } from "../createTypeChecker.ts";
+import { is$Array } from "../primitive.private.ts";
 
 export const isArray = createTypeChecker("Array", is$Array);

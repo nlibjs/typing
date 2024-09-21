@@ -1,11 +1,11 @@
 import { test } from "node:test";
 import * as assert from "node:assert";
-import { isString } from "./is/String.mjs";
-import { createTypeChecker } from "./createTypeChecker.mjs";
-import { definition } from "./definition.mjs";
-import { isNull } from "./is/Null.mjs";
-import { is$String } from "./primitive.private.mjs";
-import { testValue } from "./testValue.mjs";
+import { isString } from "./is/String.ts";
+import { createTypeChecker } from "./createTypeChecker.ts";
+import { definition } from "./definition.ts";
+import { isNull } from "./is/Null.ts";
+import { is$String } from "./primitive.private.ts";
+import { testValue } from "./testValue.ts";
 
 test("Name is required", () => {
 	assert.throws(() => createTypeChecker("", is$String), { code: "NoTypeName" });

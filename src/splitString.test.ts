@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import * as assert from "node:assert";
-import { splitString } from "./splitString.mjs";
+import { splitString } from "./splitString.ts";
 
 test("csv", () => {
 	const input = "a, b c , d,";

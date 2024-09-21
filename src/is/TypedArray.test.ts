@@ -1,6 +1,6 @@
 import { describe, test } from "node:test";
 import * as assert from "node:assert";
-import { listCheckerTests } from "./tests.private.mjs";
+import { listCheckerTests } from "./tests.private.ts";
 import {
 	isBigInt64Array,
 	isBigUint64Array,
@@ -13,7 +13,7 @@ import {
 	isUint32Array,
 	isUint8Array,
 	isUint8ClampedArray,
-} from "./TypedArray.mjs";
+} from "./TypedArray.ts";
 
 describe(isUint8Array.name, () => {
 	for (const { key, input, expected } of listCheckerTests("Uint8Array")) {

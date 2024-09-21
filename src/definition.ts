@@ -1,19 +1,19 @@
 import {
 	isDefinitionCandidates,
 	isDefinitionConditions,
-} from "./definition.private.mjs";
+} from "./definition.private.ts";
 import {
 	DefinitionCandidates,
 	DefinitionConditions,
 	DefinitionEnum,
-} from "./generics.mjs";
-import type { Definition } from "./generics.mjs";
+} from "./generics.ts";
+import type { Definition } from "./generics.ts";
 
 export const definition = {
-	enum: <T,>(...values: Array<T>): DefinitionEnum<T> => {
+	enum: <T>(...values: Array<T>): DefinitionEnum<T> => {
 		return new DefinitionEnum<T>(values);
 	},
-	some: <T,>(...definitions: Array<Definition<T>>): DefinitionCandidates<T> => {
+	some: <T>(...definitions: Array<Definition<T>>): DefinitionCandidates<T> => {
 		const set = new DefinitionCandidates<T>();
 		for (const d1 of definitions) {
 			for (const d2 of isDefinitionCandidates(d1) ? [...d1] : [d1]) {
@@ -22,9 +22,7 @@ export const definition = {
 		}
 		return set;
 	},
-	every: <T,>(
-		...definitions: Array<Definition<T>>
-	): DefinitionConditions<T> => {
+	every: <T>(...definitions: Array<Definition<T>>): DefinitionConditions<T> => {
 		const set = new DefinitionConditions<T>();
 		for (const d1 of definitions) {
 			for (const d2 of isDefinitionConditions(d1) ? [...d1] : [d1]) {

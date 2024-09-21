@@ -9,7 +9,7 @@ import {
 	listCodePoints,
 	SPACE,
 	toSmallLatinCodePoint,
-} from "./codePoints.mjs";
+} from "./codePoints.ts";
 
 describe(toSmallLatinCodePoint.name, () => {
 	const tests: Array<[number, number]> = [

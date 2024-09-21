@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import * as assert from "node:assert";
-import { listCheckerTests } from "./tests.private.mjs";
-import { isObject } from "./Object.mjs";
+import { listCheckerTests } from "./tests.private.ts";
+import { isObject } from "./Object.ts";
 
 for (const { key, input, expected } of listCheckerTests(
 	"EmptyArray",

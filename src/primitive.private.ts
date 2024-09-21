@@ -1,5 +1,5 @@
-import type { TypeGuard, Callable, TypeChecker } from "./generics.mjs";
-import { getType } from "./getType.mjs";
+import type { TypeGuard, Callable, TypeChecker } from "./generics.ts";
+import { getType } from "./getType.ts";
 
 export const is$String = (input: unknown): input is string =>
 	typeof input === "string";

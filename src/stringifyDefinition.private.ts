@@ -1,10 +1,10 @@
-import type { Definition } from "./generics.mjs";
+import type { Definition } from "./generics.ts";
 import {
 	isDefinitionEnum,
 	isDefinitionCandidates,
 	isDefinitionConditions,
-} from "./definition.private.mjs";
-import { is$Function, is$TypeChecker } from "./primitive.private.mjs";
+} from "./definition.private.ts";
+import { is$Function, is$TypeChecker } from "./primitive.private.ts";
 
 const keys = Object.keys as <T>(value: T) => Array<keyof T>;
 

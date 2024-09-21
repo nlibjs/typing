@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import * as assert from "node:assert";
-import type { Ipv4AddressParseResult } from "./parseIpv4Address.mjs";
-import { parseIpv4Address } from "./parseIpv4Address.mjs";
+import type { Ipv4AddressParseResult } from "./parseIpv4Address.ts";
+import { parseIpv4Address } from "./parseIpv4Address.ts";
 
 const validTests: Array<
 	[Parameters<typeof parseIpv4Address>, Ipv4AddressParseResult]

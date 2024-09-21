@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import * as assert from "node:assert";
-import { listCheckerTests } from "./tests.private.mjs";
-import { isEmailAddressLocalPart } from "./EmailAddressLocalPart.mjs";
+import { listCheckerTests } from "./tests.private.ts";
+import { isEmailAddressLocalPart } from "./EmailAddressLocalPart.ts";
 
 for (const { key, input, expected } of listCheckerTests(
 	"NonEmptyString",

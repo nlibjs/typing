@@ -1,7 +1,7 @@
-import { createTypeChecker } from "../createTypeChecker.mjs";
-import type { Nominal } from "../generics.mjs";
-import { isString } from "./String.mjs";
-import { isUrlHostString } from "./UrlHostString.mjs";
+import { createTypeChecker } from "../createTypeChecker.ts";
+import type { Nominal } from "../generics.ts";
+import { isString } from "./String.ts";
+import { isUrlHostString } from "./UrlHostString.ts";
 
 export type HttpsUrlString = Nominal<string, "HttpsUrlString">;
 export const isHttpsUrlString = createTypeChecker(

@@ -1,7 +1,7 @@
-import { createTypeChecker } from "../createTypeChecker.mjs";
-import type { Nominal } from "../generics.mjs";
-import { parseIpv6Address } from "../parseIpv6Address.mjs";
-import { isString } from "./String.mjs";
+import { createTypeChecker } from "../createTypeChecker.ts";
+import type { Nominal } from "../generics.ts";
+import { parseIpv6Address } from "../parseIpv6Address.ts";
+import { isString } from "./String.ts";
 
 export type Ipv6Address = Nominal<string, "Ipv6Address">;
 

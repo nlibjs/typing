@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import * as assert from "node:assert";
-import type { Ipv6AddressParseResult } from "./parseIpv6Address.mjs";
-import { parseIpv6Address } from "./parseIpv6Address.mjs";
+import type { Ipv6AddressParseResult } from "./parseIpv6Address.ts";
+import { parseIpv6Address } from "./parseIpv6Address.ts";
 
 const validTests: Array<
 	[Parameters<typeof parseIpv6Address>, Ipv6AddressParseResult]
