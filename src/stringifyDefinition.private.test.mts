@@ -11,7 +11,7 @@ const isNumber = (input: unknown) => typeof input === "number";
 test("should stringify the function", () => {
 	assert.equal(
 		stringifyDefinition(isNumber),
-		"(input) => typeof input === 'number'",
+		'(input) => typeof input === "number"',
 	);
 });
 
