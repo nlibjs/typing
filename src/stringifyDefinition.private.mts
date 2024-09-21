@@ -8,7 +8,8 @@ import { is$Function, is$TypeChecker } from "./primitive.private.mjs";
 
 const keys = Object.keys as <T>(value: T) => Array<keyof T>;
 
-export const stringifyDefinition = <T,>(
+// biome-ignore lint/complexity/noUselessTypeConstraint: to suppress ts(7060)
+export const stringifyDefinition = <T extends unknown>(
 	definition: Definition<T>,
 	indent = "",
 	ancestors: Array<Definition<T>> = [],
@@ -47,7 +48,8 @@ const stringify = function* (
 	}
 };
 
-const concat = <T,>(
+// biome-ignore lint/complexity/noUselessTypeConstraint: to suppress ts(7060)
+const concat = <T extends unknown>(
 	ancestors: Array<Definition<T>>,
 	definition: Definition<T>,
 ): Array<Definition<T>> => {
@@ -66,9 +68,9 @@ const stringifyIterableDefinitions = function* <T>(
 ): Generator<string> {
 	yield `${indent}${prefix} ${open}\n`;
 	const itemIndent = `${indent}  `;
-	const nextAncestors = concat(ancestors, definitions);
+	const nextAncestors = concat<T>(ancestors, definitions);
 	for (const definition of definitions) {
-		yield `${itemIndent}${stringifyDefinition(
+		yield `${itemIndent}${stringifyDefinition<T>(
 			definition,
 			itemIndent,
 			nextAncestors,
