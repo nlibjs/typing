@@ -1,3 +1,7 @@
+/**
+ * This module provides constants and functions for working with Unicode code points.
+ * @module
+ */
 export const NULL = 0x0000;
 export const START_OF_HEADING = 0x0001;
 export const START_OF_TEXT = 0x0002;
