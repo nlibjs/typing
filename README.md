@@ -1,6 +1,6 @@
 # @nlib/typing
 
-TypeScript utilities
+A tool for generating and managing TypeScript type definitions efficiently.
 
 [![test](https://github.com/nlibjs/typing/actions/workflows/test.yml/badge.svg)](https://github.com/nlibjs/typing/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/nlibjs/typing/graph/badge.svg?token=msEnyrNAzF)](https://codecov.io/gh/nlibjs/typing)

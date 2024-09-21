@@ -5,6 +5,7 @@ import { isString } from "../src/is/String.ts";
 const hasNameAndVersion = {
 	name: isString,
 	version: isString,
+	description: isString,
 };
 
 const packageJsonUrl = new URL("../package.json", import.meta.url);
@@ -19,5 +20,6 @@ const jsrJson = await fs
 
 jsrJson.name = packageJson.name;
 jsrJson.version = packageJson.version;
+jsrJson.description = packageJson.description;
 
 await fs.writeFile(jsrJsonUrl, `${JSON.stringify(jsrJson, null, "\t")}\n`);

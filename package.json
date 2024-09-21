@@ -1,5 +1,6 @@
 {
 	"name": "@nlib/typing",
+	"description": "A tool for generating and managing TypeScript type definitions efficiently.",
 	"publishConfig": {
 		"access": "public"
 	},
