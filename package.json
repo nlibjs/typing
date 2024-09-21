@@ -18,11 +18,7 @@
 		"import": "./esm/mod.js",
 		"require": "./cjs/mod.js"
 	},
-	"files": [
-		"cjs",
-		"esm",
-		"!**/*.test.*"
-	],
+	"files": ["cjs", "esm", "!**/*.test.*"],
 	"scripts": {
 		"test": "run-s test:*",
 		"test:type": "tsc",
@@ -47,8 +43,6 @@
 		"typescript": "5.6.2"
 	},
 	"renovate": {
-		"extends": [
-			"github>nlibjs/renovate-config"
-		]
+		"extends": ["github>nlibjs/renovate-config"]
 	}
 }

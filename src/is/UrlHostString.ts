@@ -9,9 +9,8 @@ export type UrlHostString = Nominal<string, "UrlHostString">;
 
 export const isUrlHostString: TypeChecker<
 	UrlHostString,
-	"Domain",
 	TypeGuard<UrlHostString>
-> = createTypeChecker("Domain", (input: unknown): input is UrlHostString => {
+> = createTypeChecker((input: unknown): input is UrlHostString => {
 	if (!isString(input)) {
 		return false;
 	}

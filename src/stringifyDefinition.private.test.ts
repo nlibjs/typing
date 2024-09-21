@@ -9,14 +9,11 @@ import { stringifyDefinition } from "./stringifyDefinition.private.ts";
 const isNumber = (input: unknown) => typeof input === "number";
 
 test("should stringify the function", () => {
-	assert.equal(
-		stringifyDefinition(isNumber),
-		'(input) => typeof input === "number"',
-	);
+	assert.equal(stringifyDefinition(isNumber), "isNumber");
 });
 
 test("should return the name", () => {
-	assert.equal(stringifyDefinition(isString), "String");
+	assert.equal(stringifyDefinition(isString), "is$String");
 });
 
 test("should stringify enum", () => {
@@ -29,27 +26,29 @@ test("should stringify enum", () => {
 test("should stringify an object definition", () => {
 	assert.equal(
 		stringifyDefinition({ id: isString, name: isString }),
-		["{", "  id: String,", "  name: String,", "}"].join("\n"),
+		["{", "  id: is$String,", "  name: is$String,", "}"].join("\n"),
 	);
 });
 
 test("should stringify dictionary", () => {
 	assert.equal(
 		stringifyDefinition(isString.dictionary),
-		"Record<string, String>",
+		"Record<string, is$String>",
 	);
 });
 
 test("should stringify AND", () => {
 	assert.equal(
-		stringifyDefinition(definition.every({ id: isString }, { id: isUUID })),
+		stringifyDefinition<unknown>(
+			definition.every({ id: isString }, { id: isUUID }),
+		),
 		[
 			"Every {",
 			"  {",
-			"    id: String,",
+			"    id: is$String,",
 			"  },",
 			"  {",
-			"    id: UUID,",
+			"    id: is$UUID,",
 			"  },",
 			"}",
 		].join("\n"),
@@ -58,14 +57,16 @@ test("should stringify AND", () => {
 
 test("should stringify OR", () => {
 	assert.equal(
-		stringifyDefinition(definition.some({ id: isString }, { id: isUUID })),
+		stringifyDefinition<unknown>(
+			definition.some({ id: isString }, { id: isUUID }),
+		),
 		[
 			"Some {",
 			"  {",
-			"    id: String,",
+			"    id: is$String,",
 			"  },",
 			"  {",
-			"    id: UUID,",
+			"    id: is$UUID,",
 			"  },",
 			"}",
 		].join("\n"),
@@ -77,6 +78,6 @@ test("should stringify circular definition", () => {
 	def.key2 = def;
 	assert.equal(
 		stringifyDefinition(def),
-		["{", "  key1: String,", "  key2: (circular),", "}"].join("\n"),
+		["{", "  key1: is$String,", "  key2: (circular),", "}"].join("\n"),
 	);
 });

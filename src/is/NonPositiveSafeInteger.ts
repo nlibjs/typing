@@ -4,9 +4,7 @@ import { isSafeInteger } from "./SafeInteger.ts";
 
 export const isNonPositiveSafeInteger: TypeChecker<
 	number,
-	"NonPositiveSafeInteger",
 	TypeGuard<number>
 > = createTypeChecker(
-	"NonPositiveSafeInteger",
 	(input: unknown): input is number => isSafeInteger(input) && input <= 0,
 );

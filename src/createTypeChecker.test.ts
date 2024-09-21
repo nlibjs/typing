@@ -7,12 +7,8 @@ import { isNull } from "./is/Null.ts";
 import { is$String } from "./primitive.private.ts";
 import { testValue } from "./testValue.ts";
 
-test("Name is required", () => {
-	assert.throws(() => createTypeChecker("", is$String), { code: "NoTypeName" });
-});
-
 test("should create a checker from values", () => {
-	const isEnum = createTypeChecker("Enum", definition.enum(1, 2));
+	const isEnum = createTypeChecker(definition.enum(1, 2));
 	assert.equal(isEnum(1), true);
 	assert.equal(isEnum(2), true);
 	assert.equal(isEnum(3), false);
@@ -35,7 +31,7 @@ test("should create a dictionary checker", () => {
 });
 
 test("should create a OR checker from definitions", () => {
-	const isSome = createTypeChecker("Some", definition.some(isString, isNull));
+	const isSome = createTypeChecker(definition.some(isString, isNull));
 	assert.equal(isSome("1"), true);
 	assert.equal(isSome(null), true);
 	assert.equal(isSome(1), false);
@@ -43,7 +39,6 @@ test("should create a OR checker from definitions", () => {
 
 test("should create a AND checker from definitions", () => {
 	const isEvery = createTypeChecker(
-		"Every",
 		definition.every(isString, (input: unknown): input is string =>
 			`${input}`.includes("a"),
 		),
@@ -54,7 +49,7 @@ test("should create a AND checker from definitions", () => {
 });
 
 test("should create an object checker from definitions", () => {
-	const isObject = createTypeChecker("Object", {
+	const isObject = createTypeChecker({
 		a: isString,
 		b: isNull,
 	});
@@ -64,18 +59,18 @@ test("should create an object checker from definitions", () => {
 });
 
 test("should create a RegExp checker from definitions", () => {
-	const isHexColor = createTypeChecker("HexColor", /^#[0-9a-f]{6}$/);
+	const isHexColor = createTypeChecker(/^#[0-9a-f]{6}$/);
 	assert.equal(isHexColor("#000000"), true);
 	assert.equal(isHexColor("#00000g"), false);
 	assert.equal(isHexColor("#abcdef"), true);
 });
 
 test("cannot clone a checker", () => {
-	assert.throws(() => createTypeChecker("String2", isString));
+	assert.throws(() => createTypeChecker(isString));
 });
 
 test("should exposes its definition", () => {
-	const isFoo = createTypeChecker("Foo", {
+	const isFoo = createTypeChecker({
 		a: is$String,
 		b: is$String,
 	});
@@ -87,7 +82,7 @@ test("should exposes its definition", () => {
 });
 
 test("should clone definition", () => {
-	const isFoo = createTypeChecker("Foo", {
+	const isFoo = createTypeChecker({
 		a: is$String,
 		b: is$String,
 	});
@@ -95,11 +90,11 @@ test("should clone definition", () => {
 });
 
 test("should be able to extend definition", () => {
-	const isFoo = createTypeChecker("Foo", {
+	const isFoo = createTypeChecker({
 		a: is$String,
 		b: is$String,
 	});
-	const isBar = createTypeChecker("Bar", {
+	const isBar = createTypeChecker({
 		...isFoo.definition,
 		c: is$String,
 		d: is$String,

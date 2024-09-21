@@ -66,32 +66,28 @@ const isAtomText = (codePoint: number): boolean =>
 
 export const isEmailAddressLocalPart: TypeChecker<
 	string,
-	"EmailAddressLocalPart",
 	TypeGuard<string>
-> = createTypeChecker(
-	"EmailAddressLocalPart",
-	(input: unknown): input is string => {
-		if (!isString(input)) {
-			return false;
-		}
-		const { length } = input;
-		if (length === 0 || 64 < length) {
-			return false;
-		}
-		let lastCodePoint = FULL_STOP;
-		for (const codePoint of listCodePoints(input)) {
-			if (codePoint === FULL_STOP) {
-				if (lastCodePoint === FULL_STOP) {
-					return false;
-				}
-			} else if (!isAtomText(codePoint)) {
+> = createTypeChecker((input: unknown): input is string => {
+	if (!isString(input)) {
+		return false;
+	}
+	const { length } = input;
+	if (length === 0 || 64 < length) {
+		return false;
+	}
+	let lastCodePoint = FULL_STOP;
+	for (const codePoint of listCodePoints(input)) {
+		if (codePoint === FULL_STOP) {
+			if (lastCodePoint === FULL_STOP) {
 				return false;
 			}
-			lastCodePoint = codePoint;
-		}
-		if (lastCodePoint === FULL_STOP) {
+		} else if (!isAtomText(codePoint)) {
 			return false;
 		}
-		return true;
-	},
-);
+		lastCodePoint = codePoint;
+	}
+	if (lastCodePoint === FULL_STOP) {
+		return false;
+	}
+	return true;
+});

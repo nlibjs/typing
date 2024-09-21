@@ -72,9 +72,7 @@ const getDefinitionEnumError = (
 		input,
 		definition,
 		path,
-		message: `The input (${input}) isn't in enum (${[...definition].join(
-			", ",
-		)}).`,
+		message: `The input (${input}) isn't in enum (${[...definition].join(", ")}).`,
 	};
 };
 
@@ -95,9 +93,7 @@ const getDefinitionCandidatesError = (
 		input,
 		definition,
 		path,
-		message: `The input doesn't pass any tests.\n${errors
-			.map(stringifyError)
-			.join("\n")}`,
+		message: `The input doesn't pass any tests.\n${errors.map(stringifyError).join("\n")}`,
 	};
 };
 
@@ -114,9 +110,7 @@ const getDefinitionConditionsError = (
 				input,
 				definition,
 				path,
-				message: `#${index} definition returned an error.\n${stringifyError(
-					error,
-				)}`,
+				message: `#${index} definition returned an error.\n${stringifyError(error)}`,
 			};
 		}
 		index++;

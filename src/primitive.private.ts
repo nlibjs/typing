@@ -16,13 +16,8 @@ export const is$Object = (input: unknown): input is Record<string, unknown> => {
 export const is$RegExp = (input: unknown): input is RegExp =>
 	getType(input) === "RegExp";
 
-export const is$TypeChecker = <T, N extends string>(
-	input: unknown,
-): input is TypeChecker<T, N> => {
+export const is$TypeChecker = <T>(input: unknown): input is TypeChecker<T> => {
 	return (
-		typeof input === "function" &&
-		is$Object(input) &&
-		is$String(input.type) &&
-		"definition" in input
+		typeof input === "function" && is$Object(input) && "definition" in input
 	);
 };

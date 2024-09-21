@@ -1,4 +1,4 @@
-export const cacheResult = <T,>(fn: () => T): (() => T) => {
+export const cacheResult = <T>(fn: () => T): (() => T) => {
 	let cached: { value: T } | undefined;
 	return () => {
 		if (cached) {

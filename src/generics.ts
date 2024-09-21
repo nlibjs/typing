@@ -70,25 +70,16 @@ export interface Dictionary<T> extends Record<string, T> {}
 export type DefinitionObject<T> = {
 	[K in keyof T]: Definition<T[K]>;
 };
-export interface TypeChecker<
-	T,
-	N extends string = string,
-	D extends Definition<T> = Definition<T>,
-> extends TypeGuard<T> {
-	readonly name: string;
-	readonly type: N;
-	readonly array: TypeChecker<Array<T>, `Array<${N}>`, TypeGuard<Array<T>>>;
-	readonly optional: TypeChecker<
-		T | undefined,
-		`${N}?`,
-		TypeGuard<T | undefined>
-	>;
+export interface TypeChecker<T, D extends Definition<T> = Definition<T>>
+	extends TypeGuard<T> {
+	readonly array: TypeChecker<Array<T>, TypeGuard<Array<T>>>;
+	readonly optional: TypeChecker<T | undefined, TypeGuard<T | undefined>>;
 	readonly dictionary: TypeChecker<
 		Record<string, T>,
-		`Record<string, ${N}>`,
 		TypeGuard<Record<string, T>>
 	>;
 	readonly definition: D;
+	readonly derived?: ["array" | "optional" | "dictionary", Definition<unknown>];
 }
 export class DefinitionEnum<T> extends Set<T> {}
 export class DefinitionCandidates<T> extends Set<Definition<T>> {}

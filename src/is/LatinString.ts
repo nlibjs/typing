@@ -5,8 +5,5 @@ import { SmallLatinCharacters } from "./SmallLatinString.ts";
 
 export const LatinCharacters: string = `${SmallLatinCharacters}${CapitalLatinCharacters}`;
 export type LatinString = Nominal<string, "LatinString">;
-export const isLatinString: TypeChecker<LatinString, "LatinString", RegExp> =
-	createTypeChecker<LatinString, "LatinString">(
-		"LatinString",
-		new RegExp(`^[${LatinCharacters}]*$`),
-	);
+export const isLatinString: TypeChecker<LatinString, RegExp> =
+	createTypeChecker<LatinString>(new RegExp(`^[${LatinCharacters}]*$`));

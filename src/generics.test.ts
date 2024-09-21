@@ -72,7 +72,7 @@ test("DefinedType (optional string)", () => {
 });
 
 test("DefinedType (array of template string)", () => {
-	const isA = createTypeChecker("A", definition.enum<"a">("a"));
+	const isA = createTypeChecker(definition.enum<"a">("a"));
 	const definitions = { a: { value: isA.array } };
 	type D = DefinedType<typeof definitions>;
 	const a: D["a"] = { value: ["a", "a"] };
@@ -81,7 +81,6 @@ test("DefinedType (array of template string)", () => {
 
 test("DefinedType (tuple)", () => {
 	const isA = createTypeChecker(
-		"A",
 		(input: unknown): input is ["a"] =>
 			Array.isArray(input) && input[0] === "a",
 	);

@@ -4,9 +4,7 @@ import { isFiniteNumber } from "./FiniteNumber.ts";
 
 export const isNegativeFiniteNumber: TypeChecker<
 	number,
-	"NegativeFiniteNumber",
 	TypeGuard<number>
 > = createTypeChecker(
-	"NegativeFiniteNumber",
 	(input: unknown): input is number => isFiniteNumber(input) && input < 0,
 );

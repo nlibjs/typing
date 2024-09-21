@@ -14,10 +14,8 @@ export type HttpMethod =
 	| "TRACE";
 export const isHttpMethod: TypeChecker<
 	HttpMethod,
-	string,
 	DefinitionEnum<HttpMethod>
 > = createTypeChecker<HttpMethod>(
-	"HttpMethod",
 	definition.enum<HttpMethod>(
 		"CONNECT",
 		"DELETE",

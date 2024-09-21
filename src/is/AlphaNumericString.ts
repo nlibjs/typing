@@ -5,11 +5,7 @@ import { NumericCharacters } from "./NumberString.ts";
 
 export const AlphaNumericCharacters: string = `${LatinCharacters}${NumericCharacters}`;
 export type AlphaNumericString = Nominal<string, "AlphaNumericString">;
-export const isAlphaNumericString: TypeChecker<
-	AlphaNumericString,
-	"AlphaNumericString",
-	RegExp
-> = createTypeChecker<AlphaNumericString, "AlphaNumericString">(
-	"AlphaNumericString",
-	new RegExp(`^[${AlphaNumericCharacters}]*$`),
-);
+export const isAlphaNumericString: TypeChecker<AlphaNumericString, RegExp> =
+	createTypeChecker<AlphaNumericString>(
+		new RegExp(`^[${AlphaNumericCharacters}]*$`),
+	);

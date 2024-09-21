@@ -8,24 +8,20 @@ export type EmailAddress = Nominal<string, "EmailAddress">;
 
 export const isEmailAddress: TypeChecker<
 	EmailAddress,
-	"EmailAddress",
 	TypeGuard<EmailAddress>
-> = createTypeChecker(
-	"EmailAddress",
-	(input: unknown): input is EmailAddress => {
-		if (!isString(input)) {
-			return false;
-		}
-		if (254 < input.length) {
-			return false;
-		}
-		const atMarkIndex = input.lastIndexOf("@");
-		if (atMarkIndex < 1) {
-			return false;
-		}
-		return (
-			isEmailAddressLocalPart(input.slice(0, atMarkIndex)) &&
-			isDomainName(input.slice(atMarkIndex + 1))
-		);
-	},
-);
+> = createTypeChecker((input: unknown): input is EmailAddress => {
+	if (!isString(input)) {
+		return false;
+	}
+	if (254 < input.length) {
+		return false;
+	}
+	const atMarkIndex = input.lastIndexOf("@");
+	if (atMarkIndex < 1) {
+		return false;
+	}
+	return (
+		isEmailAddressLocalPart(input.slice(0, atMarkIndex)) &&
+		isDomainName(input.slice(atMarkIndex + 1))
+	);
+});
