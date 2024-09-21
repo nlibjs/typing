@@ -1,8 +1,8 @@
 import * as fs from "node:fs/promises";
 import { URL } from "node:url";
-import { listFiles } from "./cli-util.ts";
+import { listFiles } from "./util.ts";
 
-const srcDir = new URL("src/", import.meta.url);
+const srcDir = new URL("../src/", import.meta.url);
 const excludeList = [/\.test\..*$/, /\.private\..*$/];
 
 const lines: Array<string> = [];

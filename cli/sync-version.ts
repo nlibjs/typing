@@ -1,13 +1,14 @@
 import * as fs from "node:fs/promises";
-import { ensure } from "./src/ensure.ts";
-import { isString } from "./src/is/String.ts";
+import { ensure } from "../src/ensure.ts";
+import { isString } from "../src/is/String.ts";
 
 const hasNameAndVersion = {
 	name: isString,
 	version: isString,
+	description: isString,
 };
 
-const packageJsonUrl = new URL("package.json", import.meta.url);
+const packageJsonUrl = new URL("../package.json", import.meta.url);
 const packageJson = await fs
 	.readFile(packageJsonUrl, "utf-8")
 	.then((json) => ensure(JSON.parse(json), hasNameAndVersion));
@@ -19,5 +20,6 @@ const jsrJson = await fs
 
 jsrJson.name = packageJson.name;
 jsrJson.version = packageJson.version;
+jsrJson.description = packageJson.description;
 
 await fs.writeFile(jsrJsonUrl, `${JSON.stringify(jsrJson, null, "\t")}\n`);

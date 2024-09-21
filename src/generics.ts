@@ -26,7 +26,6 @@ export type Merge<A, B> = {
 			? A[K]
 			: never;
 };
-// eslint-disable-next-line @typescript-eslint/ban-types
 export type UndefinedAsOptional<T extends object> =
 	OptionalKeys<T> extends never
 		? { [K in RequiredKeys<T>]: ProcessUndefined<T[K]> }

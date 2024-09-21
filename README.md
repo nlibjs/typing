@@ -1,9 +1,10 @@
 # @nlib/typing
 
-TypeScript utilities
+A tool for generating and managing TypeScript type definitions efficiently.
 
 [![test](https://github.com/nlibjs/typing/actions/workflows/test.yml/badge.svg)](https://github.com/nlibjs/typing/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/nlibjs/typing/graph/badge.svg?token=msEnyrNAzF)](https://codecov.io/gh/nlibjs/typing)
+[![JSR](https://jsr.io/badges/@nlib/typing)](https://jsr.io/@nlib/typing)
 
 ```typescript
 import {
@@ -14,7 +15,7 @@ import {
 } from '@nlib/typing';
 
 /** createTypeChecker defines a schema */
-const isMyObject = createTypeChecker('MyObject', {
+const isMyObject = createTypeChecker({
   id: isString,
   name: isString,
   age: isNonNegativeSafeInteger,
@@ -44,14 +45,14 @@ const dictionary = {
 };
 isMyObject.dictionary(dictionary); // → true
 
-const isMyObject2 = createTypeChecker('MyObject', {
+const isMyObject2 = createTypeChecker({
   title: isString,
   /** object is {id: string, name: string, age: number} | undefined */
   object: isMyObject.optional,
 });
 
 /** You can extend an existing schema */
-const isExtendedMyObject = createTypeChecker('ExtendedMyObject', {
+const isExtendedMyObject = createTypeChecker({
   ...isMyObject.definition,
   description: isString,
 });

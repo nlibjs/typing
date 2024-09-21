@@ -98,7 +98,6 @@ export interface Ipv6AddressParseResult {
 	end: number;
 }
 
-// eslint-disable-next-line max-lines-per-function
 export const parseIpv6Address = (
 	input: string,
 	start = 0,

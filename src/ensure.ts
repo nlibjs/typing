@@ -239,7 +239,6 @@ export function ensure<T, S>(
 	definition: Definition<T>,
 	fallbackValue: S,
 ): S | T;
-// eslint-disable-next-line func-style
 export function ensure<T, S>(
 	input: unknown,
 	definition: Definition<T>,

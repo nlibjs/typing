@@ -1,10 +1,10 @@
-import * as ts from "typescript";
+import ts from "typescript";
 import { URL } from "node:url";
-import { listFiles } from "./cli-util.ts";
+import { listFiles } from "./util.ts";
 import * as fs from "node:fs/promises";
 
-const srcDir = new URL("src/", import.meta.url);
-const tempDir = new URL("temp/", import.meta.url);
+const srcDir = new URL("../src/", import.meta.url);
+const tempDir = new URL("../temp/", import.meta.url);
 const exclude = [/\.test\..*$/];
 
 const walkTsSource = function* (
@@ -51,6 +51,11 @@ const listTsSourceStringLiterals = function* (
 };
 
 await fs.mkdir(tempDir, { recursive: true });
+
+for await (const fileUrl of listFiles(tempDir)) {
+	await fs.unlink(fileUrl);
+}
+
 for await (const fileUrl of listFiles(srcDir, exclude)) {
 	const filePath = fileUrl.pathname.slice(srcDir.pathname.length);
 	if (filePath.endsWith(".ts")) {
