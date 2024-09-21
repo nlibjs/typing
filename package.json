@@ -13,10 +13,10 @@
 	"homepage": "https://github.com/nlibjs/typing",
 	"repository": "https://github.com/nlibjs/typing",
 	"type": "module",
-	"main": "./esm/mod.mjs",
+	"main": "./esm/mod.js",
 	"exports": {
-		"import": "./esm/mod.mjs",
-		"require": "./cjs/mod.cjs"
+		"import": "./esm/mod.js",
+		"require": "./cjs/mod.js"
 	},
 	"files": [
 		"cjs",
