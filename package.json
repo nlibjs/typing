@@ -1,48 +1,43 @@
 {
-  "name": "@nlib/typing",
-  "publishConfig": {
-    "access": "public"
-  },
-  "version": "1.1.0",
-  "license": "Apache-2.0",
-  "author": {
-    "name": "Kei Ito",
-    "email": "kei.itof@gmail.com",
-    "url": "https://gojabako.zone"
-  },
-  "homepage": "https://github.com/nlibjs/typing",
-  "repository": "https://github.com/nlibjs/typing",
-  "type": "module",
-  "main": "./esm/index.mjs",
-  "exports": {
-    "import": "./esm/index.mjs",
-    "require": "./cjs/index.cjs"
-  },
-  "files": [
-    "cjs",
-    "esm",
-    "!**/*.test.*"
-  ],
-  "scripts": {
-    "test": "run-s build test:esm test:cjs",
-    "test:esm": "node --test esm/",
-    "test:cjs": "node --test cjs/",
-    "lint": "eslint src",
-    "build": "run-s build:*",
-    "build:index": "npx @nlib/indexen --output src/index.mts \"./**/*.mts\"",
-    "build:esm": "tsc",
-    "build:cjs": "run-s build:cjs:*",
-    "build:cjs:tsc": "tsc --project tsconfig.cjs.json",
-    "build:cjs:rename": "node rename-cjs.mjs",
-    "version": "npx @nlib/changelog --output CHANGELOG.md && git add CHANGELOG.md"
-  },
-  "devDependencies": {
-    "npm-run-all": "4.1.5",
-    "typescript": "5.4.5"
-  },
-  "renovate": {
-    "extends": [
-      "github>nlibjs/renovate-config"
-    ]
-  }
+	"name": "@nlib/typing",
+	"publishConfig": {
+		"access": "public"
+	},
+	"version": "1.1.0",
+	"license": "Apache-2.0",
+	"author": {
+		"name": "Kei Ito",
+		"email": "kei.itof@gmail.com",
+		"url": "https://gojabako.zone"
+	},
+	"homepage": "https://github.com/nlibjs/typing",
+	"repository": "https://github.com/nlibjs/typing",
+	"type": "module",
+	"main": "./esm/index.mjs",
+	"exports": {
+		"import": "./esm/index.mjs",
+		"require": "./cjs/index.cjs"
+	},
+	"files": ["cjs", "esm", "!**/*.test.*"],
+	"scripts": {
+		"test": "run-s build test:esm test:cjs",
+		"test:esm": "node --test esm/",
+		"test:cjs": "node --test cjs/",
+		"lint": "eslint src",
+		"build": "run-s build:*",
+		"build:index": "npx @nlib/indexen --output src/index.mts \"./**/*.mts\"",
+		"build:esm": "tsc",
+		"build:cjs": "run-s build:cjs:*",
+		"build:cjs:tsc": "tsc --project tsconfig.cjs.json",
+		"build:cjs:rename": "node rename-cjs.mjs",
+		"version": "npx @nlib/changelog --output CHANGELOG.md && git add CHANGELOG.md"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.9.2",
+		"npm-run-all": "4.1.5",
+		"typescript": "5.4.5"
+	},
+	"renovate": {
+		"extends": ["github>nlibjs/renovate-config"]
+	}
 }

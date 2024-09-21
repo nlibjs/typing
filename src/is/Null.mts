@@ -1,6 +1,6 @@
-import { createTypeChecker } from '../createTypeChecker.mjs';
+import { createTypeChecker } from "../createTypeChecker.mjs";
 
 export const isNull = createTypeChecker(
-  'Null',
-  (input: unknown): input is null => input === null,
+	"Null",
+	(input: unknown): input is null => input === null,
 );

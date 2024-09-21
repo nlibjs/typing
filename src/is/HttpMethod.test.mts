@@ -1,13 +1,13 @@
-import { test } from 'node:test';
-import * as assert from 'node:assert';
-import { listCheckerTests } from './tests.private.mjs';
-import { isHttpMethod } from './HttpMethod.mjs';
+import { test } from "node:test";
+import * as assert from "node:assert";
+import { listCheckerTests } from "./tests.private.mjs";
+import { isHttpMethod } from "./HttpMethod.mjs";
 
 for (const { key, input, expected } of listCheckerTests(
-  'HttpMethodGet',
-  'HttpMethodOptions',
+	"HttpMethodGet",
+	"HttpMethodOptions",
 )) {
-  test(`${key} → ${expected}`, () => {
-    assert.equal(isHttpMethod(input), expected);
-  });
+	test(`${key} → ${expected}`, () => {
+		assert.equal(isHttpMethod(input), expected);
+	});
 }
