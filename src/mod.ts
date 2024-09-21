@@ -38,6 +38,8 @@ export * from "./is/SafeInteger.ts";
 export * from "./is/String.ts";
 export * from "./is/TypedArray.ts";
 export * from "./is/UUID.ts";
+export * from "./is/UUIDLowercase.ts";
+export * from "./is/UUIDUppercase.ts";
 export * from "./is/Undefined.ts";
 export * from "./is/UrlHostString.ts";
 export * from "./is/ValidDate.ts";
