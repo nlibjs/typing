@@ -1,6 +1,5 @@
-/* eslint-disable func-style */
 import { cacheResult } from "./cacheResult.private.ts";
-import { cloneDefinition } from "./cloneDefinition.ts";
+import { cloneDefinition } from "./cloneDefinition.private.ts";
 import {
 	arrayDefinitionStore,
 	dictionaryDefinitionStore,
@@ -51,7 +50,6 @@ export function createTypeChecker<T>(
 export function createTypeChecker<T>(
 	definition: DefinitionObject<T>,
 ): TypeChecker<T, DefinitionObject<T>>;
-// eslint-disable-next-line max-lines-per-function
 export function createTypeChecker<T, D extends Definition<T> = Definition<T>>(
 	definition: D,
 ): TypeChecker<T, D> {

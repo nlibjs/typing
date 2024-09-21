@@ -1,4 +1,3 @@
-export * from "./cloneDefinition.ts";
 export * from "./codePoints.ts";
 export * from "./createTypeChecker.ts";
 export * from "./definition.ts";
