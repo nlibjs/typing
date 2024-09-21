@@ -13,7 +13,7 @@ const packageJson = await fs
 	.readFile(packageJsonUrl, "utf-8")
 	.then((json) => ensure(JSON.parse(json), hasNameAndVersion));
 
-const jsrJsonUrl = new URL("jsr.json", import.meta.url);
+const jsrJsonUrl = new URL("../jsr.json", import.meta.url);
 const jsrJson = await fs
 	.readFile(jsrJsonUrl, "utf-8")
 	.then((json) => ensure(JSON.parse(json), hasNameAndVersion));
