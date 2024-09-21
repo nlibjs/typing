@@ -37,44 +37,8 @@
     "version": "npx @nlib/changelog --output CHANGELOG.md && git add CHANGELOG.md"
   },
   "devDependencies": {
-    "@nlib/changelog": "0.3.1",
-    "@nlib/eslint-config": "3.20.2",
-    "@nlib/githooks": "0.2.0",
-    "@nlib/indexen": "0.2.9",
-    "@nlib/lint-commit": "1.0.1",
-    "eslint": "8.57.1",
-    "eslint-plugin-jest": "27.9.0",
-    "lint-staged": "14.0.1",
     "npm-run-all": "4.1.5",
-    "prettier": "3.3.3",
     "typescript": "5.4.5"
-  },
-  "eslintConfig": {
-    "extends": [
-      "@nlib/eslint-config"
-    ],
-    "overrides": [
-      {
-        "files": [
-          "src/is/*"
-        ],
-        "rules": {
-          "import/no-relative-parent-imports": "off"
-        }
-      },
-      {
-        "files": [
-          "*.test.mts"
-        ],
-        "rules": {
-          "@typescript-eslint/no-floating-promises": "off"
-        }
-      }
-    ]
-  },
-  "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown",
-    "**/*.*(m|c)+(j|t)s*(x)": "eslint"
   },
   "renovate": {
     "extends": [
