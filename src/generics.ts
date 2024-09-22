@@ -2,7 +2,6 @@ export type Nominal<K, T extends string> = K & {
 	__brand: T;
 	toString: () => string;
 };
-export type Resolved<T> = T extends Promise<infer S> ? S : T;
 export type ValueOf<T> = T[keyof T];
 export type SetItem<T> = T extends Set<infer I> ? I : never;
 export type MapKey<T> = T extends Map<infer I, unknown> ? I : never;
