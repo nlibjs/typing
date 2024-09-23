@@ -1,4 +1,9 @@
-import type { Callable, Dictionary, TypeGuard } from "./generics.ts";
+import type {
+	Callable,
+	Dictionary,
+	TypeChecker,
+	TypeGuard,
+} from "./generics.ts";
 import { getType } from "./getType.ts";
 import { defineProperties, keys, values } from "./object.ts";
 
@@ -22,17 +27,10 @@ const memo = <T, S extends object>(getter: (arg: S) => T): ((arg: S) => T) => {
 	};
 };
 
-export type Checker<T> = TypeGuard<T> & {
-	get optional(): Checker<T | undefined>;
-	get array(): Checker<Array<T>>;
-	get dictionary(): Checker<Dictionary<T>>;
-	get toString(): (depth?: number) => string;
-};
-
 type Descriptors<T> = {
-	[K in keyof Checker<T>]:
-		| { get: (this: Checker<T>) => Checker<T>[K] }
-		| { value: Checker<T>[K] };
+	[K in keyof TypeChecker<T>]:
+		| { get: (this: TypeChecker<T>) => TypeChecker<T>[K] }
+		| { value: TypeChecker<T>[K] };
 };
 
 const factory = <T, A extends object>(
@@ -46,7 +44,7 @@ const factory = <T, A extends object>(
 ) =>
 	memo((arg: A, name?: string) => {
 		const { typeGuard, ...others } = getProps(arg, name);
-		return defineProperties<Checker<T>, TypeGuard<T>>(typeGuard, {
+		return defineProperties<TypeChecker<T>, TypeGuard<T>>(typeGuard, {
 			optional: {
 				get() {
 					return optionalChecker(this);
@@ -66,8 +64,8 @@ const factory = <T, A extends object>(
 		});
 	});
 
-const optionalChecker: <T>(isT: Checker<T>) => Checker<T | undefined> = factory(
-	<T>(isT: Checker<T>) => ({
+const optionalChecker: <T>(isT: TypeChecker<T>) => TypeChecker<T | undefined> =
+	factory(<T>(isT: TypeChecker<T>) => ({
 		typeGuard: (v: unknown): v is T | undefined => isT(v) || is$Undefined(v),
 		optional: {
 			get() {
@@ -77,36 +75,36 @@ const optionalChecker: <T>(isT: Checker<T>) => Checker<T | undefined> = factory(
 		toString: {
 			value: (depth = 0) => `${isT.toString(depth)} | undefined`,
 		},
-	}),
-);
+	}));
 
-const arrayChecker: <T>(isT: Checker<T>) => Checker<Array<T>> = factory(
-	<T>(isT: Checker<T>) => ({
+const arrayChecker: <T>(isT: TypeChecker<T>) => TypeChecker<Array<T>> = factory(
+	<T>(isT: TypeChecker<T>) => ({
 		typeGuard: (v: unknown): v is Array<T> => Array.isArray(v) && v.every(isT),
 		toString: { value: (depth = 0) => `Array<${isT.toString(depth)}>` },
 	}),
 );
 
-const dictionaryChecker: <T>(isT: Checker<T>) => Checker<Dictionary<T>> =
-	factory(<T>(isT: Checker<T>) => ({
-		typeGuard: (v: unknown): v is Dictionary<T> => {
-			if (!is$Object(v)) {
+const dictionaryChecker: <T>(
+	isT: TypeChecker<T>,
+) => TypeChecker<Dictionary<T>> = factory(<T>(isT: TypeChecker<T>) => ({
+	typeGuard: (v: unknown): v is Dictionary<T> => {
+		if (!is$Object(v)) {
+			return false;
+		}
+		for (const item of values(v)) {
+			if (!isT(item)) {
 				return false;
 			}
-			for (const item of values(v)) {
-				if (!isT(item)) {
-					return false;
-				}
-			}
-			return true;
-		},
-		toString: {
-			value: (depth = 0) => `Dictionary<${isT.toString(depth)}>`,
-		},
-	}));
+		}
+		return true;
+	},
+	toString: {
+		value: (depth = 0) => `Dictionary<${isT.toString(depth)}>`,
+	},
+}));
 
 export type DefProperty<T> =
-	| Checker<T>
+	| TypeChecker<T>
 	| RegExp
 	| (T extends object ? DefObject<T> : never);
 
@@ -162,7 +160,7 @@ const serializeDefObject = <T>(
 export const objectChecker: <T extends object>(
 	definition: DefObject<T>,
 	typeName?: string,
-) => Checker<T> = factory(
+) => TypeChecker<T> = factory(
 	<T extends object>(definition: DefObject<T>, typeName?: string) => ({
 		typeGuard: defObjectToTypeGuard(definition),
 		toString: {
@@ -196,7 +194,7 @@ const serializeDefString = <T extends string>(
 export const stringChecker: <T extends string>(
 	definition: DefString<T>,
 	typeName?: string,
-) => Checker<T> = factory(
+) => TypeChecker<T> = factory(
 	<T extends string>(definition: DefString<T>, typeName?: string) => ({
 		typeGuard: defStringToTypeGuard(definition),
 		toString: { value: () => serializeDefString(definition, typeName) },
@@ -220,7 +218,7 @@ const serializeDefNumber = (d: DefNumber, typeName?: string): string => {
 export const numberChecker: <T extends number>(
 	definition: DefNumber,
 	typeName?: string,
-) => Checker<T> = factory((definition: DefNumber, typeName?: string) => ({
+) => TypeChecker<T> = factory((definition: DefNumber, typeName?: string) => ({
 	typeGuard: defNumberToTypeGuard(definition),
 	toString: { value: () => serializeDefNumber(definition, typeName) },
 }));
@@ -228,7 +226,9 @@ export const numberChecker: <T extends number>(
 export const typeChecker: <T>(
 	definition: TypeGuard<T>,
 	typeName?: string,
-) => Checker<T> = factory(<T>(definition: TypeGuard<T>, typeName?: string) => ({
-	typeGuard: definition,
-	toString: { value: () => typeName || definition.name || "T" },
-}));
+) => TypeChecker<T> = factory(
+	<T>(definition: TypeGuard<T>, typeName?: string) => ({
+		typeGuard: definition,
+		toString: { value: () => typeName || definition.name || "T" },
+	}),
+);

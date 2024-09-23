@@ -14,5 +14,10 @@ export type KeyValuePair<T, K extends keyof T = Extract<keyof T, string>> = [
 export type Callable<Return = unknown> = (...args: Array<unknown>) => Return;
 export type TypeGuard<T> = (input: unknown) => input is T;
 export type GuardedType<T> = T extends TypeGuard<infer S> ? S : never;
-
 export type Dictionary<T> = Record<string, T>;
+export type TypeChecker<T> = TypeGuard<T> & {
+	get optional(): TypeChecker<T | undefined>;
+	get array(): TypeChecker<Array<T>>;
+	get dictionary(): TypeChecker<Dictionary<T>>;
+	get toString(): (depth?: number) => string;
+};
