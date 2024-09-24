@@ -46,16 +46,26 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22.x
-          cache: npm
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
-      - run: npm ci
+      - run: bun install
       - run: bun cli/bun.ts
       - run: bun test bun --coverage --coverage-reporter=lcov
+      - uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+  TestDeno:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: vx.x.x
+      - run: deno test --coverage src
+      - run: deno coverage --lcov --output=coverage.lcov
       - uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}

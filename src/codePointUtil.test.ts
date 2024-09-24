@@ -1,4 +1,4 @@
-import { describe, test } from "node:test";
+import { test } from "node:test";
 import * as assert from "node:assert";
 import {
 	DIGIT_ONE,
@@ -10,7 +10,7 @@ import {
 } from "./codePoints.ts";
 import { listCodePoints, toSmallLatinCodePoint } from "./codePointUtil.ts";
 
-describe(toSmallLatinCodePoint.name, () => {
+{
 	const tests: Array<[number, number]> = [
 		[DIGIT_ONE, DIGIT_ONE],
 		[LATIN_CAPITAL_LETTER_A, LATIN_SMALL_LETTER_A],
@@ -21,9 +21,9 @@ describe(toSmallLatinCodePoint.name, () => {
 			assert.equal(toSmallLatinCodePoint(input), expected);
 		});
 	}
-});
+}
 
-describe(listCodePoints.name, () => {
+{
 	const tests: Array<[string, Array<number>]> = [
 		["", []],
 		["aA 0", [LATIN_SMALL_LETTER_A, LATIN_CAPITAL_LETTER_A, SPACE, DIGIT_ZERO]],
@@ -41,4 +41,4 @@ describe(listCodePoints.name, () => {
 			});
 		});
 	}
-});
+}
