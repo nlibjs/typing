@@ -44,16 +44,4 @@ const dictionary = {
   c: { id: '003', name: 'c', age: 3 },
 };
 isMyObject.dictionary(dictionary); // → true
-
-const isMyObject2 = typeChecker({
-  title: isString,
-  /** object is {id: string, name: string, age: number} | undefined */
-  object: isMyObject.optional,
-});
-
-/** You can extend an existing schema */
-const isExtendedMyObject = typeChecker({
-  ...isMyObject.definition,
-  description: isString,
-});
 ```
