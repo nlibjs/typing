@@ -9,7 +9,12 @@ const excludeList = [/\.test\..*$/, /\.private\..*$/];
 const lines: Array<string> = [];
 for await (const { pathname } of listFiles(srcDir, excludeList)) {
 	if (pathname.endsWith(".ts") && destUrl.pathname !== pathname) {
-		lines.push(`export * from "./${pathname.slice(srcDir.pathname.length)}";`);
+		const from = pathname.slice(srcDir.pathname.length);
+		let line = `export * from "./${from}";`;
+		if (from === "codePoints.ts") {
+			line = `export * as cp from "./${from}"`;
+		}
+		lines.push(line);
 	}
 }
 lines.sort((l1, l2) => {

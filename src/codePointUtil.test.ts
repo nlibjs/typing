@@ -6,10 +6,9 @@ import {
 	LATIN_CAPITAL_LETTER_A,
 	LATIN_SMALL_LETTER_A,
 	LATIN_SMALL_LETTER_Z,
-	listCodePoints,
 	SPACE,
-	toSmallLatinCodePoint,
 } from "./codePoints.ts";
+import { listCodePoints, toSmallLatinCodePoint } from "./codePointUtil.ts";
 
 describe(toSmallLatinCodePoint.name, () => {
 	const tests: Array<[number, number]> = [

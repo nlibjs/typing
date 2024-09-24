@@ -3,12 +3,11 @@ import {
 	DIGIT_NINE,
 	DIGIT_ZERO,
 	FULL_STOP,
-	isHexCodePoint,
 	LATIN_CAPITAL_LETTER_A,
 	LATIN_CAPITAL_LETTER_F,
 	LATIN_SMALL_LETTER_A,
-	listCodePoints,
 } from "./codePoints.ts";
+import { isHexCodePoint, listCodePoints } from "./codePointUtil.ts";
 import { listIpv4Octets } from "./parseIpv4Address.ts";
 
 /**

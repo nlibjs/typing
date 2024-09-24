@@ -1,4 +1,4 @@
-export * from "./codePoints.ts";
+export * as cp from "./codePoints.ts"
 export * from "./ensure.ts";
 export * from "./getType.ts";
 export * from "./object.ts";

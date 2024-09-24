@@ -1,10 +1,9 @@
+import { FULL_STOP, HYPHEN_MINUS } from "../codePoints.ts";
 import {
-	FULL_STOP,
-	HYPHEN_MINUS,
 	isDigitCodePoint,
 	isSmallLatinCodePoint,
 	listCodePoints,
-} from "../codePoints.ts";
+} from "../codePointUtil.ts";
 import { typeChecker } from "../typeChecker.ts";
 import type { Nominal, TypeChecker } from "../types.ts";
 import { isString } from "./String.ts";

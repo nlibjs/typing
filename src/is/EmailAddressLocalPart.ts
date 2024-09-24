@@ -20,13 +20,15 @@ import {
 	SOLIDUS,
 	TILDE,
 	VERTICAL_LINE,
-	isDigitCodePoint,
-	isSmallLatinCodePoint,
-	isCapitalLatinCodePoint,
-	listCodePoints,
 } from "../codePoints.ts";
 import { isString } from "./String.ts";
 import type { TypeChecker } from "../types.ts";
+import {
+	isCapitalLatinCodePoint,
+	isDigitCodePoint,
+	isSmallLatinCodePoint,
+	listCodePoints,
+} from "../codePointUtil.ts";
 
 /**
  * https://www.rfc-editor.org/rfc/rfc5322.html#section-3.4.1
