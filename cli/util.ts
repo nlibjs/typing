@@ -1,3 +1,4 @@
+import ts from "typescript";
 import * as fs from "node:fs/promises";
 import { URL } from "node:url";
 
@@ -17,6 +18,49 @@ export const listFiles = async function* (
 		fileUrl.pathname = fileUrl.pathname.replace(/\/*$/, "/");
 		for (const name of await fs.readdir(fileUrl)) {
 			yield* listFiles(new URL(name, fileUrl), excludeList);
+		}
+	}
+};
+
+export const walkTsSource = function* (
+	node: ts.Node,
+	tsSource: ts.SourceFile,
+	depth = 0,
+): Generator<[ts.Node, number]> {
+	yield [node, depth];
+	for (const child of node.getChildren(tsSource)) {
+		yield* walkTsSource(child, tsSource, depth + 1);
+	}
+};
+
+export const listTsSourceStringLiterals = function* (
+	tsSource: ts.SourceFile,
+): Generator<ts.StringLiteral> {
+	for (const [node] of walkTsSource(tsSource, tsSource)) {
+		if (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) {
+			let checking = false;
+			for (const [n] of walkTsSource(node, tsSource)) {
+				if (checking) {
+					if (ts.isStringLiteral(n)) {
+						yield n;
+						break;
+					}
+				} else if (n.kind === ts.SyntaxKind.FromKeyword) {
+					checking = true;
+				}
+			}
+		} else if (ts.isImportTypeNode(node)) {
+			let checking = false;
+			for (const [n] of walkTsSource(node, tsSource)) {
+				if (checking) {
+					if (ts.isStringLiteral(n)) {
+						yield n;
+						break;
+					}
+				} else if (n.kind === ts.SyntaxKind.OpenParenToken) {
+					checking = true;
+				}
+			}
 		}
 	}
 };

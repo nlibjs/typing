@@ -3,5 +3,7 @@ node_modules
 esm
 cjs
 temp
+bun
 coverage
 tsconfig.tsbuildinfo
+coverage.lcov
