@@ -108,15 +108,52 @@ const dictionaryChecker: <T>(
 	},
 }));
 
-export type DefObject<T> = { [K in keyof T]: TypeDefinition<T[K]> };
-
+/**
+ * A type of the first argument of `typeChecker()`.
+ */
 export type TypeDefinition<T> =
 	| TypeGuard<T>
-	| Set<T>
 	| string
-	| DefObject<T>
-	| RegExp;
+	| Set<T>
+	| RegExp
+	| { [K in keyof T]: TypeDefinition<T[K]> };
 
+/**
+ * Create a type checker from a type definition.
+ * @example
+ * ```typescript
+ * // Create a type checker from a type guard function.
+ * const isNonNegativeInteger = typeChecker(
+ *   (input: unknown): input is number => Number.isInteger(input) && 0 <= input,
+ * );
+ *
+ * // Create a type checker for a class instance.
+ * // Values are checked by `getType(input) === "Point"`
+ * class Point {}
+ * const isPoint = typeChecker("Point");
+ *
+ * // Create a type checker for a string literal.
+ * const isLowerHex = typeChecker(/^[0-9a-f]+$/);
+ *
+ * // Create a type checker for a set of values.
+ * const isColor = typeChecker(new Set(["red", "green", "blue"]));
+ *
+ * // Create a type checker for an object.
+ * type Person = { name: string; age: number };
+ * const isPerson = typeChecker({
+ *   name: isString,
+ *   age: isNonNegativeInteger,
+ * });
+ *
+ * // Some utilities.
+ * isPerson.optional;   // TypeChecker<Person | undefined>
+ * isPerson.array;      // TypeChecker<Array<Person>>
+ * isPerson.dictionary; // TypeChecker<Record<string, Person>>
+ * ```
+ * @param definition A type definition.
+ * @param typeName A type name.
+ * @returns A type checker.
+ */
 export const typeChecker: <T>(
 	definition: TypeDefinition<T>,
 	typeName?: string,
