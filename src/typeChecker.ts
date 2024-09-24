@@ -161,7 +161,7 @@ export const typeChecker: <T>(
 					list.push(`${k}: ${pd.toString(depth + 1)}`);
 				}
 				const prefix = name ? `${name} ` : "";
-				if (list.length <= 3) {
+				if (list.length <= 3 && list.every((item) => !item.includes("\n"))) {
 					return `${prefix}{ ${list.join(", ")} }`;
 				}
 				const indent = getIndent(depth + 1);
