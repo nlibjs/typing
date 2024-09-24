@@ -1,5 +1,16 @@
 # Changelog
 
+## v2.0.5 (2024-09-24)
+
+### Documentation
+
+- update README ([6145d8b](https://github.com/nlibjs/typing/commit/6145d8b16660ff50c47bcf174149b1a20aaf575b))
+
+### Continuous Integration
+
+- test mod.ts ([728a3cb](https://github.com/nlibjs/typing/commit/728a3cbedb35b17105e9aea929a8b019938bd719))
+
+
 ## v2.0.4 (2024-09-24)
 
 ### Breaking Changes
@@ -11,11 +22,21 @@
 
 - add typeChecker, stringChecker, numberChecker, objectChecker ([db7830b](https://github.com/nlibjs/typing/commit/db7830b53154a0d45f8db6d6d5e7daaaf3162112))
 
+### Bug Fixes
+
+- return value for MyClass ([0a3e81b](https://github.com/nlibjs/typing/commit/0a3e81b40737031d953e0ecdbcdc32dbb4bf4591))
+- serializer ([b24f62b](https://github.com/nlibjs/typing/commit/b24f62b0020843e160efa2a551e2c9ce44a5010a))
+
 ### Code Refactoring
 
+- remove Dictionary<T> ([0f4a1ca](https://github.com/nlibjs/typing/commit/0f4a1caf22d7ee1825ee07349a6c9bf4df83fc32))
 - split codePoints.ts ([23eaa30](https://github.com/nlibjs/typing/commit/23eaa308eb43e4d65a3b466ebbf32d6cb37c1a3c))
 - move TypeCheckError ([c1f3b87](https://github.com/nlibjs/typing/commit/c1f3b8727c008c322df9cb5a3d3d98de0cfaedc0))
 - move TypeChecker<T> ([991352f](https://github.com/nlibjs/typing/commit/991352fb0d1e983a37a09c28f661a4fd76c8ca63))
+
+### Documentation
+
+- add some docs ([4fdf54d](https://github.com/nlibjs/typing/commit/4fdf54de1f0cbfa0b8b65bb29afba92c17b56aee))
 
 
 ## v2.0.3 (2024-09-21)
