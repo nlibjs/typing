@@ -1,4 +1,7 @@
-import type { TypeChecker } from "../generics.ts";
-import { typeChecker } from "../typing.ts";
+import type { TypeChecker } from "../types.ts";
+import { typeChecker } from "../typeChecker.ts";
 
-export const isArray: TypeChecker<Array<unknown>> = typeChecker(Array.isArray);
+export const isArray: TypeChecker<Array<unknown>> = typeChecker(
+	Array.isArray,
+	"Array",
+);

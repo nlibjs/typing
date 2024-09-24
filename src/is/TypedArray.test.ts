@@ -1,6 +1,6 @@
 import { describe, test } from "node:test";
 import * as assert from "node:assert";
-import { listCheckerTests } from "./tests.private.ts";
+import { listCheckerTests } from "./listCheckerTests.test.ts";
 import {
 	isBigInt64Array,
 	isBigUint64Array,

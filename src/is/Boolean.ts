@@ -1,9 +1,7 @@
-import { createTypeChecker } from "../createTypeChecker.ts";
-import type { TypeChecker, TypeGuard } from "../generics.ts";
+import { typeChecker } from "../typeChecker.ts";
+import type { TypeChecker } from "../types.ts";
 
-export const isBoolean: TypeChecker<
-	boolean,
-	TypeGuard<boolean>
-> = createTypeChecker(
-	(input: unknown): input is boolean => typeof input === "boolean",
+export const isBoolean: TypeChecker<boolean> = typeChecker(
+	(input) => typeof input === "boolean",
+	"boolean",
 );

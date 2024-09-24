@@ -1,4 +1,4 @@
-import type { KeyValuePair } from "./generics.ts";
+import type { KeyValuePair } from "./types.ts";
 
 export const keys = Object.keys as <T>(o: T) => Array<Extract<keyof T, string>>;
 export const values = Object.values as <T>(o: T) => Array<T[keyof T]>;

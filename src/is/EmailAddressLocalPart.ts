@@ -1,4 +1,4 @@
-import { createTypeChecker } from "../createTypeChecker.ts";
+import { typeChecker } from "../typeChecker.ts";
 import {
 	AMPERSAND,
 	APOSTROPHE,
@@ -26,7 +26,7 @@ import {
 	listCodePoints,
 } from "../codePoints.ts";
 import { isString } from "./String.ts";
-import type { TypeChecker, TypeGuard } from "../generics.ts";
+import type { TypeChecker } from "../types.ts";
 
 /**
  * https://www.rfc-editor.org/rfc/rfc5322.html#section-3.4.1
@@ -64,30 +64,30 @@ const isAtomText = (codePoint: number): boolean =>
 	isDigitCodePoint(codePoint) ||
 	allowedNonAlphaNumerics.has(codePoint);
 
-export const isEmailAddressLocalPart: TypeChecker<
-	string,
-	TypeGuard<string>
-> = createTypeChecker((input: unknown): input is string => {
-	if (!isString(input)) {
-		return false;
-	}
-	const { length } = input;
-	if (length === 0 || 64 < length) {
-		return false;
-	}
-	let lastCodePoint = FULL_STOP;
-	for (const codePoint of listCodePoints(input)) {
-		if (codePoint === FULL_STOP) {
-			if (lastCodePoint === FULL_STOP) {
-				return false;
-			}
-		} else if (!isAtomText(codePoint)) {
+export const isEmailAddressLocalPart: TypeChecker<string> = typeChecker(
+	(input: unknown): input is string => {
+		if (!isString(input)) {
 			return false;
 		}
-		lastCodePoint = codePoint;
-	}
-	if (lastCodePoint === FULL_STOP) {
-		return false;
-	}
-	return true;
-});
+		const { length } = input;
+		if (length === 0 || 64 < length) {
+			return false;
+		}
+		let lastCodePoint = FULL_STOP;
+		for (const codePoint of listCodePoints(input)) {
+			if (codePoint === FULL_STOP) {
+				if (lastCodePoint === FULL_STOP) {
+					return false;
+				}
+			} else if (!isAtomText(codePoint)) {
+				return false;
+			}
+			lastCodePoint = codePoint;
+		}
+		if (lastCodePoint === FULL_STOP) {
+			return false;
+		}
+		return true;
+	},
+	"EmailAddressLocalPart",
+);

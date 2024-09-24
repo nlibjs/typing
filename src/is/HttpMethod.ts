@@ -1,30 +1,19 @@
-import { definition } from "../definition.ts";
-import { createTypeChecker } from "../createTypeChecker.ts";
-import type { DefinitionEnum, TypeChecker } from "../generics.ts";
+import { typeChecker } from "../typeChecker.ts";
+import type { TypeChecker, ValueOf } from "../types.ts";
 
-export type HttpMethod =
-	| "CONNECT"
-	| "DELETE"
-	| "GET"
-	| "HEAD"
-	| "OPTIONS"
-	| "PATCH"
-	| "POST"
-	| "PUT"
-	| "TRACE";
-export const isHttpMethod: TypeChecker<
-	HttpMethod,
-	DefinitionEnum<HttpMethod>
-> = createTypeChecker<HttpMethod>(
-	definition.enum<HttpMethod>(
-		"CONNECT",
-		"DELETE",
-		"GET",
-		"HEAD",
-		"OPTIONS",
-		"PATCH",
-		"POST",
-		"PUT",
-		"TRACE",
-	),
+export const HttpMethod = {
+	CONNECT: "CONNECT",
+	DELETE: "DELETE",
+	GET: "GET",
+	HEAD: "HEAD",
+	OPTIONS: "OPTIONS",
+	PATCH: "PATCH",
+	POST: "POST",
+	PUT: "PUT",
+	TRACE: "TRACE",
+} as const;
+export type HttpMethod = ValueOf<typeof HttpMethod>;
+export const isHttpMethod: TypeChecker<HttpMethod> = typeChecker<HttpMethod>(
+	new Set(Object.values(HttpMethod)),
+	"HttpMethod",
 );

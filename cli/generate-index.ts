@@ -3,11 +3,12 @@ import { URL } from "node:url";
 import { listFiles } from "./util.ts";
 
 const srcDir = new URL("../src/", import.meta.url);
+const destUrl = new URL("mod.ts", srcDir);
 const excludeList = [/\.test\..*$/, /\.private\..*$/];
 
 const lines: Array<string> = [];
 for await (const { pathname } of listFiles(srcDir, excludeList)) {
-	if (pathname.endsWith(".ts")) {
+	if (pathname.endsWith(".ts") && destUrl.pathname !== pathname) {
 		lines.push(`export * from "./${pathname.slice(srcDir.pathname.length)}";`);
 	}
 }
@@ -20,5 +21,4 @@ lines.sort((l1, l2) => {
 	return s1 < s2 ? -1 : 1;
 });
 lines.push("");
-const destUrl = new URL("mod.ts", srcDir);
 await fs.writeFile(destUrl, lines.join("\n"));

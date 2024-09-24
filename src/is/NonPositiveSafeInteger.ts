@@ -1,10 +1,8 @@
-import { createTypeChecker } from "../createTypeChecker.ts";
-import type { TypeChecker, TypeGuard } from "../generics.ts";
+import { typeChecker } from "../typeChecker.ts";
+import type { TypeChecker } from "../types.ts";
 import { isSafeInteger } from "./SafeInteger.ts";
 
-export const isNonPositiveSafeInteger: TypeChecker<
-	number,
-	TypeGuard<number>
-> = createTypeChecker(
+export const isNonPositiveSafeInteger: TypeChecker<number> = typeChecker(
 	(input: unknown): input is number => isSafeInteger(input) && input <= 0,
+	"NonPositiveSafeInteger",
 );

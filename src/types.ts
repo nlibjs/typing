@@ -16,8 +16,13 @@ export type TypeGuard<T> = (input: unknown) => input is T;
 export type GuardedType<T> = T extends TypeGuard<infer S> ? S : never;
 export type Dictionary<T> = Record<string, T>;
 export type TypeChecker<T> = TypeGuard<T> & {
-	get optional(): TypeChecker<T | undefined>;
-	get array(): TypeChecker<Array<T>>;
-	get dictionary(): TypeChecker<Dictionary<T>>;
-	get toString(): (depth?: number) => string;
+	readonly optional: TypeChecker<T | undefined>;
+	readonly array: TypeChecker<Array<T>>;
+	readonly dictionary: TypeChecker<Dictionary<T>>;
+	test(
+		this: TypeChecker<T>,
+		input: unknown,
+		route?: Array<string>,
+	): Error | null;
+	toString(depth?: number): string;
 };

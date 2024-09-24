@@ -1,6 +1,7 @@
-import { createTypeChecker } from "../createTypeChecker.ts";
-import type { TypeChecker, TypeGuard } from "../generics.ts";
+import { typeChecker } from "../typeChecker.ts";
+import type { TypeChecker } from "../types.ts";
 
-export const isNull: TypeChecker<null, TypeGuard<null>> = createTypeChecker(
+export const isNull: TypeChecker<null> = typeChecker(
 	(input: unknown): input is null => input === null,
+	"null",
 );
