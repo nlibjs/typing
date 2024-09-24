@@ -1,7 +1,6 @@
 import type { Callable, Dictionary, TypeChecker, TypeGuard } from "./types.ts";
 import { getType } from "./getType.ts";
 import { defineProperties, keys, values } from "./object.ts";
-import { TypeCheckError } from "./TypeCheckError.ts";
 
 const getIndent = (depth: number) => "  ".repeat(depth);
 const is$Undefined = (v: unknown): v is undefined => typeof v === "undefined";
@@ -185,3 +184,12 @@ export const typeChecker: <T>(
 		},
 	};
 });
+
+class TypeCheckError<T> extends Error {
+	constructor(checker: TypeChecker<T>, value: unknown, route?: Array<string>) {
+		const name = route ? `.${route.join(".")}` : "The value";
+		super(
+			`TypeCheckError: ${name} ${value} is not of type ${checker.toString()}`,
+		);
+	}
+}

@@ -1,4 +1,3 @@
-export * from "./TypeCheckError.ts";
 export * from "./codePoints.ts";
 export * from "./ensure.ts";
 export * from "./getType.ts";
