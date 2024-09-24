@@ -13,8 +13,11 @@ const tests: Array<[unknown, string]> = [
 	["0", "String"],
 	[{}, "Object"],
 	[[], "Array"],
-	[new Uint32Array(1), "Uint32Array"],
 	[/.*/, "RegExp"],
+	[new Date(), "Date"],
+	[new Error(), "Error"],
+	[new Uint32Array(1), "Uint32Array"],
+	[new (class MyClass {})(), "MyClass"],
 ];
 for (const [value, expected] of tests) {
 	test(`${value} → ${expected}`, () => {
