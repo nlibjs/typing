@@ -1,5 +1,23 @@
 # Changelog
 
+## v2.0.4 (2024-09-24)
+
+### Breaking Changes
+
+- rewrite createTypeChecker() to typeChecker() ([3de7179](https://github.com/nlibjs/typing/commit/3de71795c0cc2230fbd5ef7988089255a70b7cf4))
+- delete Resolved<T> ([c2de404](https://github.com/nlibjs/typing/commit/c2de40499e65248ed4a9f91fb1f03aefb8e5b596))
+
+### Features
+
+- add typeChecker, stringChecker, numberChecker, objectChecker ([db7830b](https://github.com/nlibjs/typing/commit/db7830b53154a0d45f8db6d6d5e7daaaf3162112))
+
+### Code Refactoring
+
+- split codePoints.ts ([23eaa30](https://github.com/nlibjs/typing/commit/23eaa308eb43e4d65a3b466ebbf32d6cb37c1a3c))
+- move TypeCheckError ([c1f3b87](https://github.com/nlibjs/typing/commit/c1f3b8727c008c322df9cb5a3d3d98de0cfaedc0))
+- move TypeChecker<T> ([991352f](https://github.com/nlibjs/typing/commit/991352fb0d1e983a37a09c28f661a4fd76c8ca63))
+
+
 ## v2.0.3 (2024-09-21)
 
 ### Bug Fixes
@@ -35,7 +53,7 @@
 ### Breaking Changes
 
 - delete some string checkers ([aad6ee1](https://github.com/nlibjs/typing/commit/aad6ee1ff44c9bc640114e6962e33492349c7776))
-- delete the first argument of typeChecker ([3155873](https://github.com/nlibjs/typing/commit/3155873a8fba43f69a0c7d90679f1cc39b69b667))
+- delete the first argument of createTypeChecker ([3155873](https://github.com/nlibjs/typing/commit/3155873a8fba43f69a0c7d90679f1cc39b69b667))
 
 ### Tests
 
@@ -463,7 +481,7 @@
 
 ### Tests
 
-- typeChecker ([b8e13a9](https://github.com/nlibjs/typing/commit/b8e13a92720aee8131744fffe077b8bf0931e38b))
+- createTypeChecker ([b8e13a9](https://github.com/nlibjs/typing/commit/b8e13a92720aee8131744fffe077b8bf0931e38b))
 - NoTypeName ([fe7d993](https://github.com/nlibjs/typing/commit/fe7d99363bf9a8fcf53574cb884f519bbaa29c4a))
 
 ### Build System
