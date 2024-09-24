@@ -35,7 +35,7 @@
 ### Breaking Changes
 
 - delete some string checkers ([aad6ee1](https://github.com/nlibjs/typing/commit/aad6ee1ff44c9bc640114e6962e33492349c7776))
-- delete the first argument of createTypeChecker ([3155873](https://github.com/nlibjs/typing/commit/3155873a8fba43f69a0c7d90679f1cc39b69b667))
+- delete the first argument of typeChecker ([3155873](https://github.com/nlibjs/typing/commit/3155873a8fba43f69a0c7d90679f1cc39b69b667))
 
 ### Tests
 
@@ -463,7 +463,7 @@
 
 ### Tests
 
-- createTypeChecker ([b8e13a9](https://github.com/nlibjs/typing/commit/b8e13a92720aee8131744fffe077b8bf0931e38b))
+- typeChecker ([b8e13a9](https://github.com/nlibjs/typing/commit/b8e13a92720aee8131744fffe077b8bf0931e38b))
 - NoTypeName ([fe7d993](https://github.com/nlibjs/typing/commit/fe7d99363bf9a8fcf53574cb884f519bbaa29c4a))
 
 ### Build System

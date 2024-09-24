@@ -1,9 +1,5 @@
-import {
-	FULL_STOP,
-	DIGIT_ZERO,
-	isDigitCodePoint,
-	listCodePoints,
-} from "./codePoints.ts";
+import { FULL_STOP, DIGIT_ZERO } from "./codePoints.ts";
+import { isDigitCodePoint, listCodePoints } from "./codePointUtil.ts";
 
 export interface Ipv4AddressOctet {
 	value: number;

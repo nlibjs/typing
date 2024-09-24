@@ -8,14 +8,14 @@ A tool for generating and managing TypeScript type definitions efficiently.
 
 ```typescript
 import {
-  createTypeChecker,
+  typeChecker,
   isString,
   isNonNegativeSafeInteger,
   ensure,
 } from '@nlib/typing';
 
-/** createTypeChecker defines a schema */
-const isMyObject = createTypeChecker({
+/** typeChecker defines a schema */
+const isMyObject = typeChecker({
   id: isString,
   name: isString,
   age: isNonNegativeSafeInteger,
@@ -45,14 +45,14 @@ const dictionary = {
 };
 isMyObject.dictionary(dictionary); // → true
 
-const isMyObject2 = createTypeChecker({
+const isMyObject2 = typeChecker({
   title: isString,
   /** object is {id: string, name: string, age: number} | undefined */
   object: isMyObject.optional,
 });
 
 /** You can extend an existing schema */
-const isExtendedMyObject = createTypeChecker({
+const isExtendedMyObject = typeChecker({
   ...isMyObject.definition,
   description: isString,
 });

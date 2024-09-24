@@ -1,7 +1,7 @@
-import { createTypeChecker } from "../createTypeChecker.ts";
-import type { TypeChecker, TypeGuard } from "../generics.ts";
+import { typeChecker } from "../typeChecker.ts";
+import type { TypeChecker, TypeGuard } from "../types.ts";
 
-export const isSafeInteger: TypeChecker<
-	number,
-	TypeGuard<number>
-> = createTypeChecker(Number.isSafeInteger as TypeGuard<number>);
+export const isSafeInteger: TypeChecker<number> = typeChecker(
+	Number.isSafeInteger as TypeGuard<number>,
+	"SafeInteger",
+);

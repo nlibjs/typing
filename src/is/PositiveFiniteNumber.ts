@@ -1,10 +1,8 @@
-import { createTypeChecker } from "../createTypeChecker.ts";
-import type { TypeChecker, TypeGuard } from "../generics.ts";
+import { typeChecker } from "../typeChecker.ts";
+import type { TypeChecker } from "../types.ts";
 import { isFiniteNumber } from "./FiniteNumber.ts";
 
-export const isPositiveFiniteNumber: TypeChecker<
-	number,
-	TypeGuard<number>
-> = createTypeChecker(
+export const isPositiveFiniteNumber: TypeChecker<number> = typeChecker(
 	(input: unknown): input is number => isFiniteNumber(input) && 0 < input,
+	"PositiveFiniteNumber",
 );

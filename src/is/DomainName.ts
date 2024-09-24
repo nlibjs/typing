@@ -1,12 +1,11 @@
+import { FULL_STOP, HYPHEN_MINUS } from "../codePoints.ts";
 import {
-	FULL_STOP,
-	HYPHEN_MINUS,
 	isDigitCodePoint,
 	isSmallLatinCodePoint,
 	listCodePoints,
-} from "../codePoints.ts";
-import { createTypeChecker } from "../createTypeChecker.ts";
-import type { Nominal, TypeChecker, TypeGuard } from "../generics.ts";
+} from "../codePointUtil.ts";
+import { typeChecker } from "../typeChecker.ts";
+import type { Nominal, TypeChecker } from "../types.ts";
 import { isString } from "./String.ts";
 
 /**
@@ -19,34 +18,33 @@ import { isString } from "./String.ts";
  * let-dig     = ALPHA / DIGIT
  */
 export type DomainName = Nominal<string, "DomainName">;
-
-export const isDomainName: TypeChecker<
-	DomainName,
-	TypeGuard<DomainName>
-> = createTypeChecker((input: unknown): input is DomainName => {
-	if (!isString(input)) {
-		return false;
-	}
-	/** Initial value is hyphen to return false for .example.com */
-	let lastCodePoint = HYPHEN_MINUS;
-	let currentLabelIsValid = false;
-	let labelCount = 1;
-	for (const codePoint of listCodePoints(input)) {
-		if (codePoint === FULL_STOP) {
-			if (!currentLabelIsValid || lastCodePoint === HYPHEN_MINUS) {
-				return false;
-			}
-			currentLabelIsValid = false;
-			labelCount += 1;
-		} else if (isSmallLatinCodePoint(codePoint)) {
-			currentLabelIsValid = true;
-		} else if (codePoint !== HYPHEN_MINUS && !isDigitCodePoint(codePoint)) {
+export const isDomainName: TypeChecker<DomainName> = typeChecker(
+	(input: unknown): input is DomainName => {
+		if (!isString(input)) {
 			return false;
 		}
-		lastCodePoint = codePoint;
-	}
-	if (lastCodePoint === FULL_STOP || lastCodePoint === HYPHEN_MINUS) {
-		return false;
-	}
-	return 1 < labelCount;
-});
+		/** Initial value is hyphen to return false for .example.com */
+		let lastCodePoint = HYPHEN_MINUS;
+		let currentLabelIsValid = false;
+		let labelCount = 1;
+		for (const codePoint of listCodePoints(input)) {
+			if (codePoint === FULL_STOP) {
+				if (!currentLabelIsValid || lastCodePoint === HYPHEN_MINUS) {
+					return false;
+				}
+				currentLabelIsValid = false;
+				labelCount += 1;
+			} else if (isSmallLatinCodePoint(codePoint)) {
+				currentLabelIsValid = true;
+			} else if (codePoint !== HYPHEN_MINUS && !isDigitCodePoint(codePoint)) {
+				return false;
+			}
+			lastCodePoint = codePoint;
+		}
+		if (lastCodePoint === FULL_STOP || lastCodePoint === HYPHEN_MINUS) {
+			return false;
+		}
+		return 1 < labelCount;
+	},
+	"DomainName",
+);

@@ -1,9 +1,7 @@
-import { createTypeChecker } from "../createTypeChecker.ts";
-import type { Callable, TypeChecker, TypeGuard } from "../generics.ts";
+import { typeChecker } from "../typeChecker.ts";
+import type { Callable, TypeChecker } from "../types.ts";
 
-export const isFunction: TypeChecker<
-	Callable,
-	TypeGuard<Callable>
-> = createTypeChecker(
+export const isFunction: TypeChecker<Callable> = typeChecker(
 	(input: unknown): input is Callable => typeof input === "function",
+	"function",
 );
