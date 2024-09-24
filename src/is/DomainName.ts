@@ -9,13 +9,15 @@ import type { Nominal, TypeChecker } from "../types.ts";
 import { isString } from "./String.ts";
 
 /**
- * https://www.rfc-editor.org/rfc/rfc5322.html#section-3.4.1
- * https://gitlab-ce.zipang.in/everholic/monorepo/-/issues/36
+ * - https://www.rfc-editor.org/rfc/rfc5322.html#section-3.4.1
+ * - https://gitlab-ce.zipang.in/everholic/monorepo/-/issues/36
+ * ```abnf
  * domain      = label *("." label)
  * label       = ALPHA [[lgh-str] let-dig]
  * lgh-str     = 1*let-dig-hyp
  * let-dig-hyp = let-dig / "-"
  * let-dig     = ALPHA / DIGIT
+ * ```
  */
 export type DomainName = Nominal<string, "DomainName">;
 export const isDomainName: TypeChecker<DomainName> = typeChecker(
