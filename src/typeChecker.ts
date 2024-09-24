@@ -1,4 +1,4 @@
-import type { Callable, Dictionary, TypeChecker, TypeGuard } from "./types.ts";
+import type { Callable, TypeChecker, TypeGuard } from "./types.ts";
 import { getType } from "./getType.ts";
 import { defineProperties, keys, values } from "./object.ts";
 
@@ -91,8 +91,8 @@ const arrayChecker: <T>(isT: TypeChecker<T>) => TypeChecker<Array<T>> = factory(
 
 const dictionaryChecker: <T>(
 	isT: TypeChecker<T>,
-) => TypeChecker<Dictionary<T>> = factory(<T>(isT: TypeChecker<T>) => ({
-	typeGuard: (v: unknown): v is Dictionary<T> => {
+) => TypeChecker<Record<string, T>> = factory(<T>(isT: TypeChecker<T>) => ({
+	typeGuard: (v: unknown): v is Record<string, T> => {
 		if (!is$Object(v)) {
 			return false;
 		}
@@ -104,7 +104,7 @@ const dictionaryChecker: <T>(
 		return true;
 	},
 	toString: {
-		value: (depth = 0) => `Dictionary<${isT.toString(depth)}>`,
+		value: (depth = 0) => `Record<string, ${isT.toString(depth)}>`,
 	},
 }));
 
