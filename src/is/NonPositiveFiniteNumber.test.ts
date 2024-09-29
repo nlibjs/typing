@@ -1,9 +1,9 @@
 import { test } from "node:test";
 import * as assert from "node:assert";
-import { listCheckerTests } from "./listCheckerTests.test.ts";
+import { checkerTestCase } from "../checkerTestCase.test.ts";
 import { isNonPositiveFiniteNumber } from "./NonPositiveFiniteNumber.ts";
 
-for (const { key, input, expected } of listCheckerTests(
+for (const { name, input, expected } of checkerTestCase(
 	"NegativeZero",
 	"PositiveZero",
 	"Zero",
@@ -11,7 +11,7 @@ for (const { key, input, expected } of listCheckerTests(
 	"NegativeFloat",
 	"NegativeUnsafeInteger",
 )) {
-	test(`${key} → ${expected}`, () => {
+	test(`${name} → ${expected}`, () => {
 		assert.equal(isNonPositiveFiniteNumber(input), expected);
 	});
 }

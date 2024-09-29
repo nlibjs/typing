@@ -1,14 +1,14 @@
 import { test } from "node:test";
 import * as assert from "node:assert";
-import { listCheckerTests } from "./listCheckerTests.test.ts";
+import { checkerTestCase } from "../checkerTestCase.test.ts";
 import { isPositiveSafeInteger } from "./PositiveSafeInteger.ts";
 
-for (const { key, input, expected } of listCheckerTests(
+for (const { name, input, expected } of checkerTestCase(
 	"PositiveInteger",
 	"HttpResponseStatusCodeOk",
 	"HttpResponseStatusCodeNotFound",
 )) {
-	test(`${key} → ${expected}`, () => {
+	test(`${name} → ${expected}`, () => {
 		assert.equal(isPositiveSafeInteger(input), expected);
 	});
 }
