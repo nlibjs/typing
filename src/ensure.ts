@@ -1,4 +1,5 @@
-import { typeChecker, type TypeDefinition } from "./typeChecker.ts";
+import { typeChecker } from "./typeChecker.ts";
+import type { TypeDefinition } from "./types.ts";
 
 /**
  * It ensures that the input matches the definition and returns the input.

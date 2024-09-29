@@ -30,14 +30,6 @@ import {
 	listCodePoints,
 } from "../codePointUtil.ts";
 
-/**
- * https://www.rfc-editor.org/rfc/rfc5322.html#section-3.4.1
- * https://gitlab-ce.zipang.in/everholic/monorepo/-/issues/36
- * local-part  = 1*atext *("." 1*atext)
- * atext       = ALPHA / DIGIT / "!" / "#" / "$" / "%" / "&" / "'" / "*" / "+" /
- *               "-" / "/" / "=" / "?" / "^" / "_" / "`" / "{" / "|" / "}" / "~"
- */
-
 const allowedNonAlphaNumerics = new Set([
 	EXCLAMATION_MARK,
 	NUMBER_SIGN,
@@ -66,6 +58,17 @@ const isAtomText = (codePoint: number): boolean =>
 	isDigitCodePoint(codePoint) ||
 	allowedNonAlphaNumerics.has(codePoint);
 
+/**
+ * - https://www.rfc-editor.org/rfc/rfc5322.html#section-3.4.1
+ * - https://gitlab-ce.zipang.in/everholic/monorepo/-/issues/36
+ * ```abnf
+ * local-part  = 1*atext *("." 1*atext)
+ * atext       = ALPHA / DIGIT / "!" / "#" / "$" / "%" / "&" / "'" / "*" / "+" /
+ *               "-" / "/" / "=" / "?" / "^" / "_" / "`" / "{" / "|" / "}" / "~"
+ * ```
+ * @param input A value to check.
+ * @returns A type predicate for string that is a local part of an email address.
+ */
 export const isEmailAddressLocalPart: TypeChecker<string> = typeChecker(
 	(input: unknown): input is string => {
 		if (!isString(input)) {
