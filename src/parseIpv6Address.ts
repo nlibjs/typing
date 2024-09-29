@@ -11,7 +11,8 @@ import { isHexCodePoint, listCodePoints } from "./codePointUtil.ts";
 import { listIpv4Octets } from "./parseIpv4Address.ts";
 
 /**
- * https://tools.ietf.org/html/rfc5952
+ * Represents a group of an IPv6 address.
+ * @see https://tools.ietf.org/html/rfc5952
  */
 export interface Ipv6AddressGroup {
 	value: number | null;
@@ -19,6 +20,9 @@ export interface Ipv6AddressGroup {
 	end: number;
 }
 
+/**
+ * Represents the groups of an IPv6 address.
+ */
 export type Ipv6AddressGroups = [
 	number,
 	number,
@@ -30,6 +34,11 @@ export type Ipv6AddressGroups = [
 	number,
 ];
 
+/**
+ * Converts a code point to a number.
+ * @param codePoint - The code point to convert.
+ * @returns The number.
+ */
 const toNumber = (codePoint: number): number => {
 	if (codePoint <= DIGIT_NINE) {
 		return codePoint - DIGIT_ZERO;
@@ -40,6 +49,12 @@ const toNumber = (codePoint: number): number => {
 	return 10 + codePoint - LATIN_SMALL_LETTER_A;
 };
 
+/**
+ * Lists the groups of an IPv6 address.
+ * @param input - The input string.
+ * @param fromIndex - The index to start from.
+ * @returns An iterator of IPv6 address groups.
+ */
 export const listIpv6Groups = function* (
 	input: string,
 	fromIndex = 0,
@@ -91,12 +106,21 @@ export const listIpv6Groups = function* (
 	}
 };
 
+/**
+ * Represents the result of parsing an IPv6 address.
+ */
 export interface Ipv6AddressParseResult {
 	groups: Ipv6AddressGroups;
 	start: number;
 	end: number;
 }
 
+/**
+ * Parses an IPv6 address.
+ * @param input - The input string.
+ * @param start - The index to start from.
+ * @returns The result of parsing an IPv6 address.
+ */
 export const parseIpv6Address = (
 	input: string,
 	start = 0,

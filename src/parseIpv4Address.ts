@@ -1,12 +1,24 @@
 import { FULL_STOP, DIGIT_ZERO } from "./codePoints.ts";
 import { isDigitCodePoint, listCodePoints } from "./codePointUtil.ts";
 
+/**
+ * Represents an octet of an IPv4 address.
+ */
 export interface Ipv4AddressOctet {
+	/** The value of the octet. */
 	value: number;
+	/** The start index of the octet. */
 	start: number;
+	/** The end index of the octet. */
 	end: number;
 }
 
+/**
+ * Lists the octets of an IPv4 address.
+ * @param input - The input string.
+ * @param fromIndex - The index to start from.
+ * @returns An iterator of IPv4 address octets.
+ */
 export const listIpv4Octets = function* (
 	input: string,
 	fromIndex = 0,
@@ -40,12 +52,24 @@ export const listIpv4Octets = function* (
 	}
 };
 
+/**
+ * Represents the result of parsing an IPv4 address.
+ */
 export interface Ipv4AddressParseResult {
+	/** The octets of the IPv4 address. */
 	octets: [number, number, number, number];
+	/** The start index of the IPv4 address. */
 	start: number;
+	/** The end index of the IPv4 address. */
 	end: number;
 }
 
+/**
+ * Parses an IPv4 address.
+ * @param input - The input string.
+ * @param start - The index to start from.
+ * @returns The result of parsing an IPv4 address.
+ */
 export const parseIpv4Address = (
 	input: string,
 	start = 0,
