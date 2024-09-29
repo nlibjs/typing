@@ -1,5 +1,30 @@
 # Changelog
 
+## v2.0.6 (2024-09-29)
+
+### Bug Fixes
+
+- throw an error if input has a circular reference ([119f83e](https://github.com/nlibjs/typing/commit/119f83e65108a07ddd58283bed5e4c6e71309693))
+- set a name to type guard function ([34668f9](https://github.com/nlibjs/typing/commit/34668f9806cf751b3515fe2340128ed2c43b05a7))
+
+### Tests
+
+- beforeEach is not implemented in Deno ([bb8ec8c](https://github.com/nlibjs/typing/commit/bb8ec8ccd4892cea7c2183a854baa77b8eabd285))
+- add --allow-read ([2b29852](https://github.com/nlibjs/typing/commit/2b298526b3f0c99625ff7264223d45b59b33ec6f))
+- add checkerTestCase to test values from another context ([72edb62](https://github.com/nlibjs/typing/commit/72edb624d0642d480d3b9f176fa80870484f8b88))
+
+### Documentation
+
+- add docs to codepoints and resetNoNameTypeCount ([37430b9](https://github.com/nlibjs/typing/commit/37430b9a16e3eb75e875d92b7c63e2f91f889e34))
+- style ([1dde25b](https://github.com/nlibjs/typing/commit/1dde25bc1706961332c10ac7d30a4f611e6d0745))
+
+### Continuous Integration
+
+- skip reporting coverage on DenoTest ([7ea92fe](https://github.com/nlibjs/typing/commit/7ea92febfa69cc463869ea1874d501b698d65495))
+- run tests with deno ([ef3f225](https://github.com/nlibjs/typing/commit/ef3f2259acff26f5633fb1b51377c5cf405fe2ef))
+- run tests with bun ([4111120](https://github.com/nlibjs/typing/commit/4111120d713a301eaf1c1c7c76b1b8dfaf9c2c3e))
+
+
 ## v2.0.5 (2024-09-24)
 
 ### Documentation
