@@ -159,15 +159,19 @@ export const typeChecker: <T>(
 	typeName?: string,
 ) => TypeChecker<T> = factory(<T>(d: TypeDefinition<T>, name = "") => {
 	if (is$String(d)) {
+		const typeName = name || d;
+		const k = `is${typeName}`;
 		return {
-			typeGuard: (v: unknown): v is T => getType(v) === d,
-			toString: { value: () => name || d },
+			typeGuard: { [k]: (v: unknown): v is T => getType(v) === d }[k],
+			toString: { value: () => typeName },
 		};
 	}
 	if (is$RegExp(d)) {
+		const typeName = name || `${d}`;
+		const k = `is ${typeName}`;
 		return {
-			typeGuard: (v: unknown): v is T => is$String(v) && d.test(v),
-			toString: { value: () => name || `${d}` },
+			typeGuard: { [k]: (v: unknown): v is T => is$String(v) && d.test(v) }[k],
+			toString: { value: () => typeName },
 		};
 	}
 	if (is$Set(d)) {
