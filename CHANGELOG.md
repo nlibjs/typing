@@ -1,5 +1,16 @@
 # Changelog
 
+## v2.0.7 (2024-09-29)
+
+### Bug Fixes
+
+- KeyValuePair<T> ([6ab3d1a](https://github.com/nlibjs/typing/commit/6ab3d1ada2fd58304792d5bdc399343cb8ea931c))
+
+### Documentation
+
+- add some docs ([0b9dbe3](https://github.com/nlibjs/typing/commit/0b9dbe3ada10148848e515aa0533bb3f6dd4ec7d))
+
+
 ## v2.0.6 (2024-09-29)
 
 ### Bug Fixes
