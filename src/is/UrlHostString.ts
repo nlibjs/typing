@@ -5,7 +5,13 @@ import { isIpv4Address } from "./Ipv4Address.ts";
 import { isIpv6Address } from "./Ipv6Address.ts";
 import { isString } from "./String.ts";
 
+/** A URL host string. */
 export type UrlHostString = Nominal<string, "UrlHostString">;
+
+/**
+ * @param input A value to check.
+ * @returns A type predicate for `UrlHostString`.
+ */
 export const isUrlHostString: TypeChecker<UrlHostString> = typeChecker(
 	(input: unknown): input is UrlHostString => {
 		if (!isString(input)) {

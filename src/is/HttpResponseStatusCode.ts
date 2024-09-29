@@ -1,6 +1,7 @@
 import { typeChecker } from "../typeChecker.ts";
 import type { TypeChecker, ValueOf } from "../types.ts";
 
+/** Constants for HTTP status codes. */
 export const HttpStatusCode = {
 	Continue: 100,
 	SwitchingProtocol: 101,
@@ -65,6 +66,13 @@ export const HttpStatusCode = {
 	NotExtended: 510,
 	NetworkAuthenticationRequired: 511,
 } as const;
+
+/** An HTTP status code. */
 export type HttpResponseStatusCode = ValueOf<typeof HttpStatusCode>;
+
+/**
+ * @param input A value to check.
+ * @returns A type predicate for `HttpResponseStatusCode`.
+ */
 export const isHttpResponseStatusCode: TypeChecker<HttpResponseStatusCode> =
 	typeChecker(new Set(Object.values(HttpStatusCode)), "HttpResponseStatusCode");

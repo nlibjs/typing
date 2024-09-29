@@ -20,6 +20,11 @@ import { isString } from "./String.ts";
  * ```
  */
 export type DomainName = Nominal<string, "DomainName">;
+
+/**
+ * @param input A value to check.
+ * @returns A type predicate for `DomainName`.
+ */
 export const isDomainName: TypeChecker<DomainName> = typeChecker(
 	(input: unknown): input is DomainName => {
 		if (!isString(input)) {
