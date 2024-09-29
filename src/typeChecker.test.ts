@@ -1,11 +1,7 @@
-import { beforeEach, test } from "node:test";
+import { test } from "node:test";
 import * as assert from "node:assert";
 import { resetNoNameTypeCount, typeChecker } from "./typeChecker.ts";
 import type { Nominal } from "./types.ts";
-
-beforeEach(() => {
-	resetNoNameTypeCount();
-});
 
 test("Should return the same object when generated from a TypeChecker.", () => {
 	type MyType = "MyType";
@@ -26,6 +22,7 @@ test("Should detect circular references.", () => {
 });
 
 test("Should serialize definitions (type guard)", () => {
+	resetNoNameTypeCount();
 	const isT1 = typeChecker(function isFoo() {
 		return true;
 	});
@@ -37,6 +34,7 @@ test("Should serialize definitions (type guard)", () => {
 });
 
 test("Should serialize definitions (string)", () => {
+	resetNoNameTypeCount();
 	const isT1 = typeChecker("MyClass");
 	assert.equal(`${isT1}`, "TypeChecker<T1>\nT1 = MyClass");
 	const isT2 = typeChecker("MyClass", "MyType");
@@ -44,6 +42,7 @@ test("Should serialize definitions (string)", () => {
 });
 
 test("Should serialize definitions (RegExp)", () => {
+	resetNoNameTypeCount();
 	const isT1 = typeChecker(/^[0-9a-f]{4}$/);
 	assert.equal(`${isT1}`, "TypeChecker<T1>\nT1 = /^[0-9a-f]{4}$/");
 	const isT2 = typeChecker(/^[0-9a-f]{4}$/, "MyType");
@@ -51,6 +50,7 @@ test("Should serialize definitions (RegExp)", () => {
 });
 
 test("Should serialize definitions (Set)", () => {
+	resetNoNameTypeCount();
 	const isT1 = typeChecker(new Set(["a", "b", "c"]));
 	assert.equal(`${isT1}`, 'TypeChecker<T1>\nT1 = "a" | "b" | "c"');
 	const isT2 = typeChecker(new Set(["a", "b", "c"]), "MyType");
@@ -58,6 +58,7 @@ test("Should serialize definitions (Set)", () => {
 });
 
 test("Should serialize definitions (Object)", () => {
+	resetNoNameTypeCount();
 	const isT1 = typeChecker({ a: /a/ });
 	assert.equal(`${isT1}`, "TypeChecker<T1>\nT1 = {\n  a: /a/,\n}");
 	const isT2 = typeChecker({ a: /a/ }, "MyType");
@@ -65,6 +66,7 @@ test("Should serialize definitions (Object)", () => {
 });
 
 test("Should serialize definitions (Array)", () => {
+	resetNoNameTypeCount();
 	const isT1 = typeChecker({ a: /a/ });
 	assert.equal(
 		`${isT1.array}`,
