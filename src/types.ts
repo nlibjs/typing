@@ -61,10 +61,9 @@ export type MapValue<T> = T extends Map<unknown, infer I> ? I : never;
  * type Pair = KeyValuePair<typeof obj>; // → ['a', 1] | ['b', 2] | ['c', 3]
  * ```
  */
-export type KeyValuePair<T, K extends keyof T = Extract<keyof T, string>> = [
-	K,
-	T[K],
-];
+export type KeyValuePair<T> = {
+	[K in keyof T]: [K, T[K]];
+}[keyof T];
 /**
  * A type representing a callable function.
  */
