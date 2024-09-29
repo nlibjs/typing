@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.0.8 (2024-09-29)
+
+### Features
+
+- add typeCheckerConfig ([d45e256](https://github.com/nlibjs/typing/commit/d45e256dc5592bdd01803226cc66a69ee7621c18))
+
+### Documentation
+
+- add docs for type checkers ([4c9bf93](https://github.com/nlibjs/typing/commit/4c9bf938040359ade9239675ecf3d13a76fe8008))
+- add docs tocodePointUtil.ts ([9b970f2](https://github.com/nlibjs/typing/commit/9b970f298ceeb97b6f658403c6c19a6356707536))
+
+
 ## v2.0.7 (2024-09-29)
 
 ### Bug Fixes
