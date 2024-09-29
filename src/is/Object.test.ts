@@ -1,9 +1,9 @@
 import { test } from "node:test";
 import * as assert from "node:assert";
-import { listCheckerTests } from "./listCheckerTests.test.ts";
+import { checkerTestCase } from "../checkerTestCase.test.ts";
 import { isObject } from "./Object.ts";
 
-for (const { key, input, expected } of listCheckerTests(
+for (const { name, input, expected } of checkerTestCase(
 	"EmptyArray",
 	"Object",
 	"InvalidDate",
@@ -22,7 +22,7 @@ for (const { key, input, expected } of listCheckerTests(
 	"BigUint64Array",
 	"BigInt64Array",
 )) {
-	test(`${key} → ${expected}`, () => {
+	test(`${name} → ${expected}`, () => {
 		assert.equal(isObject(input), expected);
 	});
 }

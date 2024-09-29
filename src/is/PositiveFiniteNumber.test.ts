@@ -1,16 +1,16 @@
 import { test } from "node:test";
 import * as assert from "node:assert";
-import { listCheckerTests } from "./listCheckerTests.test.ts";
+import { checkerTestCase } from "../checkerTestCase.test.ts";
 import { isPositiveFiniteNumber } from "./PositiveFiniteNumber.ts";
 
-for (const { key, input, expected } of listCheckerTests(
+for (const { name, input, expected } of checkerTestCase(
 	"PositiveInteger",
 	"PositiveUnsafeInteger",
 	"PositiveFloat",
 	"HttpResponseStatusCodeOk",
 	"HttpResponseStatusCodeNotFound",
 )) {
-	test(`${key} → ${expected}`, () => {
+	test(`${name} → ${expected}`, () => {
 		assert.equal(isPositiveFiniteNumber(input), expected);
 	});
 }

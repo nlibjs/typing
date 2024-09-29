@@ -1,14 +1,14 @@
 import { test } from "node:test";
 import * as assert from "node:assert";
-import { listCheckerTests } from "./listCheckerTests.test.ts";
+import { checkerTestCase } from "../checkerTestCase.test.ts";
 import { isUUID } from "./UUID.ts";
 
-for (const { key, input, expected } of listCheckerTests(
+for (const { name, input, expected } of checkerTestCase(
 	"UUIDLowercase",
 	"UUIDUppercase",
 	"UUIDMixedcase",
 )) {
-	test(`${key} → ${expected}`, () => {
+	test(`${name} → ${expected}`, () => {
 		assert.equal(isUUID(input), expected);
 	});
 }

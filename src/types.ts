@@ -15,6 +15,7 @@ export type Callable<Return = unknown> = (...args: Array<unknown>) => Return;
 export type TypeGuard<T> = (input: unknown) => input is T;
 export type GuardedType<T> = T extends TypeGuard<infer S> ? S : never;
 export type TypeChecker<T> = TypeGuard<T> & {
+	readonly typeName: string;
 	readonly optional: TypeChecker<T | undefined>;
 	readonly array: TypeChecker<Array<T>>;
 	readonly dictionary: TypeChecker<Record<string, T>>;
@@ -23,5 +24,6 @@ export type TypeChecker<T> = TypeGuard<T> & {
 		input: unknown,
 		route?: Array<string>,
 	): Error | null;
-	toString(depth?: number): string;
+	serialize(depth: number): Generator<string>;
+	toString(): string;
 };

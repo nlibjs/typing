@@ -1,4 +1,4 @@
-const typeCheckerTestValues = {
+export const checkerTestValues = {
 	NegativeInfinity: Number.NEGATIVE_INFINITY,
 	NegativeUnsafeInteger: Number.MAX_SAFE_INTEGER * -2,
 	NegativeFloat: -1.1,
@@ -60,7 +60,7 @@ const typeCheckerTestValues = {
 	Undefined: undefined,
 	True: true,
 	False: false,
-	Object: Object.create(null) as unknown,
+	Object: Object.create(null),
 	ValidDate: new Date(),
 	InvalidDate: new Date("Foo"),
 	Function: () => null,
@@ -85,12 +85,4 @@ const typeCheckerTestValues = {
 	SmallHex: "0123456789abcdef",
 	CapitalHex: "0123456789ABCDEF",
 	Hex: "0123456789ABCDEFabcdef",
-};
-type TestKey = keyof typeof typeCheckerTestValues;
-export const listCheckerTests = function* (...trueKeys: Array<TestKey>) {
-	for (const key of Object.keys(typeCheckerTestValues) as Array<TestKey>) {
-		const input = typeCheckerTestValues[key];
-		const expected = trueKeys.includes(key);
-		yield { key, input, expected };
-	}
 };
