@@ -1,7 +1,17 @@
-import type { Callable, TypeChecker, TypeGuard } from "./types.ts";
+import type {
+	Callable,
+	TypeChecker,
+	TypeDefinition,
+	TypeGuard,
+} from "./types.ts";
 import { getType } from "./getType.ts";
-import { defineProperties, keys, values } from "./object.ts";
 
+const keys = Object.keys as <T>(o: T) => Array<keyof T>;
+const values = Object.values as <T>(o: T) => Array<T[keyof T]>;
+const defineProperties = Object.defineProperties as <T, S = T>(
+	object: S,
+	props: { [K in keyof T]: { get: (this: T) => T[K] } | { value: T[K] } },
+) => T;
 const is$Undefined = (v: unknown): v is undefined => typeof v === "undefined";
 const is$String = (v: unknown): v is string => typeof v === "string";
 const is$RegExp = (v: unknown): v is RegExp => getType(v) === "RegExp";
@@ -55,18 +65,46 @@ interface FactoryProps<T> {
 }
 
 let noNameTypeCount = 0;
-
-/**
- * Reset the counter for unnamed type names.
- */
-export const resetNoNameTypeCount: () => void = () => {
-	noNameTypeCount = 0;
+const cacheStore = new Map<object, WeakMap<object, TypeChecker<unknown>>>();
+const getCache = <T>(key: object) => {
+	let map = cacheStore.get(key);
+	if (!map) {
+		map = new WeakMap();
+		cacheStore.set(key, map);
+	}
+	return map as WeakMap<object, TypeChecker<T>>;
 };
 
-const factory = <T, A>(props: (arg: A, name: string) => FactoryProps<T>) => {
-	const cache = new WeakMap<object, TypeChecker<T>>();
-	return (arg: A, typeName = `T${++noNameTypeCount}`) => {
-		let checker = is$Object(arg) && cache.get(arg);
+/**
+ * An object that provides configuration functions for testing purposes.
+ */
+export const typeCheckerConfig: {
+	/** Clears the cache. */
+	clearCache(): void;
+	/** Gets the count of types without names. */
+	getNoNameTypeCount(): number;
+	/** Resets the count of types without names. */
+	resetNoNameTypeCount(count?: number): void;
+} = {
+	clearCache() {
+		cacheStore.clear();
+	},
+	getNoNameTypeCount() {
+		return noNameTypeCount;
+	},
+	resetNoNameTypeCount(count = 0) {
+		noNameTypeCount = count;
+	},
+};
+
+const factory =
+	<T, A>(props: (arg: A, name: string) => FactoryProps<T>) =>
+	(arg: A, typeName = `T${++noNameTypeCount}`) => {
+		const cache = getCache(props);
+		let checker: TypeChecker<T> | null = null;
+		if (is$Object(arg)) {
+			checker = (cache.get(arg) as TypeChecker<T>) ?? null;
+		}
 		if (checker) {
 			return checker;
 		}
@@ -112,7 +150,6 @@ const factory = <T, A>(props: (arg: A, name: string) => FactoryProps<T>) => {
 		cache.set(checker, checker);
 		return checker;
 	};
-};
 
 const optionalChecker: <T>(isT: TypeChecker<T>) => TypeChecker<T | undefined> =
 	factory(<T>(isT: TypeChecker<T>) => ({
@@ -160,16 +197,6 @@ const dictionaryChecker: <T>(
 		);
 	},
 }));
-
-/**
- * A type of the first argument of `typeChecker()`.
- */
-export type TypeDefinition<T> =
-	| TypeGuard<T>
-	| string
-	| Set<T>
-	| RegExp
-	| { [K in keyof T]: TypeDefinition<T[K]> };
 
 /**
  * Create a type checker from a type definition.
@@ -250,11 +277,16 @@ export const typeChecker: <T>(
 			},
 		};
 	}
-	const properties = lazy(() =>
-		keys(d).map((k): [keyof T & string, TypeChecker<T[keyof T]>] => [
-			k,
-			typeChecker<T[typeof k]>(d[k], `${typeName}.${k}`),
-		]),
+	type PropertyTuple<K extends keyof T = keyof T> = [K, TypeChecker<T[K]>];
+	const properties = lazy(
+		(): Array<PropertyTuple> => [
+			...(function* () {
+				for (const k of keys(d)) {
+					const propertyPath = `${typeName}.${String(k)}`;
+					yield [k, typeChecker(d[k], propertyPath)] as PropertyTuple;
+				}
+			})(),
+		],
 	);
 	const typeGuard = (
 		v: unknown,
@@ -280,18 +312,18 @@ export const typeChecker: <T>(
 			yield "{\n";
 			const propertyIndent = getIndent(depth + 1);
 			for (const [k, pd] of properties()) {
-				yield `${propertyIndent}${k}: `;
+				yield `${propertyIndent}${String(k)}: `;
 				yield* pd.serialize(depth + 1);
 				yield ",\n";
 			}
 			yield `${getIndent(depth)}}`;
 		},
-		test(input: unknown, route: Array<string> = []) {
+		test(input: unknown, route: Array<string | number | symbol> = []) {
 			if (!is$Object(input)) {
 				return new TypeCheckError(this, input);
 			}
 			for (const [k, pd] of properties()) {
-				const error = pd.test(input[k], route.concat(k));
+				const error = pd.test((input as T)[k], route.concat(k));
 				if (error) {
 					return error;
 				}
@@ -302,7 +334,11 @@ export const typeChecker: <T>(
 });
 
 class TypeCheckError<T> extends Error {
-	constructor(checker: TypeChecker<T>, value: unknown, route?: Array<string>) {
+	constructor(
+		checker: TypeChecker<T>,
+		value: unknown,
+		route?: Array<string | number | symbol>,
+	) {
 		const name = route ? `.${route.join(".")}` : "The value";
 		super(
 			`TypeCheckError: ${name} ${value} is not of type ${checker.toString()}`,

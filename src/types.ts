@@ -18,56 +18,20 @@ export type Nominal<K, T extends string> = K & {
  */
 export type ValueOf<T> = T[keyof T];
 /**
- * A type to extract the item type of an array.
- * @example
- * ```typescript
- * const arr = [1, 2, 3] as const;
- * type Item = ArrayItem<typeof arr>; // → 1 | 2 | 3
- * ```
- */
-export type ArrayItem<T extends Array<unknown>> = T[number];
-/**
- * A type to extract the item type of a set.
- * @example
- * ```typescript
- * const set = new Set([1, 2, 3] as const);
- * type Item = SetItem<typeof set>; // → 1 | 2 | 3
- * ```
- */
-export type SetItem<T> = T extends Set<infer I> ? I : never;
-/**
- * A type to extract the key type of a map.
- * @example
- * ```typescript
- * const map = new Map([['a', 1], ['b', 2], ['c', 3]] as const);
- * type Key = MapKey<typeof map>; // → 'a' | 'b' | 'c'
- * ```
- */
-export type MapKey<T> = T extends Map<infer I, unknown> ? I : never;
-/**
- * A type to extract the value type of a map.
- * @example
- * ```typescript
- * const map = new Map([['a', 1], ['b', 2], ['c', 3]] as const);
- * type Value = MapValue<typeof map>; // → 1 | 2 | 3
- * ```
- */
-export type MapValue<T> = T extends Map<unknown, infer I> ? I : never;
-/**
  * A type representing a key-value pair of an object.
  * @example
  * ```typescript
  * const obj = { a: 1, b: 2, c: 3 } as const;
- * type Pair = KeyValuePair<typeof obj>; // → ['a', 1] | ['b', 2] | ['c', 3]
+ * type Pair = KeyValueTuple<typeof obj>; // → ['a', 1] | ['b', 2] | ['c', 3]
  * ```
  */
-export type KeyValuePair<T> = {
-	[K in keyof T]: [K, T[K]];
-}[keyof T];
+export type KeyValueTuple<T> = { [K in keyof T]: [K, T[K]] }[keyof T];
 /**
  * A type representing a callable function.
  */
-export type Callable<Return = unknown> = (...args: Array<unknown>) => Return;
+export type Callable<T = unknown, A extends Array<unknown> = Array<unknown>> = (
+	...args: A
+) => T;
 /**
  * A type representing a type guard function.
  * @see https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates
@@ -77,10 +41,19 @@ export type TypeGuard<T> = (input: unknown) => input is T;
  * A type to extract the guarded type from a type guard function.
  * @example
  * ```typescript
- * type Guarded = GuardedType<typeof isString>; // → string
+ * type Guarded = Guarded<typeof isString>; // → string
  * ```
  */
-export type GuardedType<T> = T extends TypeGuard<infer S> ? S : never;
+export type Guarded<T> = T extends TypeGuard<infer S> ? S : never;
+/**
+ * A type of the first argument of `typeChecker()`.
+ */
+export type TypeDefinition<T> =
+	| TypeGuard<T>
+	| string
+	| Set<T>
+	| RegExp
+	| { [K in keyof T]: TypeDefinition<T[K]> };
 /**
  * `ReturnType<typeof typeChecker>`
  */
@@ -95,7 +68,7 @@ export type TypeChecker<T> = TypeGuard<T> & {
 	test(
 		this: TypeChecker<T>,
 		input: unknown,
-		route?: Array<string>,
+		route?: Array<string | number | symbol>,
 	): Error | null;
 	/**
 	 * A method used by `toString()` to serialize the type.
