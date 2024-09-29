@@ -56,7 +56,10 @@ interface FactoryProps<T> {
 
 let noNameTypeCount = 0;
 
-export const resetNoNameTypeCount = () => {
+/**
+ * Reset the counter for unnamed type names.
+ */
+export const resetNoNameTypeCount: () => void = () => {
 	noNameTypeCount = 0;
 };
 
