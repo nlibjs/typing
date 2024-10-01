@@ -91,22 +91,6 @@ const factory =
 			return cached.value;
 		}
 		const checker = defineProperties<TypeChecker<T>, TypeGuard<T>>(typeGuard, {
-			typeName: { value: typeName },
-			optional: {
-				get() {
-					return isOptionalOf(this);
-				},
-			},
-			array: {
-				get() {
-					return isArrayOf(this);
-				},
-			},
-			dictionary: {
-				get() {
-					return isDictionaryOf(this);
-				},
-			},
 			test: test
 				? { value: test }
 				: {
