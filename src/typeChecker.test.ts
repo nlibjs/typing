@@ -1,7 +1,48 @@
 import { test } from "node:test";
 import * as assert from "node:assert";
 import { typeCheckerConfig, typeChecker } from "./typeChecker.ts";
-import type { Nominal } from "./types.ts";
+import type { Nominal, TypeChecker } from "./types.ts";
+
+test("Should able to define tree structures", () => {
+	typeCheckerConfig.resetNoNameTypeCount();
+	interface MyNode {
+		id: string;
+		children: Array<MyNode>;
+	}
+	const isT: TypeChecker<MyNode> = typeChecker<MyNode>(
+		{
+			id: /^[0-9a-z]+$/,
+			get children() {
+				return isT.array;
+			},
+		},
+		"MyNode",
+	);
+	assert.equal(
+		isT({
+			id: "a",
+			children: [
+				{
+					id: "b",
+					children: [{ id: "c", children: [{ id: "d", children: [] }] }],
+				},
+			],
+		}),
+		true,
+	);
+	assert.equal(
+		isT({
+			id: "a",
+			children: [
+				{
+					id: "b",
+					children: [{ id: "c", children: [{ id: "D", children: [] }] }],
+				},
+			],
+		}),
+		false,
+	);
+});
 
 test("Should return the same object when generated from a TypeChecker.", () => {
 	type MyType = "MyType";
@@ -26,55 +67,74 @@ test("Should serialize definitions (type guard)", () => {
 	const isT1 = typeChecker(function isFoo() {
 		return true;
 	});
-	assert.equal(`${isT1}`, "TypeChecker<T1>\nT1 = isFoo");
+	assert.equal(`${isT1}`, "TypeChecker<isFoo>");
 	const isT2 = typeChecker(function isFoo() {
 		return true;
 	}, "MyType");
-	assert.equal(`${isT2}`, "TypeChecker<MyType>\nMyType = isFoo");
+	assert.equal(`${isT2}`, "TypeChecker<isFoo>");
 });
 
 test("Should serialize definitions (string)", () => {
 	typeCheckerConfig.resetNoNameTypeCount();
 	const isT1 = typeChecker("MyClass");
-	assert.equal(`${isT1}`, "TypeChecker<T1>\nT1 = MyClass");
+	assert.equal(`${isT1}`, "TypeChecker<MyClass>");
 	const isT2 = typeChecker("MyClass", "MyType");
-	assert.equal(`${isT2}`, "TypeChecker<MyType>\nMyType = MyClass");
+	assert.equal(`${isT2}`, "TypeChecker<MyClass>");
 });
 
 test("Should serialize definitions (RegExp)", () => {
 	typeCheckerConfig.resetNoNameTypeCount();
 	const isT1 = typeChecker(/^[0-9a-f]{4}$/);
-	assert.equal(`${isT1}`, "TypeChecker<T1>\nT1 = /^[0-9a-f]{4}$/");
+	assert.equal(`${isT1}`, "TypeChecker</^[0-9a-f]{4}$/>");
 	const isT2 = typeChecker(/^[0-9a-f]{4}$/, "MyType");
-	assert.equal(`${isT2}`, "TypeChecker<MyType>\nMyType = /^[0-9a-f]{4}$/");
+	assert.equal(`${isT2}`, "TypeChecker</^[0-9a-f]{4}$/>");
 });
 
 test("Should serialize definitions (Set)", () => {
 	typeCheckerConfig.resetNoNameTypeCount();
 	const isT1 = typeChecker(new Set(["a", "b", "c"]));
-	assert.equal(`${isT1}`, 'TypeChecker<T1>\nT1 = "a" | "b" | "c"');
+	assert.equal(`${isT1}`, 'TypeChecker<"a" | "b" | "c">');
 	const isT2 = typeChecker(new Set(["a", "b", "c"]), "MyType");
-	assert.equal(`${isT2}`, 'TypeChecker<MyType>\nMyType = "a" | "b" | "c"');
+	assert.equal(`${isT2}`, 'TypeChecker<"a" | "b" | "c">');
 });
 
 test("Should serialize definitions (Object)", () => {
 	typeCheckerConfig.resetNoNameTypeCount();
 	const isT1 = typeChecker({ a: /a/ });
-	assert.equal(`${isT1}`, "TypeChecker<T1>\nT1 = {\n  a: /a/,\n}");
+	assert.equal(`${isT1}`, "TypeChecker<T1 {\n  a: /a/,\n}>");
 	const isT2 = typeChecker({ a: /a/ }, "MyType");
-	assert.equal(`${isT2}`, "TypeChecker<MyType>\nMyType = {\n  a: /a/,\n}");
+	assert.equal(`${isT2}`, "TypeChecker<MyType {\n  a: /a/,\n}>");
 });
 
 test("Should serialize definitions (Array)", () => {
 	typeCheckerConfig.resetNoNameTypeCount();
 	const isT1 = typeChecker({ a: /a/ });
-	assert.equal(
-		`${isT1.array}`,
-		"TypeChecker<T2>\nT2 = Array<T1>\nT1 = {\n  a: /a/,\n}",
-	);
+	assert.equal(`${isT1.array}`, "TypeChecker<Array<T1 {\n  a: /a/,\n}>>");
 	const isT2 = typeChecker({ a: /a/ }, "MyType");
-	assert.equal(
-		`${isT2.array}`,
-		"TypeChecker<T3>\nT3 = Array<MyType>\nMyType = {\n  a: /a/,\n}",
+	assert.equal(`${isT2.array}`, "TypeChecker<Array<MyType {\n  a: /a/,\n}>>");
+});
+
+test("Should serialize definitions (Recursive)", () => {
+	typeCheckerConfig.resetNoNameTypeCount();
+	interface MyNode {
+		id: string;
+		children: Array<MyNode>;
+	}
+	const isT: TypeChecker<MyNode> = typeChecker<MyNode>(
+		{
+			id: /^[0-9a-z]+$/,
+			get children() {
+				return isT.array;
+			},
+		},
+		"MyNode",
 	);
+	const actual = `${isT}`;
+	const expected = [
+		"TypeChecker<MyNode {",
+		"  id: /^[0-9a-z]+$/,",
+		"  children: Array<Ref:MyNode>,",
+		"}>",
+	].join("\n");
+	assert.equal(actual, expected);
 });

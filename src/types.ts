@@ -72,7 +72,8 @@ export type TypeChecker<T> = TypeGuard<T> & {
 	): Error | null;
 	/**
 	 * A method used by `toString()` to serialize the type.
+	 * @private
 	 */
-	serialize(depth: number): Generator<string>;
+	serialize(depth: number, done: Map<object, string>): Generator<string>;
 	toString(): string;
 };

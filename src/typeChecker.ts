@@ -28,35 +28,11 @@ const lazy = <T>(getter: () => T): (() => T) => {
 		return cached.value;
 	};
 };
-const serializeGenerics = function* (
-	name: string,
-	argName: string,
-	serializer: Generator<string>,
-	open = "<",
-	close = ">",
-) {
-	yield `${name}${open}${argName}${close}`;
-	let buffer: string | null = "";
-	for (const chunk of serializer) {
-		if (is$String(buffer)) {
-			buffer += chunk;
-			if (!argName.startsWith(buffer) || argName.length < buffer.length) {
-				yield `\n${argName} = ${buffer}`;
-				buffer = null;
-			}
-		} else {
-			yield chunk;
-		}
-	}
-	if (buffer && argName !== buffer) {
-		yield `\n${argName} = ${buffer}`;
-	}
-};
 const getIndent = (depth: number) => "  ".repeat(depth);
 
 interface FactoryProps<T> {
 	typeGuard: TypeGuard<T>;
-	serialize(depth: number): Generator<string>;
+	serialize(depth: number, done: Map<object, string>): Generator<string>;
 	test?(
 		this: TypeChecker<T>,
 		input: unknown,
@@ -65,14 +41,14 @@ interface FactoryProps<T> {
 }
 
 let noNameTypeCount = 0;
-const cacheStore = new Map<object, WeakMap<object, TypeChecker<unknown>>>();
-const getCache = <T>(key: object) => {
-	let map = cacheStore.get(key);
+let cacheStore = new WeakMap<object, WeakMap<object, { value: unknown }>>();
+const getCache = <T>(context: object) => {
+	let map = cacheStore.get(context);
 	if (!map) {
 		map = new WeakMap();
-		cacheStore.set(key, map);
+		cacheStore.set(context, map);
 	}
-	return map as WeakMap<object, TypeChecker<T>>;
+	return map as WeakMap<object, { value: T }>;
 };
 
 /**
@@ -87,7 +63,7 @@ export const typeCheckerConfig: {
 	resetNoNameTypeCount(count?: number): void;
 } = {
 	clearCache() {
-		cacheStore.clear();
+		cacheStore = new WeakMap();
 	},
 	getNoNameTypeCount() {
 		return noNameTypeCount;
@@ -100,30 +76,35 @@ export const typeCheckerConfig: {
 const factory =
 	<T, A>(props: (arg: A, name: string) => FactoryProps<T>) =>
 	(arg: A, typeName = `T${++noNameTypeCount}`) => {
-		const cache = getCache(props);
-		let checker: TypeChecker<T> | null = null;
+		const checkerCache = getCache<TypeChecker<T>>(factory);
+		const cache = getCache<TypeChecker<T>>(props);
+		let cached: { value: TypeChecker<T> } | undefined;
 		if (is$Object(arg)) {
-			checker = (cache.get(arg) as TypeChecker<T>) ?? null;
+			cached = cache.get(arg);
 		}
-		if (checker) {
-			return checker;
+		if (cached) {
+			return cached.value;
 		}
 		const { typeGuard, serialize, test } = props(arg, typeName);
-		checker = defineProperties<TypeChecker<T>, TypeGuard<T>>(typeGuard, {
+		cached = checkerCache.get(typeGuard);
+		if (cached) {
+			return cached.value;
+		}
+		const checker = defineProperties<TypeChecker<T>, TypeGuard<T>>(typeGuard, {
 			typeName: { value: typeName },
 			optional: {
 				get() {
-					return optionalChecker(this);
+					return isOptionalOf(this);
 				},
 			},
 			array: {
 				get() {
-					return arrayChecker(this);
+					return isArrayOf(this);
 				},
 			},
 			dictionary: {
 				get() {
-					return dictionaryChecker(this);
+					return isDictionaryOf(this);
 				},
 			},
 			test: test
@@ -138,65 +119,93 @@ const factory =
 					},
 			serialize: { value: serialize },
 			toString: {
-				value: (depth = 0) =>
-					[
-						...serializeGenerics("TypeChecker", typeName, serialize(depth)),
-					].join(""),
+				value() {
+					return ["TypeChecker<", ...serialize(0, new Map()), ">"].join("");
+				},
 			},
 		});
 		if (is$Object(arg)) {
-			cache.set(arg, checker);
+			cache.set(arg, { value: checker });
 		}
-		cache.set(checker, checker);
+		cache.set(checkerCache, { value: checker });
+		checkerCache.set(checker, { value: checker });
 		return checker;
 	};
 
-const optionalChecker: <T>(isT: TypeChecker<T>) => TypeChecker<T | undefined> =
-	factory(<T>(isT: TypeChecker<T>) => ({
-		typeGuard: (v: unknown): v is T | undefined => isT(v) || is$Undefined(v),
-		optional: {
-			get() {
-				return this;
+export const isOptionalOf: <T>(
+	definition: TypeDefinition<T>,
+	typeName?: string,
+) => TypeChecker<T | undefined> = factory(
+	<T>(definition: TypeDefinition<T>, typeName: string) => {
+		const isT = typeChecker(definition, typeName);
+		const k = `isOptionalOf${typeName}`;
+		return {
+			typeGuard: {
+				[k]: (v: unknown): v is T | undefined => isT(v) || is$Undefined(v),
+			}[k],
+			optional: {
+				get() {
+					return this;
+				},
 			},
-		},
-		*serialize(depth) {
-			yield* isT.serialize(depth);
-			yield " | undefined";
-		},
-	}));
-
-const arrayChecker: <T>(isT: TypeChecker<T>) => TypeChecker<Array<T>> = factory(
-	<T>(isT: TypeChecker<T>) => ({
-		typeGuard: (v: unknown): v is Array<T> => Array.isArray(v) && v.every(isT),
-		*serialize(depth) {
-			yield* serializeGenerics("Array", isT.typeName, isT.serialize(depth));
-		},
-	}),
+			*serialize(depth, done) {
+				yield* isT.serialize(depth, done);
+				yield " | undefined";
+			},
+		};
+	},
 );
 
-const dictionaryChecker: <T>(
-	isT: TypeChecker<T>,
-) => TypeChecker<Record<string, T>> = factory(<T>(isT: TypeChecker<T>) => ({
-	typeGuard: (v: unknown): v is Record<string, T> => {
-		if (!is$Object(v)) {
-			return false;
-		}
-		for (const item of values(v)) {
-			if (!isT(item)) {
-				return false;
-			}
-		}
-		return true;
+export const isArrayOf: <T>(
+	definition: TypeDefinition<T>,
+	typeName?: string,
+) => TypeChecker<Array<T>> = factory(
+	<T>(definition: TypeDefinition<T>, typeName: string) => {
+		const isT = typeChecker(definition, typeName);
+		const k = `isArrayOf${typeName}`;
+		return {
+			typeGuard: {
+				[k]: (v: unknown): v is Array<T> =>
+					Array.isArray(v) && v.every((i) => isT(i)),
+			}[k],
+			*serialize(depth, done) {
+				yield "Array<";
+				yield* isT.serialize(depth, done);
+				yield ">";
+			},
+		};
 	},
-	*serialize(depth) {
-		yield* serializeGenerics(
-			"Record",
-			isT.typeName,
-			isT.serialize(depth),
-			"<string, ",
-		);
+);
+
+export const isDictionaryOf: <T>(
+	definition: TypeDefinition<T>,
+	typeName?: string,
+) => TypeChecker<Record<string, T>> = factory(
+	<T>(definition: TypeDefinition<T>, typeName: string) => {
+		const isT = typeChecker(definition, typeName);
+		const k = `isDictionaryOf${typeName}`;
+		return {
+			typeGuard: {
+				[k]: (v: unknown): v is Record<string, T> => {
+					if (!is$Object(v)) {
+						return false;
+					}
+					for (const item of values(v)) {
+						if (!isT(item)) {
+							return false;
+						}
+					}
+					return true;
+				},
+			}[k],
+			*serialize(depth, done) {
+				yield "Record<string, ";
+				yield* isT.serialize(depth, done);
+				yield ">";
+			},
+		};
 	},
-}));
+);
 
 /**
  * Create a type checker from a type definition.
@@ -308,12 +317,19 @@ export const typeChecker: <T>(
 	};
 	return {
 		typeGuard,
-		*serialize(depth) {
-			yield "{\n";
+		*serialize(depth, done) {
+			let id = done.get(d);
+			if (!is$Undefined(id)) {
+				yield `Ref:${id}`;
+				return;
+			}
+			id = typeName;
+			done.set(d, id);
+			yield `${id} {\n`;
 			const propertyIndent = getIndent(depth + 1);
 			for (const [k, pd] of properties()) {
 				yield `${propertyIndent}${String(k)}: `;
-				yield* pd.serialize(depth + 1);
+				yield* pd.serialize(depth + 1, done);
 				yield ",\n";
 			}
 			yield `${getIndent(depth)}}`;
