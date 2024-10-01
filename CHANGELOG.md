@@ -1,5 +1,23 @@
 # Changelog
 
+## v2.1.0 (2024-10-01)
+
+### Features
+
+- add isNever ([f951869](https://github.com/nlibjs/typing/commit/f9518699d509e8c20fe7ecb68a17e64dfb759719))
+- support recursive object definition ([504966e](https://github.com/nlibjs/typing/commit/504966ed86c7c778f650fb59efa43192b6cad197))
+
+### Bug Fixes
+
+- update mod.ts ([961ffe0](https://github.com/nlibjs/typing/commit/961ffe01e41481ecafacd1f2860fe28f04ce30a9))
+
+### Documentation
+
+- add docs to isOptionalOf, isArrayOf, isDictionaryOf ([8c901af](https://github.com/nlibjs/typing/commit/8c901afc79e4d75a11a262b752a0a7fe8071b6ba))
+- deprecate .optional, .array, .dictionary ([5525afd](https://github.com/nlibjs/typing/commit/5525afde5dc47f33506b1b73b25e94d47602c944))
+- update the usage section ([96ab0cd](https://github.com/nlibjs/typing/commit/96ab0cdb6c2a433773dad92ec0e32510a123bc06))
+
+
 ## v2.0.8 (2024-09-29)
 
 ### Features
