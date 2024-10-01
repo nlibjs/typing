@@ -1,35 +1,24 @@
-# @nlib/typing
-
-A tool for generating and managing TypeScript type definitions efficiently.
-
-[![test](https://github.com/nlibjs/typing/actions/workflows/test.yml/badge.svg)](https://github.com/nlibjs/typing/actions/workflows/test.yml)
-[![codecov](https://codecov.io/gh/nlibjs/typing/graph/badge.svg?token=msEnyrNAzF)](https://codecov.io/gh/nlibjs/typing)
-[![JSR](https://jsr.io/badges/@nlib/typing)](https://jsr.io/@nlib/typing)
-
-## Usage
-
-```typescript
 import * as assert from "node:assert";
 import {
-  typeChecker,
-  ensure,
-  isString,
-  isPositiveSafeInteger,
-  isArrayOf,
-  isDictionaryOf,
-  isOptionalOf,
+	typeChecker,
+	ensure,
+	isString,
+	isPositiveSafeInteger,
+	isArrayOf,
+	isDictionaryOf,
+	isOptionalOf,
 } from "./src/mod.ts";
 
 // For example, there is a interface named User.
 interface User {
-  id: number;
-  name: string;
+	id: number;
+	name: string;
 }
 
 // You can create a TypeChecker for User with typeChecker().
 const isUser = typeChecker({
-  id: isPositiveSafeInteger,
-  name: isString,
+	id: isPositiveSafeInteger,
+	name: isString,
 });
 // typeChecker<T>() returns TypeChecker<T> which is a type guard for T.
 // https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates
@@ -46,29 +35,29 @@ console.info(`member.name: ${member.name}`);
 // isArrayOf returns TypeChecker<Array<T>>.
 const isUserArray = isArrayOf(isUser);
 assert.equal(
-  isUserArray([
-    { id: 1, name: "a" },
-    { id: 2, name: "b" },
-    { id: 3, name: "c" },
-  ]),
-  true,
+	isUserArray([
+		{ id: 1, name: "a" },
+		{ id: 2, name: "b" },
+		{ id: 3, name: "c" },
+	]),
+	true,
 );
 
 // isDictionaryOf returns TypeChecker<Record<string, T>>.
 const isUserDictionary = isDictionaryOf(isUser);
 assert.equal(
-  isUserDictionary({
-    a: { id: 1, name: "a" },
-    b: { id: 2, name: "b" },
-    c: { id: 3, name: "c" },
-  }),
-  true,
+	isUserDictionary({
+		a: { id: 1, name: "a" },
+		b: { id: 2, name: "b" },
+		c: { id: 3, name: "c" },
+	}),
+	true,
 );
 
 // isOptionalOf returns TypeChecker<T | undefined>.
 const isItem = typeChecker({
-  id: isPositiveSafeInteger,
-  name: isOptionalOf(isString),
+	id: isPositiveSafeInteger,
+	name: isOptionalOf(isString),
 });
 assert.equal(isItem({ id: 1 }), true);
 assert.equal(isItem({ id: 1, name: "a" }), true);
@@ -76,28 +65,27 @@ assert.equal(isItem({ id: 1, name: 1 }), false);
 
 // Example: Tree structure
 interface Node {
-  id: string;
-  children?: Array<Node>;
+	id: string;
+	children?: Array<Node>;
 }
 const isNode = typeChecker({
-  // You can use regular expression for defining a string pattern.
-  id: /^[0-9a-z]+$/,
-  // You can't use isNode here because isNode is not defined yet.
-  // Use getter for recursive type definition.
-  get children() {
-    return isOptionalOf(isArrayOf(isNode));
-  },
+	// You can use regular expression for defining a string pattern.
+	id: /^[0-9a-z]+$/,
+	// You can't use isNode here because isNode is not defined yet.
+	// Use getter for recursive type definition.
+	get children() {
+		return isOptionalOf(isArrayOf(isNode));
+	},
 });
 assert.equal(isNode({ id: "a" }), true);
 assert.equal(isNode({ id: "a", children: [] }), true);
 assert.equal(isNode({ id: "a", children: [{ id: "b" }] }), true);
 assert.equal(
-  isNode({ id: "a", children: [{ id: "b", children: [{ id: "c" }] }] }),
-  true,
+	isNode({ id: "a", children: [{ id: "b", children: [{ id: "c" }] }] }),
+	true,
 );
 assert.equal(
-  isNode({ id: "a", children: [{ id: "b", children: [{ id: "C" }] }] }),
-  // id: "C" is invalid because it is not lowercase.
-  false,
+	isNode({ id: "a", children: [{ id: "b", children: [{ id: "C" }] }] }),
+	// id: "C" is invalid because it is not lowercase.
+	false,
 );
-```

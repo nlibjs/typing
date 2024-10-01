@@ -59,8 +59,17 @@ export type TypeDefinition<T> =
  */
 export type TypeChecker<T> = TypeGuard<T> & {
 	readonly typeName: string;
+	/**
+	 * @deprecated Use `isOptionalOf` instead.
+	 */
 	readonly optional: TypeChecker<T | undefined>;
+	/**
+	 * @deprecated Use `isArrayOf` instead.
+	 */
 	readonly array: TypeChecker<Array<T>>;
+	/**
+	 * @deprecated Use `isDictionaryOf` instead.
+	 */
 	readonly dictionary: TypeChecker<Record<string, T>>;
 	/**
 	 * A method used by `ensure()` to validate the input.
@@ -72,7 +81,8 @@ export type TypeChecker<T> = TypeGuard<T> & {
 	): Error | null;
 	/**
 	 * A method used by `toString()` to serialize the type.
+	 * @private
 	 */
-	serialize(depth: number): Generator<string>;
+	serialize(depth: number, done: Map<object, string>): Generator<string>;
 	toString(): string;
 };

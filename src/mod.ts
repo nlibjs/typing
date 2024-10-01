@@ -22,6 +22,7 @@ export * from "./is/Ipv4Address.ts";
 export * from "./is/Ipv6Address.ts";
 export * from "./is/NegativeFiniteNumber.ts";
 export * from "./is/NegativeSafeInteger.ts";
+export * from "./is/Never.ts";
 export * from "./is/NonNegativeFiniteNumber.ts";
 export * from "./is/NonNegativeSafeInteger.ts";
 export * from "./is/NonPositiveFiniteNumber.ts";
