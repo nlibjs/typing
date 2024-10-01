@@ -1,5 +1,22 @@
 # Changelog
 
+## v3.0.0 (2024-10-01)
+
+### Breaking Changes
+
+- delete TypeChecker.optional, TypeChecker.array, TypeChecker.dictionary ([943c6f1](https://github.com/nlibjs/typing/commit/943c6f1a552de2c52101474155c3ff6d410e08da))
+
+### Tests
+
+- use isArrayOf to test Array<T> ([f8ac939](https://github.com/nlibjs/typing/commit/f8ac9399565a0a16bf5e1c270bf38e57f32c743e))
+- run build:index before test ([a4043bd](https://github.com/nlibjs/typing/commit/a4043bd330952ab17cff4eaeb6f3d65f73868abd))
+
+### Dependency Upgrades
+
+- @nlib/tsm:1.0.0→1.0.1 ([1780d81](https://github.com/nlibjs/typing/commit/1780d811d09866ed2af3d1b09e91d326e1087577))
+- @types/node:22.5.5→22.7.4 ([5c4d73d](https://github.com/nlibjs/typing/commit/5c4d73dab9a035967286e32ec885a0b4efead9f0))
+
+
 ## v2.1.0 (2024-10-01)
 
 ### Features
