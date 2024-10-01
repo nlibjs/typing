@@ -28,6 +28,7 @@
 		"test": "run-s test:*",
 		"test:type": "tsc",
 		"test:unit": "tsm-test src",
+		"test:example": "tsm-test example.test.ts",
 		"test-bun": "run-s test-bun:*",
 		"test-bun:setup": "bun cli/bun.ts",
 		"test-bun:test": "bun test bun",
