@@ -132,6 +132,9 @@ const factory =
 		return checker;
 	};
 
+/**
+ * Returns `TypeChecker<T | undefined>` from `TypeDefinition<T>`.
+ */
 export const isOptionalOf: <T>(
 	definition: TypeDefinition<T>,
 	typeName?: string,
@@ -156,6 +159,9 @@ export const isOptionalOf: <T>(
 	},
 );
 
+/**
+ * Returns `TypeChecker<Array<T>>` from `TypeDefinition<T>`.
+ */
 export const isArrayOf: <T>(
 	definition: TypeDefinition<T>,
 	typeName?: string,
@@ -177,6 +183,9 @@ export const isArrayOf: <T>(
 	},
 );
 
+/**
+ * Returns `TypeChecker<Record<string, T>>` from `TypeDefinition<T>`.
+ */
 export const isDictionaryOf: <T>(
 	definition: TypeDefinition<T>,
 	typeName?: string,
@@ -233,11 +242,6 @@ export const isDictionaryOf: <T>(
  *   name: isString,
  *   age: isNonNegativeInteger,
  * });
- *
- * // Some utilities.
- * isPerson.optional;   // TypeChecker<Person | undefined>
- * isPerson.array;      // TypeChecker<Array<Person>>
- * isPerson.dictionary; // TypeChecker<Record<string, Person>>
  * ```
  * @param definition A type definition.
  * @param typeName A type name.
