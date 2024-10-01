@@ -25,7 +25,7 @@
 		"!**/*.test.*"
 	],
 	"scripts": {
-		"test": "run-s test:*",
+		"test": "run-s build:index test:*",
 		"test:type": "tsc",
 		"test:unit": "tsm-test src",
 		"test:example": "tsm-test example.test.ts",
@@ -47,8 +47,8 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.2",
-		"@nlib/tsm": "1.0.0",
-		"@types/node": "22.5.5",
+		"@nlib/tsm": "1.0.1",
+		"@types/node": "22.7.4",
 		"npm-run-all": "4.1.5",
 		"typescript": "5.6.2"
 	},

@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import * as assert from "node:assert";
-import { typeCheckerConfig, typeChecker } from "./typeChecker.ts";
+import { typeCheckerConfig, typeChecker, isArrayOf } from "./typeChecker.ts";
 import type { Nominal, TypeChecker } from "./types.ts";
 
 test("Should able to define tree structures", () => {
@@ -13,7 +13,7 @@ test("Should able to define tree structures", () => {
 		{
 			id: /^[0-9a-z]+$/,
 			get children() {
-				return isT.array;
+				return isArrayOf(isT);
 			},
 		},
 		"MyNode",
@@ -109,9 +109,12 @@ test("Should serialize definitions (Object)", () => {
 test("Should serialize definitions (Array)", () => {
 	typeCheckerConfig.resetNoNameTypeCount();
 	const isT1 = typeChecker({ a: /a/ });
-	assert.equal(`${isT1.array}`, "TypeChecker<Array<T1 {\n  a: /a/,\n}>>");
+	assert.equal(`${isArrayOf(isT1)}`, "TypeChecker<Array<T1 {\n  a: /a/,\n}>>");
 	const isT2 = typeChecker({ a: /a/ }, "MyType");
-	assert.equal(`${isT2.array}`, "TypeChecker<Array<MyType {\n  a: /a/,\n}>>");
+	assert.equal(
+		`${isArrayOf(isT2)}`,
+		"TypeChecker<Array<MyType {\n  a: /a/,\n}>>",
+	);
 });
 
 test("Should serialize definitions (Recursive)", () => {
@@ -124,7 +127,7 @@ test("Should serialize definitions (Recursive)", () => {
 		{
 			id: /^[0-9a-z]+$/,
 			get children() {
-				return isT.array;
+				return isArrayOf(isT);
 			},
 		},
 		"MyNode",
