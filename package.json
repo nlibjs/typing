@@ -25,7 +25,7 @@
 		"!**/*.test.*"
 	],
 	"scripts": {
-		"test": "run-s test:*",
+		"test": "run-s build:index test:*",
 		"test:type": "tsc",
 		"test:unit": "tsm-test src",
 		"test:example": "tsm-test example.test.ts",
