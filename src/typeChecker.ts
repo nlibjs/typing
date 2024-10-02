@@ -130,11 +130,6 @@ export const isOptionalOf: <T>(
 			typeGuard: {
 				[k]: (v: unknown): v is T | undefined => isT(v) || is$Undefined(v),
 			}[k],
-			optional: {
-				get() {
-					return this;
-				},
-			},
 			*serialize(depth, done) {
 				yield* isT.serialize(depth, done);
 				yield " | undefined";
