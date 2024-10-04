@@ -1,5 +1,20 @@
 # Changelog
 
+## v3.0.1 (2024-10-04)
+
+### Bug Fixes
+
+- Passing native function objects causes an error in defineProperty ([db6af35](https://github.com/nlibjs/typing/commit/db6af358a805b56779ac8a5bc6ea630dd3946761))
+
+### Code Refactoring
+
+- delete an unused getter ([d766857](https://github.com/nlibjs/typing/commit/d76685727e45fd332556b45c422a14f75e6b73a8))
+
+### Documentation
+
+- update README.md ([5f24ecc](https://github.com/nlibjs/typing/commit/5f24ecc6e3319865c2b524ba373ebde8070cae63))
+
+
 ## v3.0.0 (2024-10-01)
 
 ### Breaking Changes
