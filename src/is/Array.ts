@@ -6,6 +6,6 @@ import { typeChecker } from "../typeChecker.ts";
  * @returns A type predicate for `Array<unknown>`.
  */
 export const isArray: TypeChecker<Array<unknown>> = typeChecker(
-	Array.isArray,
+	(input: unknown): input is Array<unknown> => Array.isArray(input),
 	"Array",
 );
