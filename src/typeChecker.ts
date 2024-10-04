@@ -90,7 +90,11 @@ const factory =
 		if (cached) {
 			return cached.value;
 		}
-		const checker = defineProperties<TypeChecker<T>, TypeGuard<T>>(typeGuard, {
+		if (is$Object(arg)) {
+			cache.set(arg, { value: typeGuard as TypeChecker<T> });
+		}
+		checkerCache.set(typeGuard, { value: typeGuard as TypeChecker<T> });
+		return defineProperties<TypeChecker<T>, TypeGuard<T>>(typeGuard, {
 			test: test
 				? { value: test }
 				: {
@@ -108,12 +112,6 @@ const factory =
 				},
 			},
 		});
-		if (is$Object(arg)) {
-			cache.set(arg, { value: checker });
-		}
-		cache.set(checkerCache, { value: checker });
-		checkerCache.set(checker, { value: checker });
-		return checker;
 	};
 
 /**
