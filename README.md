@@ -2,7 +2,7 @@
 
 A tool for generating and managing TypeScript type definitions efficiently.
 
-![NPM Version](https://img.shields.io/npm/v/%40nlib%2Ftyping)
+[![NPM Version](https://img.shields.io/npm/v/%40nlib%2Ftyping)](https://www.npmjs.com/package/@nlib/typing)
 [![JSR](https://jsr.io/badges/@nlib/typing)](https://jsr.io/@nlib/typing)
 [![test](https://github.com/nlibjs/typing/actions/workflows/test.yml/badge.svg)](https://github.com/nlibjs/typing/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/nlibjs/typing/graph/badge.svg?token=msEnyrNAzF)](https://codecov.io/gh/nlibjs/typing)
