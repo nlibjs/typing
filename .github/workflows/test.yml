@@ -37,7 +37,7 @@ jobs:
       - run: npm ci
       - run: npx c8 npm run test
       - run: npx c8 report --reporter=text-lcov > coverage.lcov
-      - uses: codecov/codecov-action@v4
+      - uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
   TestBun:
@@ -52,7 +52,7 @@ jobs:
       - run: bun install
       - run: bun cli/bun.ts
       - run: bun test bun --coverage --coverage-reporter=lcov
-      - uses: codecov/codecov-action@v4
+      - uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
   TestDeno:
