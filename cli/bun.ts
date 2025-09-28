@@ -1,7 +1,7 @@
-import ts from "typescript";
-import { URL } from "node:url";
-import { listFiles, listTsSourceStringLiterals } from "./util.ts";
 import * as fs from "node:fs/promises";
+import { URL } from "node:url";
+import ts from "typescript";
+import { listFiles, listTsSourceStringLiterals } from "./util.ts";
 
 const srcDir = new URL("../src/", import.meta.url);
 const bunDir = new URL("../bun/", import.meta.url);

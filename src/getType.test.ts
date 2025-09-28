@@ -1,5 +1,5 @@
-import { test } from "node:test";
 import * as assert from "node:assert";
+import { test } from "node:test";
 import { getType } from "./getType.ts";
 
 const tests: Array<[unknown, string]> = [

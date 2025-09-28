@@ -1,12 +1,12 @@
 import * as assert from "node:assert";
 import {
-	typeChecker,
 	ensure,
-	isString,
-	isPositiveSafeInteger,
 	isArrayOf,
 	isDictionaryOf,
 	isOptionalOf,
+	isPositiveSafeInteger,
+	isString,
+	typeChecker,
 } from "./src/mod.ts";
 
 // For example, there is a interface named User.

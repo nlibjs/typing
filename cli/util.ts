@@ -1,6 +1,6 @@
-import ts from "typescript";
 import * as fs from "node:fs/promises";
 import { URL } from "node:url";
+import ts from "typescript";
 
 export const listFiles = async function* (
 	fileUrl: URL,

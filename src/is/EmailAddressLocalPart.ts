@@ -1,4 +1,3 @@
-import { typeChecker } from "../typeChecker.ts";
 import {
 	AMPERSAND,
 	APOSTROPHE,
@@ -21,14 +20,15 @@ import {
 	TILDE,
 	VERTICAL_LINE,
 } from "../codePoints.ts";
-import { isString } from "./String.ts";
-import type { TypeChecker } from "../types.ts";
 import {
 	isCapitalLatinCodePoint,
 	isDigitCodePoint,
 	isSmallLatinCodePoint,
 	listCodePoints,
 } from "../codePointUtil.ts";
+import { typeChecker } from "../typeChecker.ts";
+import type { TypeChecker } from "../types.ts";
+import { isString } from "./String.ts";
 
 const allowedNonAlphaNumerics = new Set([
 	EXCLAMATION_MARK,

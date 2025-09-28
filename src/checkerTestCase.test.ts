@@ -1,6 +1,6 @@
-import ts from "typescript";
-import * as vm from "node:vm";
 import * as fs from "node:fs";
+import * as vm from "node:vm";
+import ts from "typescript";
 import { checkerTestValues } from "./checkerTestValues.test.ts";
 
 const checkerTestValuesFromAnotherContext: typeof checkerTestValues = (() => {

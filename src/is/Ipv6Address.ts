@@ -1,6 +1,6 @@
+import { parseIpv6Address } from "../parseIpv6Address.ts";
 import { typeChecker } from "../typeChecker.ts";
 import type { Nominal, TypeChecker } from "../types.ts";
-import { parseIpv6Address } from "../parseIpv6Address.ts";
 import { isString } from "./String.ts";
 
 /** An IPv6 address. */

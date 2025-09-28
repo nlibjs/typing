@@ -1,5 +1,5 @@
-import { test } from "node:test";
 import * as assert from "node:assert";
+import { test } from "node:test";
 import { checkerTestCase } from "../checkerTestCase.test.ts";
 import { isString } from "./String.ts";
 
