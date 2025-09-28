@@ -33,7 +33,7 @@
 		"test-bun:setup": "bun cli/bun.ts",
 		"test-bun:test": "bun test bun",
 		"test-deno": "deno test --allow-read src",
-		"lint": "biome lint",
+		"lint": "biome check",
 		"build": "run-s build:*",
 		"build:index": "node cli/generate-index.ts",
 		"build:temp": "node cli/temp.ts",

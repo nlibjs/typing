@@ -1,5 +1,5 @@
-import type { Nominal, TypeChecker } from "../types.ts";
 import { typeChecker } from "../typeChecker.ts";
+import type { Nominal, TypeChecker } from "../types.ts";
 
 /**
  * A string that contains only base64 characters.

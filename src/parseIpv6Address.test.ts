@@ -1,5 +1,5 @@
-import { test } from "node:test";
 import * as assert from "node:assert";
+import { test } from "node:test";
 import type { Ipv6AddressParseResult } from "./parseIpv6Address.ts";
 import { parseIpv6Address } from "./parseIpv6Address.ts";
 

@@ -1,4 +1,4 @@
-import { FULL_STOP, DIGIT_ZERO } from "./codePoints.ts";
+import { DIGIT_ZERO, FULL_STOP } from "./codePoints.ts";
 import { isDigitCodePoint, listCodePoints } from "./codePointUtil.ts";
 
 /**

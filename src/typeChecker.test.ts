@@ -1,6 +1,6 @@
-import { test } from "node:test";
 import * as assert from "node:assert";
-import { typeCheckerConfig, typeChecker, isArrayOf } from "./typeChecker.ts";
+import { test } from "node:test";
+import { isArrayOf, typeChecker, typeCheckerConfig } from "./typeChecker.ts";
 import type { Nominal, TypeChecker } from "./types.ts";
 
 test("Should able to define tree structures", () => {

@@ -1,10 +1,10 @@
+import { getType } from "./getType.ts";
 import type {
 	Callable,
 	TypeChecker,
 	TypeDefinition,
 	TypeGuard,
 } from "./types.ts";
-import { getType } from "./getType.ts";
 
 const keys = Object.keys as <T>(o: T) => Array<keyof T>;
 const values = Object.values as <T>(o: T) => Array<T[keyof T]>;

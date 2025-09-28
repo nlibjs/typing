@@ -1,18 +1,18 @@
-import { test } from "node:test";
 import * as assert from "node:assert";
+import { test } from "node:test";
 import { checkerTestCase } from "../checkerTestCase.test.ts";
 import {
 	isBigInt64Array,
 	isBigUint64Array,
 	isFloat32Array,
 	isFloat64Array,
+	isInt8Array,
 	isInt16Array,
 	isInt32Array,
-	isInt8Array,
-	isUint16Array,
-	isUint32Array,
 	isUint8Array,
 	isUint8ClampedArray,
+	isUint16Array,
+	isUint32Array,
 } from "./TypedArray.ts";
 
 for (const { name, input, expected } of checkerTestCase("Uint8Array")) {
