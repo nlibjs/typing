@@ -12,18 +12,11 @@ for await (const { pathname } of listFiles(srcDir, excludeList)) {
 		const from = pathname.slice(srcDir.pathname.length);
 		let line = `export * from "./${from}";`;
 		if (from === "codePoints.ts") {
-			line = `export * as cp from "./${from}"`;
+			line = `export * as cp from "./${from}";`;
 		}
 		lines.push(line);
 	}
 }
-lines.sort((l1, l2) => {
-	const s1 = l1.split("/").length;
-	const s2 = l2.split("/").length;
-	if (s1 === s2) {
-		return l1 < l2 ? -1 : 1;
-	}
-	return s1 < s2 ? -1 : 1;
-});
+lines.sort((l1, l2) => (l1.toLowerCase() < l2.toLowerCase() ? -1 : 1));
 lines.push("");
 await fs.writeFile(destUrl, lines.join("\n"));
