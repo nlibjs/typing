@@ -1,5 +1,12 @@
 # Changelog
 
+## v3.0.4 (2025-10-12)
+
+### Bug Fixes
+
+- include 'types' directory in package files ([8ac8125](https://github.com/nlibjs/typing/commit/8ac81259ebefdfb4c2f9f8e7463950cb81daab5c))
+
+
 ## v3.0.3 (2025-10-12)
 
 ### Bug Fixes
