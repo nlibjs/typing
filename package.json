@@ -14,14 +14,17 @@
 	"homepage": "https://github.com/nlibjs/typing",
 	"repository": "https://github.com/nlibjs/typing",
 	"type": "module",
-	"main": "./esm/mod.js",
 	"exports": {
-		"import": "./esm/mod.js",
-		"require": "./cjs/mod.js"
+		"./package.json": "./package.json",
+		".": {
+			"import": "./mjs/mod.js",
+			"require": "./cjs/mod.js",
+			"types": "./types/mod.d.ts"
+		}
 	},
 	"files": [
 		"cjs",
-		"esm",
+		"mjs",
 		"!**/*.test.*"
 	],
 	"scripts": {
@@ -36,9 +39,8 @@
 		"lint": "biome check",
 		"build": "run-s build:*",
 		"build:index": "node cli/generate-index.ts",
-		"build:temp": "node cli/temp.ts",
-		"build:esm": "tsc --project tsconfig.esm.json",
-		"build:cjs": "tsc --project tsconfig.cjs.json",
+		"build:types": "tsc",
+		"build:code": "node cli/build.ts",
 		"version": "run-s version:*",
 		"version:changelog": "npx @nlib/changelog --output CHANGELOG.md",
 		"version:add-changelog": "git add CHANGELOG.md",
