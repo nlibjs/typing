@@ -54,8 +54,7 @@ jobs:
         with:
           bun-version: latest
       - run: bun install
-      - run: bun cli/bun.ts
-      - run: bun test bun --coverage --coverage-reporter=lcov
+      - run: bun test src --coverage --coverage-reporter=lcov
       - uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
