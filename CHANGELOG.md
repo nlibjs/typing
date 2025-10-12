@@ -1,5 +1,34 @@
 # Changelog
 
+## v3.0.2 (2025-10-12)
+
+### Code Refactoring
+
+- update test configuration and remove unused bun script ([5f4ec4c](https://github.com/nlibjs/typing/commit/5f4ec4c7300a7134c18a7e9a4d92bf38bfc49c79))
+- reorganize project structure and update TypeScript configurations ([be9138a](https://github.com/nlibjs/typing/commit/be9138a450b8f5e79768a5d221fc9fad7d5e25f9))
+
+### Styles
+
+- fix biome errors ([0e3d65a](https://github.com/nlibjs/typing/commit/0e3d65a2507d4dc08a9ed10939d484e151c17352))
+
+### Documentation
+
+- fix npm badge ([74a0d02](https://github.com/nlibjs/typing/commit/74a0d0277fa467e6b7d1c8c30192344f74410483))
+
+### Continuous Integration
+
+- update actions for Deno ([89d5fdc](https://github.com/nlibjs/typing/commit/89d5fdce2e5be2bd120377a241692a41c7c34727))
+- update actions ([dc2f634](https://github.com/nlibjs/typing/commit/dc2f634ce6a2d56c136e08e9004e45df8e93acc8))
+
+### Dependency Upgrades
+
+- @biomejs/biome:2.2.4→2.2.5 @types/node:24.5.2→24.7.2 typescript:5.9.2→5.9.3 ([0b273f9](https://github.com/nlibjs/typing/commit/0b273f9bb2bf9163fcb34ed7ed80fe6738c2d4af))
+- update deno.lock ([80cd620](https://github.com/nlibjs/typing/commit/80cd6207c98c47c2bdd4095c0057d512764c362d))
+- @biomejs/biome:1.9.2→2.2.4 @types/node:22.7.4→24.5.2 typescript:5.6.2→5.9.2 ([0df5d63](https://github.com/nlibjs/typing/commit/0df5d632fbeec44eae72ce0f7cb9af9599edf9d4))
+- remove tsm ([108f1be](https://github.com/nlibjs/typing/commit/108f1be71408f885054053b93545e126b92324c9))
+- audit fix ([edd46b5](https://github.com/nlibjs/typing/commit/edd46b5cb40ca550eccc431764a61e4c686a713b))
+
+
 ## v3.0.1 (2024-10-04)
 
 ### Bug Fixes
