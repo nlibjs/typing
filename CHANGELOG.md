@@ -1,5 +1,12 @@
 # Changelog
 
+## v3.0.3 (2025-10-12)
+
+### Bug Fixes
+
+- update module file extensions in exports ([684a808](https://github.com/nlibjs/typing/commit/684a8086ae8870f06ead29311fd689ed4bed6307))
+
+
 ## v3.0.2 (2025-10-12)
 
 ### Code Refactoring
