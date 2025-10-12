@@ -14,6 +14,7 @@
 			"!mjs",
 			"!types",
 			"!coverage",
+			"!jsr.json",
 			"!example.test.ts"
 		]
 	}
