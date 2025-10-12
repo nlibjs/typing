@@ -8,6 +8,13 @@
 		}
 	},
 	"files": {
-		"includes": ["**", "!cjs", "!esm", "!temp", "!coverage", "!example.test.ts"]
+		"includes": [
+			"**",
+			"!cjs",
+			"!mjs",
+			"!types",
+			"!coverage",
+			"!example.test.ts"
+		]
 	}
 }
