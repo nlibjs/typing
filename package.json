@@ -17,8 +17,8 @@
 	"exports": {
 		"./package.json": "./package.json",
 		".": {
-			"import": "./mjs/mod.js",
-			"require": "./cjs/mod.js",
+			"import": "./mjs/mod.mjs",
+			"require": "./cjs/mod.cjs",
 			"types": "./types/mod.d.ts"
 		}
 	},
