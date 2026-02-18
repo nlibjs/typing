@@ -12,7 +12,7 @@ export const HttpMethod = {
 	POST: "POST",
 	PUT: "PUT",
 	TRACE: "TRACE",
-} as const;
+} as const satisfies Record<string, string>;
 
 /** An HTTP method. */
 export type HttpMethod = ValueOf<typeof HttpMethod>;
