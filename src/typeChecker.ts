@@ -54,14 +54,7 @@ const getCache = <T>(context: object) => {
 /**
  * An object that provides configuration functions for testing purposes.
  */
-export const typeCheckerConfig: {
-	/** Clears the cache. */
-	clearCache(): void;
-	/** Gets the count of types without names. */
-	getNoNameTypeCount(): number;
-	/** Resets the count of types without names. */
-	resetNoNameTypeCount(count?: number): void;
-} = {
+export const typeCheckerConfig = {
 	clearCache() {
 		cacheStore = new WeakMap();
 	},
@@ -71,6 +64,13 @@ export const typeCheckerConfig: {
 	resetNoNameTypeCount(count = 0) {
 		noNameTypeCount = count;
 	},
+} satisfies {
+	/** Clears the cache. */
+	clearCache(): void;
+	/** Gets the count of types without names. */
+	getNoNameTypeCount(): number;
+	/** Resets the count of types without names. */
+	resetNoNameTypeCount(count?: number): void;
 };
 
 const factory =
