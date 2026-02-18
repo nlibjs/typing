@@ -1,6 +1,28 @@
 # @nlib/typing
 
-A tool for generating and managing TypeScript type definitions efficiently.
+**TypeScript types that actually work at runtime.**
+
+Stop writing your types twice. `@nlib/typing` lets you define the shape of your data **once** — and use it for both compile-time type safety and runtime validation. No more keeping Zod schemas in sync with your interfaces. No more manual type guards that go stale.
+
+```typescript
+// Define once...
+const isUser = typeChecker({ id: isPositiveSafeInteger, name: isString });
+
+// ...use as a type guard
+if (isUser(data)) { /* data is User here */ }
+
+// ...use for safe API responses
+const user = ensure(await response.json(), isUser); // throws with a clear message if invalid
+```
+
+**Why @nlib/typing?**
+
+- **Single source of truth** — One definition drives both TypeScript types and runtime checks
+- **Rich built-in validators** — Email addresses, UUIDs, IPv4/IPv6, HTTP methods, Base64, URLs, and more — all with branded types for extra compile-time safety
+- **Recursive types** — Model trees and self-referencing structures with a simple getter pattern
+- **Works everywhere** — Node.js, Deno, and browsers (via esm.sh CDN)
+- **Zero runtime overhead** — Results are cached via `WeakMap`; the same definition always returns the same checker instance
+- **Descriptive errors** — `ensure()` throws with the exact property path that failed validation
 
 [![NPM Version](https://img.shields.io/npm/v/%40nlib%2Ftyping)](https://www.npmjs.com/package/@nlib/typing)
 [![JSR](https://jsr.io/badges/@nlib/typing)](https://jsr.io/@nlib/typing)
