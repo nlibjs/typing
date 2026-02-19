@@ -17,7 +17,7 @@ export const isIpv4Address: TypeChecker<Ipv4Address> = typeChecker(
 				const result = parseIpv4Address(input);
 				return result.end === input.length;
 			} catch {
-				// do nothing
+				// Ignore parse errors.
 			}
 		}
 		return false;

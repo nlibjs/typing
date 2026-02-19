@@ -57,9 +57,9 @@ const getCache = <T>(context: object) => {
 export const typeCheckerConfig: {
 	/** Clears the cache. */
 	clearCache(): void;
-	/** Gets the count of types without names. */
+	/** Returns the number of unnamed types. */
 	getNoNameTypeCount(): number;
-	/** Resets the count of types without names. */
+	/** Resets the unnamed type counter. */
 	resetNoNameTypeCount(count?: number): void;
 } = {
 	clearCache() {
@@ -195,7 +195,7 @@ export const isDictionaryOf: <const T>(
 );
 
 /**
- * Create a type checker from a type definition.
+ * Creates a type checker from a type definition.
  * @example
  * ```typescript
  * // Create a type checker from a type guard function.

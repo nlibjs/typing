@@ -30,7 +30,7 @@ export const isDomainName: TypeChecker<DomainName> = typeChecker(
 		if (!isString(input)) {
 			return false;
 		}
-		/** Initial value is hyphen to return false for .example.com */
+		/** Initialize with a hyphen so `.example.com` is rejected. */
 		let lastCodePoint = HYPHEN_MINUS;
 		let currentLabelIsValid = false;
 		let labelCount = 1;

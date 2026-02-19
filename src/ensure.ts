@@ -2,8 +2,8 @@ import { typeChecker } from "./typeChecker.ts";
 import type { TypeDefinition } from "./types.ts";
 
 /**
- * It ensures that the input matches the definition and returns the input.
- * The returned value is guaranteed to be of the type defined by the definition.
+ * Ensures that the input matches the definition and returns it.
+ * The returned value is guaranteed to match the defined type.
  * @example
  * ```typescript
  * const isProduct = typeChecker({
@@ -14,9 +14,9 @@ import type { TypeDefinition } from "./types.ts";
  * const response = await fetch("https://api.example.com/product/1");
  * const product = ensure(await response.json(), isProduct);
  * ```
- * @param input value to be checked.
- * @param definition definition of the type.
- * @returns input value as the defined type.
+ * @param input The value to check.
+ * @param definition The type definition.
+ * @returns The input value as the defined type.
  */
 export const ensure = <const T>(
 	input: unknown,
