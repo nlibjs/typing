@@ -17,7 +17,7 @@ export const isIpv6Address: TypeChecker<Ipv6Address> = typeChecker(
 				const result = parseIpv6Address(input);
 				return result.end === input.length;
 			} catch {
-				// do nothing
+				// Ignore parse errors.
 			}
 		}
 		return false;

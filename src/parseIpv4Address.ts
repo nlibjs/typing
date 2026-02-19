@@ -65,20 +65,32 @@ export interface Ipv4AddressParseResult {
 }
 
 /**
+ * Argument tuple for `parseIpv4Address`.
+ */
+export type ParseIpv4AddressArgs = [
+	input: string,
+	...rest: [start: number] | [],
+];
+
+const isIpv4OctetTuple = (
+	octets: Array<number>,
+): octets is Ipv4AddressParseResult["octets"] => octets.length === 4;
+
+/**
  * Parses an IPv4 address.
  * @param input - The input string.
  * @param start - The index to start from.
  * @returns The result of parsing an IPv4 address.
  */
 export const parseIpv4Address = (
-	input: string,
-	start = 0,
+	...[input, start = 0]: ParseIpv4AddressArgs
 ): Ipv4AddressParseResult => {
 	const octets: Array<number> = [];
 	for (const octet of listIpv4Octets(input, start)) {
-		if (octets.push(octet.value) === 4) {
+		octets.push(octet.value);
+		if (isIpv4OctetTuple(octets)) {
 			return {
-				octets: octets as [number, number, number, number],
+				octets,
 				start,
 				end: octet.end,
 			};

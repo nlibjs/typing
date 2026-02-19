@@ -116,14 +116,25 @@ export interface Ipv6AddressParseResult {
 }
 
 /**
+ * Argument tuple for `parseIpv6Address`.
+ */
+export type ParseIpv6AddressArgs = [
+	input: string,
+	...rest: [start: number] | [],
+];
+
+const isIpv6AddressGroups = (
+	groups: Array<number>,
+): groups is Ipv6AddressGroups => groups.length === 8;
+
+/**
  * Parses an IPv6 address.
  * @param input - The input string.
  * @param start - The index to start from.
  * @returns The result of parsing an IPv6 address.
  */
 export const parseIpv6Address = (
-	input: string,
-	start = 0,
+	...[input, start = 0]: ParseIpv6AddressArgs
 ): Ipv6AddressParseResult => {
 	const groups: Array<number> = [];
 	let compressorIndex = -1;
@@ -146,15 +157,21 @@ export const parseIpv6Address = (
 			const length = groups.push(value);
 			if (0 <= compressorIndex && length === 7) {
 				groups.splice(compressorIndex, 0, 0);
+				if (!isIpv6AddressGroups(groups)) {
+					throw new Error(`InvalidIpv6Address: ${input.substr(start, end)}`);
+				}
 				return {
-					groups: groups as Ipv6AddressGroups,
+					groups,
 					start,
 					end,
 				};
 			}
 			if (length === 8) {
+				if (!isIpv6AddressGroups(groups)) {
+					throw new Error(`InvalidIpv6Address: ${input.substr(start, end)}`);
+				}
 				return {
-					groups: groups as Ipv6AddressGroups,
+					groups,
 					start,
 					end,
 				};
@@ -169,8 +186,11 @@ export const parseIpv6Address = (
 		result.push(0);
 	}
 	result.push(...groups.slice(compressorIndex));
+	if (!isIpv6AddressGroups(result)) {
+		throw new Error(`InvalidIpv6Address: ${input.substr(start, end)}`);
+	}
 	return {
-		groups: result as Ipv6AddressGroups,
+		groups: result,
 		start,
 		end,
 	};
