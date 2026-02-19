@@ -117,7 +117,7 @@ const factory =
 /**
  * Returns `TypeChecker<T | undefined>` from `TypeDefinition<T>`.
  */
-export const isOptionalOf: <T>(
+export const isOptionalOf: <const T>(
 	definition: TypeDefinition<T>,
 	typeName?: string,
 ) => TypeChecker<T | undefined> = factory(
@@ -139,7 +139,7 @@ export const isOptionalOf: <T>(
 /**
  * Returns `TypeChecker<Array<T>>` from `TypeDefinition<T>`.
  */
-export const isArrayOf: <T>(
+export const isArrayOf: <const T>(
 	definition: TypeDefinition<T>,
 	typeName?: string,
 ) => TypeChecker<Array<T>> = factory(
@@ -163,7 +163,7 @@ export const isArrayOf: <T>(
 /**
  * Returns `TypeChecker<Record<string, T>>` from `TypeDefinition<T>`.
  */
-export const isDictionaryOf: <T>(
+export const isDictionaryOf: <const T>(
 	definition: TypeDefinition<T>,
 	typeName?: string,
 ) => TypeChecker<Record<string, T>> = factory(
@@ -224,7 +224,7 @@ export const isDictionaryOf: <T>(
  * @param typeName A type name.
  * @returns A type checker.
  */
-export const typeChecker: <T>(
+export const typeChecker: <const T>(
 	definition: TypeDefinition<T>,
 	typeName?: string,
 ) => TypeChecker<T> = factory(<T>(d: TypeDefinition<T>, typeName: string) => {

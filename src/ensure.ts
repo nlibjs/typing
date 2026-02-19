@@ -18,7 +18,10 @@ import type { TypeDefinition } from "./types.ts";
  * @param definition definition of the type.
  * @returns input value as the defined type.
  */
-export const ensure = <T>(input: unknown, definition: TypeDefinition<T>): T => {
+export const ensure = <const T>(
+	input: unknown,
+	definition: TypeDefinition<T>,
+): T => {
 	const error = typeChecker(definition).test(input);
 	if (error) {
 		throw error;
