@@ -20,7 +20,7 @@ import type { TypeDefinition } from "./types.ts";
  */
 export const ensure = <const T>(
 	input: unknown,
-	definition: TypeDefinition<T>,
+	definition: TypeDefinition<NoInfer<T>>,
 ): T => {
 	const error = typeChecker(definition).test(input);
 	if (error) {

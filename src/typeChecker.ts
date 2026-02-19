@@ -17,7 +17,7 @@ const is$String = (v: unknown): v is string => typeof v === "string";
 const is$RegExp = (v: unknown): v is RegExp => getType(v) === "RegExp";
 const is$Set = (v: unknown): v is Set<unknown> => getType(v) === "Set";
 const is$Function = (v: unknown): v is Callable => typeof v === "function";
-const is$Object = (v: unknown): v is Record<string, unknown> =>
+const is$Object = (v: unknown): v is Record<PropertyKey, unknown> =>
 	is$Function(v) || (typeof v === "object" && v !== null);
 const lazy = <T>(getter: () => T): (() => T) => {
 	let cached: { value: T } | null = null;
@@ -36,7 +36,7 @@ interface FactoryProps<T> {
 	test?(
 		this: TypeChecker<T>,
 		input: unknown,
-		route?: Array<string>,
+		route?: Array<string | number | symbol>,
 	): Error | null;
 }
 
@@ -90,11 +90,7 @@ const factory =
 		if (cached) {
 			return cached.value;
 		}
-		if (is$Object(arg)) {
-			cache.set(arg, { value: typeGuard as TypeChecker<T> });
-		}
-		checkerCache.set(typeGuard, { value: typeGuard as TypeChecker<T> });
-		return defineProperties<TypeChecker<T>, TypeGuard<T>>(typeGuard, {
+		const checker = defineProperties<TypeChecker<T>, TypeGuard<T>>(typeGuard, {
 			test: test
 				? { value: test }
 				: {
@@ -112,6 +108,11 @@ const factory =
 				},
 			},
 		});
+		if (is$Object(arg)) {
+			cache.set(arg, { value: checker });
+		}
+		checkerCache.set(typeGuard, { value: checker });
+		return checker;
 	};
 
 /**
@@ -267,17 +268,26 @@ export const typeChecker: <const T>(
 			},
 		};
 	}
-	type PropertyTuple<K extends keyof T = keyof T> = [K, TypeChecker<T[K]>];
+	type PropertyTuple<K extends keyof T = keyof T> = readonly [
+		K,
+		TypeChecker<T[K]>,
+	];
+	const toPropertyTuple = <K extends keyof T>(k: K): PropertyTuple<K> => {
+		const propertyPath = `${typeName}.${String(k)}`;
+		return [k, typeChecker(d[k], propertyPath)];
+	};
 	const properties = lazy(
-		(): Array<PropertyTuple> => [
-			...(function* () {
-				for (const k of keys(d)) {
-					const propertyPath = `${typeName}.${String(k)}`;
-					yield [k, typeChecker(d[k], propertyPath)] as PropertyTuple;
-				}
-			})(),
-		],
+		(): Array<PropertyTuple> => keys(d).map((k) => toPropertyTuple(k)),
 	);
+	type TypeGuardWithRefs<U> = (
+		input: unknown,
+		refs?: WeakMap<WeakKey, string>,
+	) => input is U;
+	const runGuard = <U>(
+		checker: TypeChecker<U>,
+		input: unknown,
+		refs: WeakMap<WeakKey, string>,
+	): boolean => (checker as TypeGuardWithRefs<U>)(input, refs);
 	const typeGuard = (
 		v: unknown,
 		refs = new WeakMap<WeakKey, string>(),
@@ -289,12 +299,7 @@ export const typeChecker: <const T>(
 			throw new Error(`CircularReference: ${refs.get(v)} -> ${typeName}`);
 		}
 		refs.set(v, typeName);
-		return properties().every(([k, is]) =>
-			(is as (input: T[typeof k], refs: WeakMap<WeakKey, string>) => boolean)(
-				(v as T)[k],
-				refs,
-			),
-		);
+		return properties().every(([k, is]) => runGuard(is, v[k], refs));
 	};
 	return {
 		typeGuard,
@@ -320,7 +325,7 @@ export const typeChecker: <const T>(
 				return new TypeCheckError(this, input);
 			}
 			for (const [k, pd] of properties()) {
-				const error = pd.test((input as T)[k], route.concat(k));
+				const error = pd.test(input[k], route.concat(k));
 				if (error) {
 					return error;
 				}
