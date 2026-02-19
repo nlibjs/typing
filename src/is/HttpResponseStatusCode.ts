@@ -65,7 +65,7 @@ export const HttpStatusCode = {
 	LoopDetected: 508,
 	NotExtended: 510,
 	NetworkAuthenticationRequired: 511,
-} as const satisfies Record<string, number>;
+} as const;
 
 /** An HTTP status code. */
 export type HttpResponseStatusCode = ValueOf<typeof HttpStatusCode>;
