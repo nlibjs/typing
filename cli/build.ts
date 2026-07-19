@@ -1,6 +1,6 @@
 import * as fs from "node:fs/promises";
 import { URL } from "node:url";
-import ts from "typescript";
+import ts from "@typescript/typescript6";
 import { listFiles, listTsSourceStringLiterals } from "./util.ts";
 
 interface OutputPattern {
