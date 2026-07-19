@@ -1,6 +1,6 @@
 import * as fs from "node:fs";
 import * as vm from "node:vm";
-import ts from "typescript";
+import ts from "@typescript/typescript6";
 import { checkerTestValues } from "./checkerTestValues.test.ts";
 
 const checkerTestValuesFromAnotherContext: typeof checkerTestValues = (() => {
@@ -8,7 +8,9 @@ const checkerTestValuesFromAnotherContext: typeof checkerTestValues = (() => {
 		new URL("./checkerTestValues.test.ts", import.meta.url),
 		"utf-8",
 	);
-	const result = ts.transpileModule(tsCode, {});
+	const result = ts.transpileModule(tsCode, {
+		compilerOptions: { module: ts.ModuleKind.CommonJS },
+	});
 	const context = { exports: {} };
 	vm.runInNewContext(result.outputText, context);
 	return (context.exports as { checkerTestValues: typeof checkerTestValues })
