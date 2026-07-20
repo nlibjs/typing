@@ -1,6 +1,13 @@
 import * as assert from "node:assert";
 import { test } from "node:test";
-import { isArrayOf, typeChecker, typeCheckerConfig } from "./typeChecker.ts";
+import { isString } from "./is/String.ts";
+import {
+	isArrayOf,
+	isObjectWith,
+	isOptionalOf,
+	typeChecker,
+	typeCheckerConfig,
+} from "./typeChecker.ts";
 import type { Nominal, TypeChecker } from "./types.ts";
 
 test("Should able to define tree structures", () => {
@@ -79,6 +86,95 @@ test("Should test type guards and object definitions.", () => {
 	assert.match(propertyError.message, /^TypeCheckError: \.name /);
 });
 
+test("exact object definitions reject unknown and missing own properties", () => {
+	const isPerson = typeChecker({ name: isString }, "Person");
+
+	assert.equal(isPerson({ name: "Ada" }), true);
+	assert.equal(isPerson({ name: "Ada", role: "admin" }), false);
+	assert.equal(isPerson({}), false);
+	assert.equal(isPerson({ toString: "Ada" }), false);
+
+	const isObjectWithOwnToString = typeChecker({ toString: isString });
+	assert.equal(isObjectWithOwnToString({}), false);
+	assert.equal(isObjectWithOwnToString({ toString: "value" }), true);
+});
+
+test("exact object definitions accept optional, symbol, and hidden properties", () => {
+	const symbol = Symbol("metadata");
+	const isPerson = typeChecker({
+		name: isString,
+		nickname: isOptionalOf(isString),
+	});
+	const input: {
+		name: string;
+		nickname?: string;
+		[symbol]: number;
+		hidden?: number;
+	} = { name: "Ada", [symbol]: 1 };
+	Object.defineProperty(input, "hidden", { enumerable: false, value: 2 });
+
+	assert.equal(isPerson(input), true);
+	input.nickname = undefined;
+	assert.equal(isPerson(input), true);
+	input.nickname = "A";
+	assert.equal(isPerson(input), true);
+});
+
+test("exact object definitions accept Object.prototype and null prototypes", () => {
+	const checker = typeChecker({ name: isString });
+	const nullPrototype = Object.assign(Object.create(null), { name: "Ada" });
+
+	assert.equal(checker({ name: "Ada" }), true);
+	assert.equal(checker(nullPrototype), true);
+});
+
+test("exact object definitions reject arrays, functions, and class instances", () => {
+	class Person {
+		name = "Ada";
+	}
+	const isNamed = typeChecker({ name: isString });
+	const array = Object.assign([], { name: "Ada" });
+	const fn = Object.assign(() => undefined, { nameValue: "Ada" });
+
+	assert.equal(isNamed(array), false);
+	assert.equal(typeChecker({ nameValue: isString })(fn), false);
+	assert.equal(isNamed(new Person()), false);
+});
+
+test("nested definitions are exact unless isObjectWith is explicit", () => {
+	const exact = typeChecker({ profile: { name: isString } });
+	const openNested = typeChecker({
+		profile: isObjectWith({ name: isString }),
+	});
+	const input = { profile: { name: "Ada", role: "admin" } };
+
+	assert.equal(exact(input), false);
+	assert.equal(openNested(input), true);
+	assert.equal(openNested({ ...input, rootExtra: true }), false);
+});
+
+test("isObjectWith preserves open shape matching", () => {
+	class Person {
+		name = "Ada";
+	}
+	const definition = { name: isString };
+	const checker = isObjectWith(definition, "NamedShape");
+	const inherited = Object.create({ name: "Ada" });
+	const array = Object.assign([], { name: "Ada" });
+	const namedFunction = function Ada() {};
+
+	assert.equal(checker({ name: "Ada", role: "admin" }), true);
+	assert.equal(checker(inherited), true);
+	assert.equal(checker(array), true);
+	assert.equal(checker(namedFunction), true);
+	assert.equal(checker(new Person()), true);
+	assert.equal(checker({ role: "admin" }), false);
+	assert.equal(checker(null), false);
+	assert.equal(checker, isObjectWith(definition));
+	assert.notEqual(checker, typeChecker(definition));
+	assert.equal(`${checker}`, "TypeChecker<NamedShape {\n  name: isstring,\n}>");
+});
+
 test("Should expose cache and unnamed type configuration.", () => {
 	const originalCount = typeCheckerConfig.getNoNameTypeCount();
 	typeCheckerConfig.resetNoNameTypeCount(40);
@@ -89,6 +185,7 @@ test("Should expose cache and unnamed type configuration.", () => {
 	assert.equal(typeChecker(definition), first);
 	typeCheckerConfig.clearCache();
 	assert.notEqual(typeChecker(definition, "FreshObject"), first);
+	assert.equal(typeChecker(first), first);
 	typeCheckerConfig.resetNoNameTypeCount(originalCount);
 });
 

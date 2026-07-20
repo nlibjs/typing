@@ -3,6 +3,7 @@ import {
 	ensure,
 	isArrayOf,
 	isDictionaryOf,
+	isObjectWith,
 	isOptionalOf,
 	isPositiveSafeInteger,
 	isString,
@@ -26,9 +27,14 @@ const isUser = typeChecker({
 assert.equal(isUser({ id: 1, name: "a" }), true);
 assert.equal(isUser({ id: "1", name: "a" }), false);
 
-// You can handle a response with confidence using ensure().
+// API responses commonly contain additional fields, so validate this one as
+// an open shape with isObjectWith().
+const isUserResponse = isObjectWith({
+	id: isPositiveSafeInteger,
+	name: isString,
+});
 const response = await fetch("https://jsonplaceholder.typicode.com/users/1");
-const member = ensure(await response.json(), isUser);
+const member = ensure(await response.json(), isUserResponse);
 console.info(`member.id: ${member.id}`);
 console.info(`member.name: ${member.name}`);
 

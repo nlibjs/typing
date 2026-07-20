@@ -9,13 +9,15 @@
  */
 import * as assert from "node:assert";
 import { test } from "node:test";
+import { isString } from "./is/String.ts";
 import {
 	isArrayOf,
 	isDictionaryOf,
+	isObjectWith,
 	isOptionalOf,
 	typeChecker,
 } from "./typeChecker.ts";
-import type { TypeChecker } from "./types.ts";
+import type { ObjectTypeDefinition, TypeChecker } from "./types.ts";
 
 // ---------------------------------------------------------------------------
 // Compile-time assertions
@@ -41,12 +43,26 @@ const _isArrayAB: TypeChecker<Array<"a" | "b">> = isArrayOf(
 const _isDictAB: TypeChecker<Record<string, "a" | "b">> = isDictionaryOf(
 	new Set(["a", "b"]),
 );
+/** Verify isObjectWith infers object properties and their literal unions. */
+const _isObjectWithAB: TypeChecker<{ kind: "a" | "b" }> = isObjectWith({
+	kind: new Set(["a", "b"]),
+});
+/** Verify the public object-definition type composes field definitions. */
+const _objectDefinition: ObjectTypeDefinition<{
+	kind: "a" | "b";
+	label: string;
+}> = {
+	kind: new Set(["a", "b"]),
+	label: isString,
+};
 
 // Suppress "declared but never used" warnings.
 void _isAB;
 void _isOptionalAB;
 void _isArrayAB;
 void _isDictAB;
+void _isObjectWithAB;
+void _objectDefinition;
 
 // ---------------------------------------------------------------------------
 // Runtime tests
@@ -81,6 +97,13 @@ test("isDictionaryOf(Set) accepts records of members", () => {
 	assert.equal(isColorDictionary({ a: "red", b: "green" }), true);
 	assert.equal(isColorDictionary({}), true);
 	assert.equal(isColorDictionary({ a: "yellow" }), false);
+});
+
+test("isObjectWith infers and checks literal object properties", () => {
+	const isTagged = isObjectWith({ kind: new Set(["a", "b"]) });
+	assert.equal(isTagged({ kind: "a" }), true);
+	assert.equal(isTagged({ kind: "b", extra: true }), true);
+	assert.equal(isTagged({ kind: "c" }), false);
 });
 
 test("typeChecker(Set) works with numeric literals", () => {
