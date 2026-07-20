@@ -1,3 +1,5 @@
+import type { ValidationIssueCode } from "./validationIssue.ts";
+
 /**
  * A generic type to create a nominal type.
  * @example
@@ -81,3 +83,28 @@ export type TypeChecker<T> = TypeGuard<T> & {
 	serialize(depth: number, done: Map<object, string>): Generator<string>;
 	toString(): string;
 };
+
+/** A machine-readable validation issue. */
+export interface ValidationIssue {
+	/** Location of the issue within the input. */
+	readonly path: ReadonlyArray<string | number>;
+	/** Stable machine-readable built-in issue identifier. */
+	readonly code: ValidationIssueCode;
+	/** Description of the expected value, when available. */
+	readonly expected?: string;
+	/** Runtime type name returned by `getType()`, when available. */
+	readonly actualType?: string;
+}
+
+/** The result of first-issue validation. */
+export type ValidationResult<T> =
+	| { readonly ok: true; readonly value: T }
+	| { readonly ok: false; readonly issue: ValidationIssue };
+
+/** The result of all-issues validation. */
+export type ValidationAllResult<T> =
+	| { readonly ok: true; readonly value: T }
+	| {
+			readonly ok: false;
+			readonly issues: readonly [ValidationIssue, ...ValidationIssue[]];
+	  };

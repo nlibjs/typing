@@ -4,7 +4,15 @@ import type {
 	TypeChecker,
 	TypeDefinition,
 	TypeGuard,
+	ValidationIssue,
 } from "./types.ts";
+import {
+	type Diagnoser,
+	getDiagnoser,
+	setDiagnoser,
+	type ValidationIssueReporter,
+} from "./validation.private.ts";
+import { ValidationIssueCode } from "./validationIssue.ts";
 
 const keys = Object.keys as <T>(o: T) => Array<keyof T>;
 const values = Object.values as <T>(o: T) => Array<T[keyof T]>;
@@ -33,6 +41,13 @@ const getIndent = (depth: number) => "  ".repeat(depth);
 interface FactoryProps<T> {
 	typeGuard: TypeGuard<T>;
 	serialize(depth: number, done: Map<object, string>): Generator<string>;
+	diagnose?: (
+		checker: TypeChecker<T>,
+		input: unknown,
+		path: ReadonlyArray<string | number>,
+		report: ValidationIssueReporter,
+		context: Parameters<Diagnoser>[3],
+	) => boolean;
 	test?(
 		this: TypeChecker<T>,
 		input: unknown,
@@ -49,6 +64,34 @@ const getCache = <T>(context: object) => {
 		cacheStore.set(context, map);
 	}
 	return map as WeakMap<object, { value: T }>;
+};
+
+const createIssue = <T>(
+	checker: TypeChecker<T>,
+	input: unknown,
+	path: ReadonlyArray<string | number>,
+	code: ValidationIssueCode,
+): ValidationIssue => ({
+	path,
+	code,
+	expected: checker.toString(),
+	actualType: getType(input),
+});
+
+const diagnoseCircularReference = <T>(
+	checker: TypeChecker<T>,
+	input: WeakKey,
+	path: ReadonlyArray<string | number>,
+	report: ValidationIssueReporter,
+	context: Parameters<Diagnoser>[3],
+): boolean | null => {
+	if (context.objects.has(input)) {
+		return report(
+			createIssue(checker, input, path, ValidationIssueCode.CircularReference),
+		);
+	}
+	context.objects.add(input);
+	return null;
 };
 
 /**
@@ -85,7 +128,7 @@ const factory =
 		if (cached) {
 			return cached.value;
 		}
-		const { typeGuard, serialize, test } = props(arg, typeName);
+		const { typeGuard, serialize, diagnose, test } = props(arg, typeName);
 		cached = checkerCache.get(typeGuard);
 		if (cached) {
 			return cached.value;
@@ -112,6 +155,14 @@ const factory =
 			cache.set(arg, { value: checker });
 		}
 		checkerCache.set(typeGuard, { value: checker });
+		setDiagnoser(checker, (input, path, report, context) =>
+			diagnose
+				? diagnose(checker, input, path, report, context)
+				: checker(input) ||
+					report(
+						createIssue(checker, input, path, ValidationIssueCode.GuardFailed),
+					),
+		);
 		return checker;
 	};
 
@@ -132,6 +183,11 @@ export const isOptionalOf: <const T>(
 			*serialize(depth, done) {
 				yield* isT.serialize(depth, done);
 				yield " | undefined";
+			},
+			diagnose(_checker, input, path, report, context) {
+				return (
+					is$Undefined(input) || getDiagnoser(isT)(input, path, report, context)
+				);
 			},
 		};
 	},
@@ -156,6 +212,33 @@ export const isArrayOf: <const T>(
 				yield "Array<";
 				yield* isT.serialize(depth, done);
 				yield ">";
+			},
+			diagnose(checker, input, path, report, context) {
+				if (!Array.isArray(input)) {
+					return report(
+						createIssue(checker, input, path, ValidationIssueCode.TypeMismatch),
+					);
+				}
+				const circular = diagnoseCircularReference(
+					checker,
+					input,
+					path,
+					report,
+					context,
+				);
+				if (circular !== null) {
+					return circular;
+				}
+				try {
+					for (const [index, item] of input.entries()) {
+						if (!getDiagnoser(isT)(item, path.concat(index), report, context)) {
+							return false;
+						}
+					}
+					return true;
+				} finally {
+					context.objects.delete(input);
+				}
 			},
 		};
 	},
@@ -189,6 +272,41 @@ export const isDictionaryOf: <const T>(
 				yield "Record<string, ";
 				yield* isT.serialize(depth, done);
 				yield ">";
+			},
+			diagnose(checker, input, path, report, context) {
+				if (!is$Object(input)) {
+					return report(
+						createIssue(checker, input, path, ValidationIssueCode.TypeMismatch),
+					);
+				}
+				const circular = diagnoseCircularReference(
+					checker,
+					input,
+					path,
+					report,
+					context,
+				);
+				if (circular !== null) {
+					return circular;
+				}
+				try {
+					for (const key of keys(input)) {
+						if (
+							typeof key !== "symbol" &&
+							!getDiagnoser(isT)(
+								input[key],
+								path.concat(String(key)),
+								report,
+								context,
+							)
+						) {
+							return false;
+						}
+					}
+					return true;
+				} finally {
+					context.objects.delete(input);
+				}
 			},
 		};
 	},
@@ -236,6 +354,14 @@ export const typeChecker: <const T>(
 			*serialize() {
 				yield d;
 			},
+			diagnose(checker, input, path, report) {
+				return (
+					getType(input) === d ||
+					report(
+						createIssue(checker, input, path, ValidationIssueCode.TypeMismatch),
+					)
+				);
+			},
 		};
 	}
 	if (is$RegExp(d)) {
@@ -243,6 +369,19 @@ export const typeChecker: <const T>(
 			typeGuard: { [k]: (v: unknown): v is T => is$String(v) && d.test(v) }[k],
 			*serialize() {
 				yield `${d}`;
+			},
+			diagnose(checker, input, path, report) {
+				return (
+					(is$String(input) && d.test(input)) ||
+					report(
+						createIssue(
+							checker,
+							input,
+							path,
+							ValidationIssueCode.PatternMismatch,
+						),
+					)
+				);
 			},
 		};
 	}
@@ -258,6 +397,19 @@ export const typeChecker: <const T>(
 					yield JSON.stringify(item);
 				}
 			},
+			diagnose(checker, input, path, report) {
+				return (
+					d.has(input as T) ||
+					report(
+						createIssue(
+							checker,
+							input,
+							path,
+							ValidationIssueCode.ValueMismatch,
+						),
+					)
+				);
+			},
 		};
 	}
 	if (is$Function(d)) {
@@ -265,6 +417,14 @@ export const typeChecker: <const T>(
 			typeGuard: d,
 			*serialize() {
 				yield `${d.name || k}`;
+			},
+			diagnose(checker, input, path, report) {
+				return (
+					d(input) ||
+					report(
+						createIssue(checker, input, path, ValidationIssueCode.GuardFailed),
+					)
+				);
 			},
 		};
 	}
@@ -319,6 +479,41 @@ export const typeChecker: <const T>(
 				yield ",\n";
 			}
 			yield `${getIndent(depth)}}`;
+		},
+		diagnose(checker, input, path, report, context) {
+			if (!is$Object(input)) {
+				return report(
+					createIssue(checker, input, path, ValidationIssueCode.TypeMismatch),
+				);
+			}
+			const circular = diagnoseCircularReference(
+				checker,
+				input,
+				path,
+				report,
+				context,
+			);
+			if (circular !== null) {
+				return circular;
+			}
+			try {
+				for (const [key, property] of properties()) {
+					if (
+						typeof key !== "symbol" &&
+						!getDiagnoser(property)(
+							input[key],
+							path.concat(String(key)),
+							report,
+							context,
+						)
+					) {
+						return false;
+					}
+				}
+				return true;
+			} finally {
+				context.objects.delete(input);
+			}
 		},
 		test(input: unknown, route: Array<string | number | symbol> = []) {
 			if (!is$Object(input)) {
