@@ -6,6 +6,7 @@ export const ValidationIssueCode = {
 	NoUnionMember: "no_union_member",
 	PatternMismatch: "pattern_mismatch",
 	TypeMismatch: "type_mismatch",
+	UnexpectedProperty: "unexpected_property",
 	ValueMismatch: "value_mismatch",
 } as const;
 

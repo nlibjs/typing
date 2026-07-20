@@ -54,6 +54,10 @@ test("ESM, CommonJS, and root package entries preserve runtime behavior", async 
 		);
 		assert.equal(coreEntry.validate({ id: valid }, checker).ok, true);
 		assert.equal(coreEntry.validate({ id: invalid }, checker).ok, false);
+		assert.equal(
+			coreEntry.ValidationIssueCode.UnexpectedProperty,
+			"unexpected_property",
+		);
 	}
 	for (const entry of [uuid, cjsUuid]) {
 		assert.equal(entry.isUUIDLowercase(valid), true);
@@ -235,6 +239,11 @@ const allowedBundleGrowth = {
 	httpsUrl: 1_200,
 	typedArray: 600,
 } as const;
+// Exact-object paths share typeChecker with scalar checkers. The explicit
+// unexpected-property issue and error message add 542–548 minified bytes to
+// these graphs; keep a small deterministic margin while retaining the fixed
+// core and compound bundle caps below.
+const unexpectedPropertyDiagnosticsGrowth = 600;
 
 test("core bundle removes unused exports and unrelated checkers", async (t) => {
 	const result = await bundle("bundle-core.mjs");
@@ -254,7 +263,10 @@ test("individual UUID checker bundle excludes unrelated validators", async (t) =
 	assert.ok(0 < bytesFrom(result, "/is/String.mjs"));
 	assertUnrelatedModulesAbsent(result);
 	assert.ok(
-		result.bytes <= mainBundleBytes.uuid + allowedBundleGrowth.uuid,
+		result.bytes <=
+			mainBundleBytes.uuid +
+				allowedBundleGrowth.uuid +
+				unexpectedPropertyDiagnosticsGrowth,
 		`UUID bundle grew from ${mainBundleBytes.uuid} to ${result.bytes} bytes`,
 	);
 });
@@ -268,7 +280,10 @@ test("numeric checker bundle remains near its main baseline", async (t) => {
 	assert.equal(bytesFrom(result, "/is/String.mjs"), 0);
 	assert.equal(bytesFrom(result, "/is/EmailAddress.mjs"), 0);
 	assert.ok(
-		result.bytes <= mainBundleBytes.numeric + allowedBundleGrowth.numeric,
+		result.bytes <=
+			mainBundleBytes.numeric +
+				allowedBundleGrowth.numeric +
+				unexpectedPropertyDiagnosticsGrowth,
 		`numeric bundle grew from ${mainBundleBytes.numeric} to ${result.bytes} bytes`,
 	);
 });
@@ -283,7 +298,10 @@ test("email bundle includes only its string refinement dependencies", async (t) 
 	assert.equal(bytesFrom(result, "/parseIpv6Address.mjs"), 0);
 	assert.equal(bytesFrom(result, "/is/HttpsUrlString.mjs"), 0);
 	assert.ok(
-		result.bytes <= mainBundleBytes.email + allowedBundleGrowth.email,
+		result.bytes <=
+			mainBundleBytes.email +
+				allowedBundleGrowth.email +
+				unexpectedPropertyDiagnosticsGrowth,
 		`email bundle grew from ${mainBundleBytes.email} to ${result.bytes} bytes`,
 	);
 });
@@ -299,7 +317,10 @@ test("HTTPS URL bundle retains the intended host dependency graph", async (t) =>
 	assert.equal(bytesFrom(result, "/is/EmailAddress.mjs"), 0);
 	assert.equal(bytesFrom(result, "/is/TypedArray.mjs"), 0);
 	assert.ok(
-		result.bytes <= mainBundleBytes.httpsUrl + allowedBundleGrowth.httpsUrl,
+		result.bytes <=
+			mainBundleBytes.httpsUrl +
+				allowedBundleGrowth.httpsUrl +
+				unexpectedPropertyDiagnosticsGrowth,
 		`HTTPS URL bundle grew from ${mainBundleBytes.httpsUrl} to ${result.bytes} bytes`,
 	);
 });
@@ -314,7 +335,10 @@ test("TypedArray bundle excludes string and parser modules", async (t) => {
 	assert.equal(bytesFrom(result, "/parseIpv6Address.mjs"), 0);
 	assert.equal(bytesFrom(result, "/is/EmailAddress.mjs"), 0);
 	assert.ok(
-		result.bytes <= mainBundleBytes.typedArray + allowedBundleGrowth.typedArray,
+		result.bytes <=
+			mainBundleBytes.typedArray +
+				allowedBundleGrowth.typedArray +
+				unexpectedPropertyDiagnosticsGrowth,
 		`TypedArray bundle grew from ${mainBundleBytes.typedArray} to ${result.bytes} bytes`,
 	);
 });

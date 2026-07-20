@@ -99,6 +99,18 @@ test("exact object definitions reject unknown and missing own properties", () =>
 	assert.equal(isObjectWithOwnToString({ toString: "value" }), true);
 });
 
+test("exact object tests identify unexpected properties", () => {
+	const isPerson = typeChecker({ name: isString }, "Person");
+	const error = isPerson.test({ name: "Ada", role: "admin" });
+
+	assert.ok(error instanceof Error);
+	assert.match(error.message, /Unexpected property \.role\./);
+	assert.match(error.message, /TypeChecker<Person/);
+	assert.match(error.message, /requires an exact object/);
+	assert.match(error.message, /use isObjectWith\(\.\.\.\)/);
+	assert.doesNotMatch(error.message, /\[object Object\]/);
+});
+
 test("exact object definitions accept optional, symbol, and hidden properties", () => {
 	const symbol = Symbol("metadata");
 	const isPerson = typeChecker({
