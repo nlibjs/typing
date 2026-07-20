@@ -14,12 +14,188 @@
 	"homepage": "https://github.com/nlibjs/typing",
 	"repository": "https://github.com/nlibjs/typing",
 	"type": "module",
+	"sideEffects": false,
 	"exports": {
 		"./package.json": "./package.json",
 		".": {
+			"types": "./types/mod.d.ts",
 			"import": "./mjs/mod.mjs",
-			"require": "./cjs/mod.cjs",
-			"types": "./types/mod.d.ts"
+			"require": "./cjs/mod.cjs"
+		},
+		"./core": {
+			"types": "./types/core.d.ts",
+			"import": "./mjs/core.mjs",
+			"require": "./cjs/core.cjs"
+		},
+		"./is/Array": {
+			"types": "./types/is/Array.d.ts",
+			"import": "./mjs/is/Array.mjs",
+			"require": "./cjs/is/Array.cjs"
+		},
+		"./is/Base64String": {
+			"types": "./types/is/Base64String.d.ts",
+			"import": "./mjs/is/Base64String.mjs",
+			"require": "./cjs/is/Base64String.cjs"
+		},
+		"./is/Base64UrlString": {
+			"types": "./types/is/Base64UrlString.d.ts",
+			"import": "./mjs/is/Base64UrlString.mjs",
+			"require": "./cjs/is/Base64UrlString.cjs"
+		},
+		"./is/Boolean": {
+			"types": "./types/is/Boolean.d.ts",
+			"import": "./mjs/is/Boolean.mjs",
+			"require": "./cjs/is/Boolean.cjs"
+		},
+		"./is/DomainName": {
+			"types": "./types/is/DomainName.d.ts",
+			"import": "./mjs/is/DomainName.mjs",
+			"require": "./cjs/is/DomainName.cjs"
+		},
+		"./is/EmailAddress": {
+			"types": "./types/is/EmailAddress.d.ts",
+			"import": "./mjs/is/EmailAddress.mjs",
+			"require": "./cjs/is/EmailAddress.cjs"
+		},
+		"./is/EmailAddressLocalPart": {
+			"types": "./types/is/EmailAddressLocalPart.d.ts",
+			"import": "./mjs/is/EmailAddressLocalPart.mjs",
+			"require": "./cjs/is/EmailAddressLocalPart.cjs"
+		},
+		"./is/FiniteNumber": {
+			"types": "./types/is/FiniteNumber.d.ts",
+			"import": "./mjs/is/FiniteNumber.mjs",
+			"require": "./cjs/is/FiniteNumber.cjs"
+		},
+		"./is/Function": {
+			"types": "./types/is/Function.d.ts",
+			"import": "./mjs/is/Function.mjs",
+			"require": "./cjs/is/Function.cjs"
+		},
+		"./is/HttpMethod": {
+			"types": "./types/is/HttpMethod.d.ts",
+			"import": "./mjs/is/HttpMethod.mjs",
+			"require": "./cjs/is/HttpMethod.cjs"
+		},
+		"./is/HttpResponseStatusCode": {
+			"types": "./types/is/HttpResponseStatusCode.d.ts",
+			"import": "./mjs/is/HttpResponseStatusCode.mjs",
+			"require": "./cjs/is/HttpResponseStatusCode.cjs"
+		},
+		"./is/HttpsUrlString": {
+			"types": "./types/is/HttpsUrlString.d.ts",
+			"import": "./mjs/is/HttpsUrlString.mjs",
+			"require": "./cjs/is/HttpsUrlString.cjs"
+		},
+		"./is/Ipv4Address": {
+			"types": "./types/is/Ipv4Address.d.ts",
+			"import": "./mjs/is/Ipv4Address.mjs",
+			"require": "./cjs/is/Ipv4Address.cjs"
+		},
+		"./is/Ipv6Address": {
+			"types": "./types/is/Ipv6Address.d.ts",
+			"import": "./mjs/is/Ipv6Address.mjs",
+			"require": "./cjs/is/Ipv6Address.cjs"
+		},
+		"./is/NegativeFiniteNumber": {
+			"types": "./types/is/NegativeFiniteNumber.d.ts",
+			"import": "./mjs/is/NegativeFiniteNumber.mjs",
+			"require": "./cjs/is/NegativeFiniteNumber.cjs"
+		},
+		"./is/NegativeSafeInteger": {
+			"types": "./types/is/NegativeSafeInteger.d.ts",
+			"import": "./mjs/is/NegativeSafeInteger.mjs",
+			"require": "./cjs/is/NegativeSafeInteger.cjs"
+		},
+		"./is/Never": {
+			"types": "./types/is/Never.d.ts",
+			"import": "./mjs/is/Never.mjs",
+			"require": "./cjs/is/Never.cjs"
+		},
+		"./is/NonNegativeFiniteNumber": {
+			"types": "./types/is/NonNegativeFiniteNumber.d.ts",
+			"import": "./mjs/is/NonNegativeFiniteNumber.mjs",
+			"require": "./cjs/is/NonNegativeFiniteNumber.cjs"
+		},
+		"./is/NonNegativeSafeInteger": {
+			"types": "./types/is/NonNegativeSafeInteger.d.ts",
+			"import": "./mjs/is/NonNegativeSafeInteger.mjs",
+			"require": "./cjs/is/NonNegativeSafeInteger.cjs"
+		},
+		"./is/NonPositiveFiniteNumber": {
+			"types": "./types/is/NonPositiveFiniteNumber.d.ts",
+			"import": "./mjs/is/NonPositiveFiniteNumber.mjs",
+			"require": "./cjs/is/NonPositiveFiniteNumber.cjs"
+		},
+		"./is/NonPositiveSafeInteger": {
+			"types": "./types/is/NonPositiveSafeInteger.d.ts",
+			"import": "./mjs/is/NonPositiveSafeInteger.mjs",
+			"require": "./cjs/is/NonPositiveSafeInteger.cjs"
+		},
+		"./is/Null": {
+			"types": "./types/is/Null.d.ts",
+			"import": "./mjs/is/Null.mjs",
+			"require": "./cjs/is/Null.cjs"
+		},
+		"./is/Object": {
+			"types": "./types/is/Object.d.ts",
+			"import": "./mjs/is/Object.mjs",
+			"require": "./cjs/is/Object.cjs"
+		},
+		"./is/PositiveFiniteNumber": {
+			"types": "./types/is/PositiveFiniteNumber.d.ts",
+			"import": "./mjs/is/PositiveFiniteNumber.mjs",
+			"require": "./cjs/is/PositiveFiniteNumber.cjs"
+		},
+		"./is/PositiveSafeInteger": {
+			"types": "./types/is/PositiveSafeInteger.d.ts",
+			"import": "./mjs/is/PositiveSafeInteger.mjs",
+			"require": "./cjs/is/PositiveSafeInteger.cjs"
+		},
+		"./is/SafeInteger": {
+			"types": "./types/is/SafeInteger.d.ts",
+			"import": "./mjs/is/SafeInteger.mjs",
+			"require": "./cjs/is/SafeInteger.cjs"
+		},
+		"./is/String": {
+			"types": "./types/is/String.d.ts",
+			"import": "./mjs/is/String.mjs",
+			"require": "./cjs/is/String.cjs"
+		},
+		"./is/TypedArray": {
+			"types": "./types/is/TypedArray.d.ts",
+			"import": "./mjs/is/TypedArray.mjs",
+			"require": "./cjs/is/TypedArray.cjs"
+		},
+		"./is/UUID": {
+			"types": "./types/is/UUID.d.ts",
+			"import": "./mjs/is/UUID.mjs",
+			"require": "./cjs/is/UUID.cjs"
+		},
+		"./is/UUIDLowercase": {
+			"types": "./types/is/UUIDLowercase.d.ts",
+			"import": "./mjs/is/UUIDLowercase.mjs",
+			"require": "./cjs/is/UUIDLowercase.cjs"
+		},
+		"./is/UUIDUppercase": {
+			"types": "./types/is/UUIDUppercase.d.ts",
+			"import": "./mjs/is/UUIDUppercase.mjs",
+			"require": "./cjs/is/UUIDUppercase.cjs"
+		},
+		"./is/Undefined": {
+			"types": "./types/is/Undefined.d.ts",
+			"import": "./mjs/is/Undefined.mjs",
+			"require": "./cjs/is/Undefined.cjs"
+		},
+		"./is/UrlHostString": {
+			"types": "./types/is/UrlHostString.d.ts",
+			"import": "./mjs/is/UrlHostString.mjs",
+			"require": "./cjs/is/UrlHostString.cjs"
+		},
+		"./is/ValidDate": {
+			"types": "./types/is/ValidDate.d.ts",
+			"import": "./mjs/is/ValidDate.mjs",
+			"require": "./cjs/is/ValidDate.cjs"
 		}
 	},
 	"files": [
@@ -33,6 +209,7 @@
 		"test:type": "tsc",
 		"test:unit": "node --test \"src/**/*.test.ts\"",
 		"test:example": "node --test example.test.ts",
+		"test:package": "npm run build && node --test \"test/**/*.test.ts\"",
 		"lint": "biome check",
 		"build": "run-s build:*",
 		"build:index": "node cli/generate-index.ts",
@@ -48,6 +225,7 @@
 		"@biomejs/biome": "2.5.4",
 		"@types/node": "26.1.1",
 		"@typescript/typescript6": "6.0.2",
+		"esbuild": "0.28.1",
 		"npm-run-all": "4.1.5",
 		"typescript": "7.0.2"
 	},

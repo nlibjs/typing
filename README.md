@@ -45,6 +45,20 @@ import { typeChecker } from "jsr:@nlib/typing";
 import { typeChecker } from 'https://esm.sh/@nlib/typing@3.0.0';
 ```
 
+Bundle-sensitive applications can import the small core surface and individual
+checkers without loading the root barrel:
+
+```typescript
+import { typeChecker, validate } from "@nlib/typing/core";
+import { isUUIDLowercase } from "@nlib/typing/is/UUIDLowercase";
+
+const isRequest = typeChecker({ id: isUUIDLowercase }, "Request");
+const result = validate(
+  { id: "123e4567-e89b-12d3-a456-426614174000" },
+  isRequest,
+);
+```
+
 ## Usage
 
 ```typescript
