@@ -277,46 +277,120 @@ test("optional validation accepts undefined and reports invalid values", () => {
 
 test("root object mismatch reports a structured issue", () => {
 	const checker = typeChecker({ value: isString }, "NamedObject");
-	assert.deepEqual(validate(null, checker), {
-		ok: false,
-		issue: {
-			path: [],
-			code: ValidationIssueCode.TypeMismatch,
-			expected: "TypeChecker<NamedObject {\n  value: isstring,\n}>",
-			actualType: "Null",
-		},
-	});
+	class NamedObject {
+		value = "value";
+	}
+	for (const [input, actualType] of [
+		[null, "Null"],
+		[Object.assign([], { value: "value" }), "Array"],
+		[Object.assign(() => undefined, { value: "value" }), "Function"],
+		[new NamedObject(), "NamedObject"],
+	] as const) {
+		assert.deepEqual(validate(input, checker), {
+			ok: false,
+			issue: {
+				path: [],
+				code: ValidationIssueCode.TypeMismatch,
+				expected: "TypeChecker<NamedObject {\n  value: isstring,\n}>",
+				actualType,
+			},
+		});
+	}
 });
 
 test("exact and open objects retain their structured validation behavior", () => {
+	const unexpectedPropertyCode: "unexpected_property" =
+		ValidationIssueCode.UnexpectedProperty;
 	const exact = typeChecker({ name: isString }, "ExactPerson");
 	const open = isObjectWith({ name: isString }, "OpenPerson");
-	const input = { name: 1, extra: true };
+	const input = { name: 1, extra: true, note: "invalid name" };
 
 	assert.deepEqual(validate(input, exact), {
 		ok: false,
 		issue: {
-			path: [],
-			code: ValidationIssueCode.TypeMismatch,
-			expected: "TypeChecker<ExactPerson {\n  name: isstring,\n}>",
-			actualType: "Object",
+			path: ["extra"],
+			code: unexpectedPropertyCode,
+			expected: "no additional properties",
+			actualType: "Boolean",
 		},
 	});
 	const all = validateAll(input, exact);
-	assert.equal(all.ok, false);
-	if (!all.ok) {
-		assert.deepEqual(
-			all.issues.map(({ path, code }) => ({ path, code })),
-			[
-				{ path: [], code: ValidationIssueCode.TypeMismatch },
-				{ path: ["name"], code: ValidationIssueCode.GuardFailed },
-			],
-		);
-	}
+	assert.deepEqual(all, {
+		ok: false,
+		issues: [
+			{
+				path: ["extra"],
+				code: ValidationIssueCode.UnexpectedProperty,
+				expected: "no additional properties",
+				actualType: "Boolean",
+			},
+			{
+				path: ["note"],
+				code: ValidationIssueCode.UnexpectedProperty,
+				expected: "no additional properties",
+				actualType: "String",
+			},
+			{
+				path: ["name"],
+				code: ValidationIssueCode.GuardFailed,
+				expected: "TypeChecker<isstring>",
+				actualType: "Number",
+			},
+		],
+	});
 	assert.deepEqual(validate({ name: "Ada", extra: true }, open), {
 		ok: true,
 		value: { name: "Ada", extra: true },
 	});
+});
+
+test("unexpected property issues retain nested paths", () => {
+	const checker = typeChecker({ profile: { name: isString } }, "Account");
+
+	assert.deepEqual(
+		validate({ profile: { name: "Ada", role: "admin" } }, checker),
+		{
+			ok: false,
+			issue: {
+				path: ["profile", "role"],
+				code: ValidationIssueCode.UnexpectedProperty,
+				expected: "no additional properties",
+				actualType: "String",
+			},
+		},
+	);
+});
+
+test("exact object validation ignores symbol and non-enumerable keys", () => {
+	const metadata = Symbol("metadata");
+	const checker = typeChecker({ name: isString });
+	const input = { name: "Ada", [metadata]: true };
+	Object.defineProperty(input, "hidden", { enumerable: false, value: 1 });
+
+	assert.deepEqual(validate(input, checker), { ok: true, value: input });
+});
+
+test("unexpected accessor properties are not evaluated for diagnostics", () => {
+	let reads = 0;
+	const checker = typeChecker({ name: isString });
+	const input = { name: "Ada" } as { name: string; extra?: number };
+	Object.defineProperty(input, "extra", {
+		enumerable: true,
+		get() {
+			reads++;
+			return 1;
+		},
+	});
+
+	assert.deepEqual(validate(input, checker), {
+		ok: false,
+		issue: {
+			path: ["extra"],
+			code: ValidationIssueCode.UnexpectedProperty,
+			expected: "no additional properties",
+		},
+	});
+	assert.equal(reads, 0);
 });
 
 test("exact object validation preserves its input without sanitizing it", () => {

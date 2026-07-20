@@ -218,6 +218,17 @@ if (!allValidation.ok) {
   );
 }
 
+// Exact objects report additional fields at their concrete paths.
+assert.deepEqual(validate({ id: 1, name: "a", admin: true }, isUser), {
+  ok: false,
+  issue: {
+    path: ["admin"],
+    code: ValidationIssueCode.UnexpectedProperty,
+    expected: "no additional properties",
+    actualType: "Boolean",
+  },
+});
+
 // isArrayOf returns TypeChecker<Array<T>>.
 const isUserArray = isArrayOf(isUser);
 assert.equal(

@@ -90,6 +90,22 @@ const createIssue = <T>(
 	actualType: getType(input),
 });
 
+const createUnexpectedPropertyIssue = (
+	input: Record<PropertyKey, unknown>,
+	key: PropertyKey,
+	path: ReadonlyArray<string | number>,
+): ValidationIssue => {
+	const descriptor = Object.getOwnPropertyDescriptor(input, key);
+	return {
+		path: path.concat(String(key)),
+		code: ValidationIssueCode.UnexpectedProperty,
+		expected: "no additional properties",
+		...(descriptor && "value" in descriptor
+			? { actualType: getType(descriptor.value) }
+			: {}),
+	};
+};
+
 const diagnoseCircularReference = <T>(
 	checker: TypeChecker<T>,
 	input: WeakKey,
@@ -488,8 +504,12 @@ const objectFactoryProps = <T>(
 		input: unknown,
 	): input is Record<PropertyKey, unknown> =>
 		exact ? is$PlainObject(input) : is$Object(input);
+	const isUnknownKey = (key: PropertyKey): boolean => !propertyKeys().has(key);
+	const findUnknownKey = (
+		input: Record<PropertyKey, unknown>,
+	): PropertyKey | undefined => keys(input).find(isUnknownKey);
 	const hasUnknownKey = (input: Record<PropertyKey, unknown>): boolean =>
-		keys(input).some((key) => !propertyKeys().has(key));
+		findUnknownKey(input) !== undefined;
 	const getProperty = (
 		input: Record<PropertyKey, unknown>,
 		key: keyof T,
@@ -557,14 +577,15 @@ const objectFactoryProps = <T>(
 				return circular;
 			}
 			try {
-				if (
-					exact &&
-					hasUnknownKey(input) &&
-					!report(
-						createIssue(checker, input, path, ValidationIssueCode.TypeMismatch),
-					)
-				) {
-					return false;
+				if (exact) {
+					for (const key of keys(input)) {
+						if (
+							isUnknownKey(key) &&
+							!report(createUnexpectedPropertyIssue(input, key, path))
+						) {
+							return false;
+						}
+					}
 				}
 				for (const [key, property] of properties()) {
 					if (
@@ -585,8 +606,17 @@ const objectFactoryProps = <T>(
 			}
 		},
 		test(input: unknown, route: Array<string | number | symbol> = []) {
-			if (!acceptsObject(input) || (exact && hasUnknownKey(input))) {
+			if (!acceptsObject(input)) {
 				return new TypeCheckError(this, input);
+			}
+			const unknownKey = exact ? findUnknownKey(input) : undefined;
+			if (unknownKey !== undefined) {
+				return new TypeCheckError(
+					this,
+					input,
+					route.concat(unknownKey),
+					ValidationIssueCode.UnexpectedProperty,
+				);
 			}
 			for (const [k, pd] of properties()) {
 				const error = pd.test(getProperty(input, k), route.concat(k));
@@ -604,7 +634,14 @@ class TypeCheckError<T> extends Error {
 		checker: TypeChecker<T>,
 		value: unknown,
 		route?: Array<string | number | symbol>,
+		reason?: typeof ValidationIssueCode.UnexpectedProperty,
 	) {
+		if (reason === ValidationIssueCode.UnexpectedProperty) {
+			super(
+				`TypeCheckError: Unexpected property .${route?.join(".")}. ${checker.toString()} requires an exact object; use isObjectWith(...) to allow additional properties.`,
+			);
+			return;
+		}
 		const name = route ? `.${route.join(".")}` : "The value";
 		super(
 			`TypeCheckError: ${name} ${value} is not of type ${checker.toString()}`,
