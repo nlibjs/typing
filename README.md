@@ -54,6 +54,7 @@ import {
   typeChecker,
   ensure,
   narrow,
+  union,
   validate,
   validateAll,
   ValidationIssueCode,
@@ -101,6 +102,19 @@ assert.deepEqual(validate("invalid", isContactEmail), {
     expected: "an email address containing @",
   },
 });
+
+// union OR-combines any TypeGuards and infers their guarded union.
+const isCircle = typeChecker({
+  kind: new Set(["circle"] as const),
+  radius: isPositiveSafeInteger,
+});
+const isSquare = typeChecker({
+  kind: new Set(["square"] as const),
+  side: isPositiveSafeInteger,
+});
+const isShape = union(isCircle, isSquare);
+assert.equal(isShape({ kind: "circle", radius: 2 }), true);
+assert.equal(isShape({ kind: "triangle", side: 2 }), false);
 
 // API responses commonly contain additional fields, so validate this one as
 // an open shape with isObjectWith().

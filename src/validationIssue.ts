@@ -3,6 +3,7 @@ export const ValidationIssueCode = {
 	CircularReference: "circular_reference",
 	GuardFailed: "guard_failed",
 	NarrowingFailed: "narrowing_failed",
+	NoUnionMember: "no_union_member",
 	PatternMismatch: "pattern_mismatch",
 	TypeMismatch: "type_mismatch",
 	ValueMismatch: "value_mismatch",
