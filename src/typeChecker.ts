@@ -10,6 +10,7 @@ import type {
 import {
 	type Diagnoser,
 	getDiagnoser,
+	getRegisteredDiagnoser,
 	setDiagnoser,
 	type ValidationIssueReporter,
 } from "./validation.private.ts";
@@ -427,12 +428,16 @@ export const typeChecker: <const T>(
 		};
 	}
 	if (is$Function(d)) {
+		const registeredDiagnoser = getRegisteredDiagnoser(d);
 		return {
 			typeGuard: d,
 			*serialize() {
 				yield `${d.name || k}`;
 			},
-			diagnose(checker, input, path, report) {
+			diagnose(checker, input, path, report, context) {
+				if (registeredDiagnoser) {
+					return registeredDiagnoser(input, path, report, context);
+				}
 				return (
 					d(input) ||
 					report(

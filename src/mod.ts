@@ -36,6 +36,7 @@ export * from "./is/UUID.ts";
 export * from "./is/UUIDLowercase.ts";
 export * from "./is/UUIDUppercase.ts";
 export * from "./is/ValidDate.ts";
+export * from "./narrow.ts";
 export * from "./parseIpv4Address.ts";
 export * from "./parseIpv6Address.ts";
 export * from "./typeChecker.ts";

@@ -44,6 +44,17 @@ export type Callable<T = unknown, A extends Array<unknown> = Array<unknown>> = (
  */
 export type TypeGuard<T> = (input: unknown) => input is T;
 
+/** A standard type guard that narrows `T` to a subtype `U`. */
+export type NarrowingGuard<T, U extends T> = (value: T) => value is U;
+
+/** A diagnostic emitted when an additional narrowing constraint fails. */
+export interface NarrowingIssue {
+	/** Machine-readable built-in or caller-defined issue identifier. */
+	readonly code: ValidationIssueCode;
+	/** Description of the expected value, when available. */
+	readonly expected?: string;
+}
+
 /**
  * A type to extract the guarded type from a type guard function.
  * @example
@@ -93,7 +104,7 @@ export type TypeChecker<T> = TypeGuard<T> & {
 export interface ValidationIssue {
 	/** Location of the issue within the input. */
 	readonly path: ReadonlyArray<string | number>;
-	/** Stable machine-readable built-in issue identifier. */
+	/** Stable machine-readable built-in or caller-defined issue identifier. */
 	readonly code: ValidationIssueCode;
 	/** Description of the expected value, when available. */
 	readonly expected?: string;
