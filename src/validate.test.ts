@@ -2,7 +2,12 @@ import * as assert from "node:assert";
 import { test } from "node:test";
 import { isBoolean } from "./is/Boolean.ts";
 import { isString } from "./is/String.ts";
-import { isArrayOf, isDictionaryOf, typeChecker } from "./typeChecker.ts";
+import {
+	isArrayOf,
+	isDictionaryOf,
+	isOptionalOf,
+	typeChecker,
+} from "./typeChecker.ts";
 import type { ValidationIssue } from "./types.ts";
 import { validate, validateAll } from "./validate.ts";
 import {
@@ -224,6 +229,7 @@ test("built-in definitions report their specific issue codes", () => {
 
 test("dictionary validation reports structural and entry issues", () => {
 	const checker = isDictionaryOf(isString, "StringDictionary");
+	assert.equal(checker(null), false);
 	assert.deepEqual(validate(null, checker), {
 		ok: false,
 		issue: {
@@ -247,5 +253,36 @@ test("dictionary validation reports structural and entry issues", () => {
 	assert.deepEqual(validateAll(input, checker), {
 		ok: false,
 		issues: [expectedIssue],
+	});
+});
+
+test("optional validation accepts undefined and reports invalid values", () => {
+	const checker = isOptionalOf(isString, "OptionalString");
+	assert.equal(checker.toString(), "TypeChecker<isstring | undefined>");
+	assert.deepEqual(validate(undefined, checker), {
+		ok: true,
+		value: undefined,
+	});
+	assert.deepEqual(validate(1, checker), {
+		ok: false,
+		issue: {
+			path: [],
+			code: ValidationIssueCode.GuardFailed,
+			expected: "TypeChecker<isstring>",
+			actualType: "Number",
+		},
+	});
+});
+
+test("root object mismatch reports a structured issue", () => {
+	const checker = typeChecker({ value: isString }, "NamedObject");
+	assert.deepEqual(validate(null, checker), {
+		ok: false,
+		issue: {
+			path: [],
+			code: ValidationIssueCode.TypeMismatch,
+			expected: "TypeChecker<NamedObject {\n  value: isstring,\n}>",
+			actualType: "Null",
+		},
 	});
 });
