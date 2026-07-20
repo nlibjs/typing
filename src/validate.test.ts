@@ -156,8 +156,8 @@ test("structural mismatch reports the input runtime type", () => {
 	assert.deepEqual(result.issues[0], {
 		path: ["items"],
 		code: ValidationIssueCode.TypeMismatch,
-		expected:
-			"TypeChecker<Array<T1 {\n  label: isstring,\n  active: isboolean,\n}>>",
+		// Unnamed type numbers depend on the test runner's module load order.
+		expected: definition.items.toString(),
 		actualType: "Null",
 	});
 });
