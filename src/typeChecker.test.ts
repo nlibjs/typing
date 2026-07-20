@@ -185,6 +185,7 @@ test("Should expose cache and unnamed type configuration.", () => {
 	assert.equal(typeChecker(definition), first);
 	typeCheckerConfig.clearCache();
 	assert.notEqual(typeChecker(definition, "FreshObject"), first);
+	assert.equal(typeChecker(first), first);
 	typeCheckerConfig.resetNoNameTypeCount(originalCount);
 });
 

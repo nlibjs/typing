@@ -65,6 +65,9 @@ interface FactoryProps<T> {
 
 let noNameTypeCount = 0;
 let cacheStore = new WeakMap<object, WeakMap<object, { value: unknown }>>();
+// Type guards are decorated in place, so their checker identity must survive
+// clearing the definition caches.
+const checkerStore = new WeakMap<object, { value: unknown }>();
 const getCache = <T>(context: object) => {
 	let map = cacheStore.get(context);
 	if (!map) {
@@ -127,7 +130,10 @@ export const typeCheckerConfig: {
 const factory =
 	<T, A>(props: (arg: A, name: string) => FactoryProps<T>) =>
 	(arg: A, typeName = `T${++noNameTypeCount}`) => {
-		const checkerCache = getCache<TypeChecker<T>>(factory);
+		const checkerCache = checkerStore as WeakMap<
+			object,
+			{ value: TypeChecker<T> }
+		>;
 		const cache = getCache<TypeChecker<T>>(props);
 		let cached: { value: TypeChecker<T> } | undefined;
 		if (is$Object(arg)) {
