@@ -103,6 +103,30 @@ assert.deepEqual(validate("invalid", isContactEmail), {
   },
 });
 
+// Diagnosis paths are relative to the narrowed value. Structural checkers
+// prefix them, and validateAll preserves every issue in iteration order.
+type OrderedRange = { min: number; max: number } & {
+  readonly orderedRange: unique symbol;
+};
+const isNumber = (input: unknown): input is number =>
+  typeof input === "number";
+const isRange = typeChecker({ min: isNumber, max: isNumber });
+const hasOrderedBounds = (
+  range: { min: number; max: number },
+): range is OrderedRange => range.min <= range.max;
+const isOrderedRange = narrow(isRange, hasOrderedBounds, () => [
+  { path: ["min"], code: "range_min_after_max" },
+  { path: ["max"], code: "range_max_before_min" },
+]);
+const isConfig = typeChecker({ range: isOrderedRange });
+assert.deepEqual(validateAll({ range: { min: 2, max: 1 } }, isConfig), {
+  ok: false,
+  issues: [
+    { path: ["range", "min"], code: "range_min_after_max" },
+    { path: ["range", "max"], code: "range_max_before_min" },
+  ],
+});
+
 // union OR-combines any TypeGuards and infers their guarded union.
 const isCircle = typeChecker({
   kind: new Set(["circle"] as const),

@@ -4,10 +4,11 @@ import { ensure } from "./ensure.ts";
 import { isBoolean } from "./is/Boolean.ts";
 import { isString } from "./is/String.ts";
 import { narrow } from "./narrow.ts";
-import { typeChecker } from "./typeChecker.ts";
+import { isArrayOf, typeChecker } from "./typeChecker.ts";
 import type {
 	Guarded,
 	NarrowingGuard,
+	NarrowingIssue,
 	Nominal,
 	TypeChecker,
 	TypeGuard,
@@ -146,6 +147,138 @@ test("custom narrowing diagnostics retain paths and support multiple issues", ()
 	});
 });
 
+test("validate stops after the first yielded diagnosis", () => {
+	const calls: Array<string> = [];
+	const guard = narrow(isString, matchesEmailAddressRules, function* () {
+		calls.push("first");
+		yield { code: "first_issue" };
+		calls.push("second");
+		yield { code: "second_issue" };
+		calls.push("done");
+	});
+
+	assert.deepEqual(validate("invalid", guard), {
+		ok: false,
+		issue: { path: [], code: "first_issue" },
+	});
+	assert.deepEqual(calls, ["first"]);
+
+	calls.length = 0;
+	assert.deepEqual(validateAll("invalid", guard), {
+		ok: false,
+		issues: [
+			{ path: [], code: "first_issue" },
+			{ path: [], code: "second_issue" },
+		],
+	});
+	assert.deepEqual(calls, ["first", "second", "done"]);
+});
+
+test("relative diagnoses are prefixed through nested objects and arrays", () => {
+	interface Marker {
+		markerId: string;
+	}
+	type UniqueMarkerArray = Array<Marker> & {
+		readonly uniqueMarkerArray: unique symbol;
+	};
+	const isMarker = typeChecker({ markerId: isString }, "Marker");
+	const isMarkerArray = isArrayOf(isMarker, "MarkerArray");
+	const hasUniqueMarkerIds = (
+		markers: Array<Marker>,
+	): markers is UniqueMarkerArray =>
+		new Set(markers.map(({ markerId }) => markerId)).size === markers.length;
+	function* diagnoseDuplicateMarkerIds(
+		markers: Array<Marker>,
+		returnIssue?: NarrowingIssue,
+	): Iterable<NarrowingIssue> {
+		assert.equal(returnIssue, undefined);
+		const firstIndexById = new Map<string, number>();
+		for (const [index, { markerId }] of markers.entries()) {
+			const firstIndex = firstIndexById.get(markerId);
+			if (firstIndex === undefined) {
+				firstIndexById.set(markerId, index);
+				continue;
+			}
+			yield {
+				path: [firstIndex, "markerId"],
+				code: "duplicate_marker_id",
+			};
+			yield { path: [index, "markerId"], code: "duplicate_marker_id" };
+		}
+	}
+	const isUniqueMarkerArray = narrow(
+		isMarkerArray,
+		hasUniqueMarkerIds,
+		diagnoseDuplicateMarkerIds,
+	);
+	const checker = typeChecker(
+		{
+			scenes: isArrayOf(
+				typeChecker({ markers: isUniqueMarkerArray }, "Scene"),
+				"SceneArray",
+			),
+		},
+		"Project",
+	);
+	const input = {
+		scenes: [
+			{
+				markers: [{ markerId: "duplicate" }, { markerId: "duplicate" }],
+			},
+		],
+	};
+
+	assert.deepEqual(validate(input, checker), {
+		ok: false,
+		issue: {
+			path: ["scenes", 0, "markers", 0, "markerId"],
+			code: "duplicate_marker_id",
+		},
+	});
+	assert.deepEqual(validateAll(input, checker), {
+		ok: false,
+		issues: [
+			{
+				path: ["scenes", 0, "markers", 0, "markerId"],
+				code: "duplicate_marker_id",
+			},
+			{
+				path: ["scenes", 0, "markers", 1, "markerId"],
+				code: "duplicate_marker_id",
+			},
+		],
+	});
+});
+
+test("validateAll preserves duplicate relative diagnoses", () => {
+	const guard = narrow(isString, matchesEmailAddressRules, () => [
+		{ path: ["domain"], code: "invalid_domain" },
+		{ path: ["domain"], code: "invalid_domain" },
+	]);
+
+	assert.deepEqual(validateAll("invalid", guard), {
+		ok: false,
+		issues: [
+			{ path: ["domain"], code: "invalid_domain" },
+			{ path: ["domain"], code: "invalid_domain" },
+		],
+	});
+});
+
+test("diagnosis iteration exceptions propagate only when consumed", () => {
+	const error = new Error("diagnosis failed");
+	const guard = narrow(isString, matchesEmailAddressRules, function* () {
+		yield { code: "first_issue" };
+		throw error;
+	});
+
+	assert.deepEqual(validate("invalid", guard), {
+		ok: false,
+		issue: { path: [], code: "first_issue" },
+	});
+	assert.throws(() => validateAll("invalid", guard), error);
+});
+
 test("failed narrowing without a diagnostic issue uses the generic code", () => {
 	type NonEmptyString = Nominal<string, "NonEmptyString">;
 	const nonEmpty: NarrowingGuard<string, NonEmptyString> = (
@@ -163,6 +296,10 @@ test("failed narrowing without a diagnostic issue uses the generic code", () => 
 
 	assert.deepEqual(validate("", withoutDiagnosis), expected);
 	assert.deepEqual(validate("", withEmptyDiagnosis), expected);
+	assert.deepEqual(validateAll("", withEmptyDiagnosis), {
+		ok: false,
+		issues: [expected.issue],
+	});
 });
 
 test("diagnosis does not decide validity", () => {
