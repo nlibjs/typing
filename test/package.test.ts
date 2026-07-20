@@ -219,6 +219,23 @@ const assertUnrelatedModulesAbsent = (result: BundleResult) => {
 	assert.equal(bytesFrom(result, "/is/HttpsUrlString.mjs"), 0);
 };
 
+// Measured with these exact fixtures from main at 4a5496c. Each allowance is
+// the accepted cost of structured-diagnosis composition for that graph.
+const mainBundleBytes = {
+	uuid: 4_816,
+	numeric: 4_686,
+	email: 5_514,
+	httpsUrl: 7_524,
+	typedArray: 5_080,
+} as const;
+const allowedBundleGrowth = {
+	uuid: 500,
+	numeric: 100,
+	email: 1_200,
+	httpsUrl: 1_200,
+	typedArray: 600,
+} as const;
+
 test("core bundle removes unused exports and unrelated checkers", async (t) => {
 	const result = await bundle("bundle-core.mjs");
 	t.diagnostic(`minified core bundle: ${result.bytes} bytes`);
@@ -236,7 +253,70 @@ test("individual UUID checker bundle excludes unrelated validators", async (t) =
 	assert.ok(0 < bytesFrom(result, "/is/UUIDLowercase.mjs"));
 	assert.ok(0 < bytesFrom(result, "/is/String.mjs"));
 	assertUnrelatedModulesAbsent(result);
-	assert.ok(result.bytes <= 5_600, `UUID bundle is ${result.bytes} bytes`);
+	assert.ok(
+		result.bytes <= mainBundleBytes.uuid + allowedBundleGrowth.uuid,
+		`UUID bundle grew from ${mainBundleBytes.uuid} to ${result.bytes} bytes`,
+	);
+});
+
+test("numeric checker bundle remains near its main baseline", async (t) => {
+	const result = await bundle("bundle-numeric.mjs");
+	t.diagnostic(`minified numeric checker bundle: ${result.bytes} bytes`);
+	assert.ok(0 < bytesFrom(result, "/is/PositiveSafeInteger.mjs"));
+	assert.ok(0 < bytesFrom(result, "/is/SafeInteger.mjs"));
+	assert.equal(bytesFrom(result, "/codePoints.mjs"), 0);
+	assert.equal(bytesFrom(result, "/is/String.mjs"), 0);
+	assert.equal(bytesFrom(result, "/is/EmailAddress.mjs"), 0);
+	assert.ok(
+		result.bytes <= mainBundleBytes.numeric + allowedBundleGrowth.numeric,
+		`numeric bundle grew from ${mainBundleBytes.numeric} to ${result.bytes} bytes`,
+	);
+});
+
+test("email bundle includes only its string refinement dependencies", async (t) => {
+	const result = await bundle("bundle-email.mjs");
+	t.diagnostic(`minified email checker bundle: ${result.bytes} bytes`);
+	assert.ok(0 < bytesFrom(result, "/is/EmailAddress.mjs"));
+	assert.ok(0 < bytesFrom(result, "/is/EmailAddressLocalPart.mjs"));
+	assert.ok(0 < bytesFrom(result, "/is/DomainName.mjs"));
+	assert.equal(bytesFrom(result, "/parseIpv4Address.mjs"), 0);
+	assert.equal(bytesFrom(result, "/parseIpv6Address.mjs"), 0);
+	assert.equal(bytesFrom(result, "/is/HttpsUrlString.mjs"), 0);
+	assert.ok(
+		result.bytes <= mainBundleBytes.email + allowedBundleGrowth.email,
+		`email bundle grew from ${mainBundleBytes.email} to ${result.bytes} bytes`,
+	);
+});
+
+test("HTTPS URL bundle retains the intended host dependency graph", async (t) => {
+	const result = await bundle("bundle-https-url.mjs");
+	t.diagnostic(`minified HTTPS URL checker bundle: ${result.bytes} bytes`);
+	assert.ok(0 < bytesFrom(result, "/is/HttpsUrlString.mjs"));
+	assert.ok(0 < bytesFrom(result, "/is/UrlHostString.mjs"));
+	assert.ok(0 < bytesFrom(result, "/is/DomainName.mjs"));
+	assert.ok(0 < bytesFrom(result, "/is/Ipv4Address.mjs"));
+	assert.ok(0 < bytesFrom(result, "/is/Ipv6Address.mjs"));
+	assert.equal(bytesFrom(result, "/is/EmailAddress.mjs"), 0);
+	assert.equal(bytesFrom(result, "/is/TypedArray.mjs"), 0);
+	assert.ok(
+		result.bytes <= mainBundleBytes.httpsUrl + allowedBundleGrowth.httpsUrl,
+		`HTTPS URL bundle grew from ${mainBundleBytes.httpsUrl} to ${result.bytes} bytes`,
+	);
+});
+
+test("TypedArray bundle excludes string and parser modules", async (t) => {
+	const result = await bundle("bundle-typed-array.mjs");
+	t.diagnostic(`minified TypedArray checker bundle: ${result.bytes} bytes`);
+	assert.ok(0 < bytesFrom(result, "/is/TypedArray.mjs"));
+	assert.ok(0 < bytesFrom(result, "/is/NonNegativeSafeInteger.mjs"));
+	assert.equal(bytesFrom(result, "/codePoints.mjs"), 0);
+	assert.equal(bytesFrom(result, "/parseIpv4Address.mjs"), 0);
+	assert.equal(bytesFrom(result, "/parseIpv6Address.mjs"), 0);
+	assert.equal(bytesFrom(result, "/is/EmailAddress.mjs"), 0);
+	assert.ok(
+		result.bytes <= mainBundleBytes.typedArray + allowedBundleGrowth.typedArray,
+		`TypedArray bundle grew from ${mainBundleBytes.typedArray} to ${result.bytes} bytes`,
+	);
 });
 
 test("compound schema bundle includes composition without checker tables", async (t) => {

@@ -26,8 +26,10 @@ import {
 	isSmallLatinCodePoint,
 	listCodePoints,
 } from "../codePointUtil.ts";
+import { fromDiagnosis, narrow } from "../narrow.ts";
 import { typeChecker } from "../typeChecker.ts";
-import type { TypeChecker } from "../types.ts";
+import type { NarrowingIssue, TypeChecker } from "../types.ts";
+import { ValidationIssueCode } from "../validationIssue.ts";
 import { isString } from "./String.ts";
 
 const allowedNonAlphaNumerics = new Set([
@@ -58,6 +60,9 @@ const isAtomText = (codePoint: number): boolean =>
 	isDigitCodePoint(codePoint) ||
 	allowedNonAlphaNumerics.has(codePoint);
 
+const localPartExpected =
+	"an email address local part of 1 to 64 valid characters";
+
 /**
  * - https://www.rfc-editor.org/rfc/rfc5322.html#section-3.4.1
  * - https://gitlab-ce.zipang.in/everholic/monorepo/-/issues/36
@@ -69,30 +74,49 @@ const isAtomText = (codePoint: number): boolean =>
  * @param input A value to check.
  * @returns A type predicate for string that is a local part of an email address.
  */
-export const isEmailAddressLocalPart: TypeChecker<string> = typeChecker(
-	(input: unknown): input is string => {
-		if (!isString(input)) {
-			return false;
-		}
-		const { length } = input;
-		if (length === 0 || 64 < length) {
-			return false;
-		}
-		let lastCodePoint = FULL_STOP;
-		for (const codePoint of listCodePoints(input)) {
-			if (codePoint === FULL_STOP) {
-				if (lastCodePoint === FULL_STOP) {
-					return false;
-				}
-			} else if (!isAtomText(codePoint)) {
-				return false;
+function* diagnoseEmailAddressLocalPart(
+	input: string,
+	returnIssue?: NarrowingIssue,
+): Iterable<NarrowingIssue> {
+	const { length } = input;
+	if (length === 0 || 64 < length) {
+		yield returnIssue ?? {
+			code: ValidationIssueCode.NarrowingFailed,
+			expected: localPartExpected,
+		};
+		return;
+	}
+	let lastCodePoint = FULL_STOP;
+	for (const codePoint of listCodePoints(input)) {
+		if (codePoint === FULL_STOP) {
+			if (lastCodePoint === FULL_STOP) {
+				yield returnIssue ?? {
+					code: ValidationIssueCode.NarrowingFailed,
+					expected: localPartExpected,
+				};
+				return;
 			}
-			lastCodePoint = codePoint;
+		} else if (!isAtomText(codePoint)) {
+			yield returnIssue ?? {
+				code: ValidationIssueCode.NarrowingFailed,
+				expected: localPartExpected,
+			};
+			return;
 		}
-		if (lastCodePoint === FULL_STOP) {
-			return false;
-		}
-		return true;
-	},
+		lastCodePoint = codePoint;
+	}
+	if (lastCodePoint === FULL_STOP) {
+		yield returnIssue ?? {
+			code: ValidationIssueCode.NarrowingFailed,
+			expected: localPartExpected,
+		};
+	}
+}
+
+export const isEmailAddressLocalPart: TypeChecker<string> = typeChecker(
+	narrow(
+		isString,
+		fromDiagnosis<string, string>(diagnoseEmailAddressLocalPart),
+	),
 	"EmailAddressLocalPart",
 );

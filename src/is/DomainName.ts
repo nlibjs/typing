@@ -4,8 +4,10 @@ import {
 	isSmallLatinCodePoint,
 	listCodePoints,
 } from "../codePointUtil.ts";
+import { fromDiagnosis, narrow } from "../narrow.ts";
 import { typeChecker } from "../typeChecker.ts";
-import type { Nominal, TypeChecker } from "../types.ts";
+import type { NarrowingIssue, Nominal, TypeChecker } from "../types.ts";
+import { ValidationIssueCode } from "../validationIssue.ts";
 import { isString } from "./String.ts";
 
 /**
@@ -25,33 +27,49 @@ export type DomainName = Nominal<string, "DomainName">;
  * @param input A value to check.
  * @returns A type predicate for `DomainName`.
  */
-export const isDomainName: TypeChecker<DomainName> = typeChecker(
-	(input: unknown): input is DomainName => {
-		if (!isString(input)) {
-			return false;
-		}
-		/** Initialize with a hyphen so `.example.com` is rejected. */
-		let lastCodePoint = HYPHEN_MINUS;
-		let currentLabelIsValid = false;
-		let labelCount = 1;
-		for (const codePoint of listCodePoints(input)) {
-			if (codePoint === FULL_STOP) {
-				if (!currentLabelIsValid || lastCodePoint === HYPHEN_MINUS) {
-					return false;
-				}
-				currentLabelIsValid = false;
-				labelCount += 1;
-			} else if (isSmallLatinCodePoint(codePoint)) {
-				currentLabelIsValid = true;
-			} else if (codePoint !== HYPHEN_MINUS && !isDigitCodePoint(codePoint)) {
-				return false;
+function* diagnoseDomainName(
+	input: string,
+	returnIssue?: NarrowingIssue,
+): Iterable<NarrowingIssue> {
+	/** Initialize with a hyphen so `.example.com` is rejected. */
+	let lastCodePoint = HYPHEN_MINUS;
+	let currentLabelIsValid = false;
+	let labelCount = 1;
+	for (const codePoint of listCodePoints(input)) {
+		if (codePoint === FULL_STOP) {
+			if (!currentLabelIsValid || lastCodePoint === HYPHEN_MINUS) {
+				yield returnIssue ?? {
+					code: ValidationIssueCode.NarrowingFailed,
+					expected: "a domain name with at least two valid labels",
+				};
+				return;
 			}
-			lastCodePoint = codePoint;
+			currentLabelIsValid = false;
+			labelCount += 1;
+		} else if (isSmallLatinCodePoint(codePoint)) {
+			currentLabelIsValid = true;
+		} else if (codePoint !== HYPHEN_MINUS && !isDigitCodePoint(codePoint)) {
+			yield returnIssue ?? {
+				code: ValidationIssueCode.NarrowingFailed,
+				expected: "a domain name with at least two valid labels",
+			};
+			return;
 		}
-		if (lastCodePoint === FULL_STOP || lastCodePoint === HYPHEN_MINUS) {
-			return false;
-		}
-		return 1 < labelCount;
-	},
+		lastCodePoint = codePoint;
+	}
+	if (
+		lastCodePoint === FULL_STOP ||
+		lastCodePoint === HYPHEN_MINUS ||
+		labelCount <= 1
+	) {
+		yield returnIssue ?? {
+			code: ValidationIssueCode.NarrowingFailed,
+			expected: "a domain name with at least two valid labels",
+		};
+	}
+}
+
+export const isDomainName: TypeChecker<DomainName> = typeChecker(
+	narrow(isString, fromDiagnosis<string, DomainName>(diagnoseDomainName)),
 	"DomainName",
 );

@@ -1,5 +1,7 @@
+import { fromDiagnosis, narrow } from "../narrow.ts";
 import { typeChecker } from "../typeChecker.ts";
-import type { Nominal, TypeChecker } from "../types.ts";
+import type { NarrowingIssue, Nominal, TypeChecker } from "../types.ts";
+import { ValidationIssueCode } from "../validationIssue.ts";
 import { isDomainName } from "./DomainName.ts";
 import { isEmailAddressLocalPart } from "./EmailAddressLocalPart.ts";
 import { isString } from "./String.ts";
@@ -13,22 +15,31 @@ export type EmailAddress = Nominal<string, "EmailAddress">;
  * @param input A value to check.
  * @returns A type predicate for `EmailAddress`.
  */
+function* diagnoseEmailAddress(
+	input: string,
+	returnIssue?: NarrowingIssue,
+): Iterable<NarrowingIssue> {
+	if (254 < input.length) {
+		yield returnIssue ?? {
+			code: ValidationIssueCode.NarrowingFailed,
+			expected: "an email address",
+		};
+		return;
+	}
+	const atMarkIndex = input.lastIndexOf("@");
+	if (
+		atMarkIndex < 1 ||
+		!isEmailAddressLocalPart(input.slice(0, atMarkIndex)) ||
+		!isDomainName(input.slice(atMarkIndex + 1))
+	) {
+		yield returnIssue ?? {
+			code: ValidationIssueCode.NarrowingFailed,
+			expected: "an email address",
+		};
+	}
+}
+
 export const isEmailAddress: TypeChecker<EmailAddress> = typeChecker(
-	(input: unknown): input is EmailAddress => {
-		if (!isString(input)) {
-			return false;
-		}
-		if (254 < input.length) {
-			return false;
-		}
-		const atMarkIndex = input.lastIndexOf("@");
-		if (atMarkIndex < 1) {
-			return false;
-		}
-		return (
-			isEmailAddressLocalPart(input.slice(0, atMarkIndex)) &&
-			isDomainName(input.slice(atMarkIndex + 1))
-		);
-	},
+	narrow(isString, fromDiagnosis<string, EmailAddress>(diagnoseEmailAddress)),
 	"EmailAddress",
 );

@@ -35,6 +35,7 @@ void _emailAddressType;
 
 test("narrow preserves subtype inference and leaves the predicate reusable", () => {
 	assert.equal("test" in isEmailAddress, false);
+	assert.equal(isEmailAddress.name, "");
 	const text = "a@example.com";
 	assert.equal(matchesEmailAddressRules(text), true);
 	if (matchesEmailAddressRules(text)) {
@@ -50,6 +51,15 @@ test("narrow preserves subtype inference and leaves the predicate reusable", () 
 	}
 	assert.equal(isEmailAddress("invalid"), false);
 	assert.equal(isEmailAddress(1), false);
+});
+
+test("narrow remains anonymous so typeChecker uses the explicit type name", () => {
+	const checker = typeChecker(
+		narrow(isString, matchesEmailAddressRules),
+		"EmailAddress",
+	);
+	assert.equal(checker.name, "");
+	assert.equal(checker.toString(), "TypeChecker<isEmailAddress>");
 });
 
 test("the boolean path short-circuits and never executes diagnosis", () => {

@@ -1,5 +1,7 @@
+import { narrow } from "../narrow.ts";
 import { typeChecker } from "../typeChecker.ts";
 import type { Nominal, TypeChecker } from "../types.ts";
+import { ValidationIssueCode } from "../validationIssue.ts";
 import { isString } from "./String.ts";
 
 /** A UUID in uppercase. */
@@ -13,7 +15,15 @@ const UUIDUppercaseRegExp =
  * @returns A type predicate for `UUIDUppercase`.
  */
 export const isUUIDUppercase: TypeChecker<UUIDUppercase> = typeChecker(
-	(input: unknown): input is UUIDUppercase =>
-		isString(input) && UUIDUppercaseRegExp.test(input),
+	narrow(
+		isString,
+		(input): input is UUIDUppercase => UUIDUppercaseRegExp.test(input),
+		() => [
+			{
+				code: ValidationIssueCode.PatternMismatch,
+				expected: "an uppercase UUID",
+			},
+		],
+	),
 	"UUIDUppercase",
 );

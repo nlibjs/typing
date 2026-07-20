@@ -1,20 +1,44 @@
 import { getType } from "../getType.ts";
+import { narrow } from "../narrow.ts";
 import { typeChecker } from "../typeChecker.ts";
 import type { TypeChecker } from "../types.ts";
+import { ValidationIssueCode } from "../validationIssue.ts";
 import { isNonNegativeSafeInteger } from "./NonNegativeSafeInteger.ts";
 
-const typedArrayChecker = <T>(name: string): TypeChecker<T> => {
+interface TypedArrayView extends ArrayBufferView {
+	readonly BYTES_PER_ELEMENT: number;
+}
+
+const isTypedArray: TypeChecker<TypedArrayView> = typeChecker(
+	(input: unknown): input is TypedArrayView =>
+		ArrayBuffer.isView(input) &&
+		"BYTES_PER_ELEMENT" in input &&
+		isNonNegativeSafeInteger(input.BYTES_PER_ELEMENT),
+	"TypedArray",
+);
+
+const typedArrayChecker = <T extends TypedArrayView>(
+	name: string,
+): TypeChecker<T> => {
 	const functionName = `is${name}`;
-	return typeChecker(
-		{
-			[functionName]: (input: unknown): input is T =>
-				ArrayBuffer.isView(input) &&
-				"BYTES_PER_ELEMENT" in input &&
-				isNonNegativeSafeInteger(input.BYTES_PER_ELEMENT) &&
-				getType(input) === name,
-		}[functionName],
+	const checker = typeChecker(
+		narrow<TypedArrayView, T>(
+			isTypedArray,
+			(input): input is T => getType(input) === name,
+			() => [
+				{
+					code: ValidationIssueCode.NarrowingFailed,
+					expected: `a ${name}`,
+				},
+			],
+		),
 		name,
 	);
+	Object.defineProperty(checker, "name", {
+		value: functionName,
+		configurable: true,
+	});
+	return checker;
 };
 
 /**
