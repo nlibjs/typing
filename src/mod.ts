@@ -41,5 +41,6 @@ export * from "./parseIpv4Address.ts";
 export * from "./parseIpv6Address.ts";
 export * from "./typeChecker.ts";
 export * from "./types.ts";
+export * from "./union.ts";
 export * from "./validate.ts";
 export * from "./validationIssue.ts";
