@@ -2,7 +2,7 @@ import * as assert from "node:assert";
 import { test } from "node:test";
 import { isBoolean } from "./is/Boolean.ts";
 import { isString } from "./is/String.ts";
-import { isArrayOf } from "./typeChecker.ts";
+import { isArrayOf, typeChecker } from "./typeChecker.ts";
 import type { ValidationIssue } from "./types.ts";
 import { validate, validateAll } from "./validate.ts";
 import {
@@ -112,6 +112,36 @@ test("validateAll returns every nested object and array issue", () => {
 	const firstCode: ValidationIssueCodeType = firstIssue.code;
 	assert.deepEqual(firstIssue.path, ["name"]);
 	assert.equal(firstCode, ValidationIssueCode.GuardFailed);
+});
+
+test("circular references return structured issues", () => {
+	const checker = typeChecker(
+		{
+			value: isString,
+			sub: { value: isString },
+		},
+		"CircularNode",
+	);
+	const input = {
+		value: "root",
+		sub: { value: "child" },
+	};
+	input.sub = input;
+	const expectedIssue = {
+		path: ["sub"],
+		code: ValidationIssueCode.CircularReference,
+		expected: "TypeChecker<CircularNode.sub {\n  value: isstring,\n}>",
+		actualType: "Object",
+	};
+
+	assert.deepEqual(validate(input, checker), {
+		ok: false,
+		issue: expectedIssue,
+	});
+	assert.deepEqual(validateAll(input, checker), {
+		ok: false,
+		issues: [expectedIssue],
+	});
 });
 
 test("successful validation preserves object identity", () => {
