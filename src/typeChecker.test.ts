@@ -62,6 +62,36 @@ test("Should detect circular references.", () => {
 	assert.throws(() => isT(obj), /^Error: CircularReference:/);
 });
 
+test("Should test type guards and object definitions.", () => {
+	const isText = typeChecker(
+		(input: unknown): input is string => typeof input === "string",
+		"Text",
+	);
+	assert.equal(isText.test("value"), null);
+
+	const isNamedObject = typeChecker({ name: isText }, "NamedObject");
+	assert.equal(isNamedObject.test({ name: "value" }), null);
+	const rootError = isNamedObject.test(null);
+	assert.ok(rootError instanceof Error);
+	assert.match(rootError.message, /^TypeCheckError: The value /);
+	const propertyError = isNamedObject.test({ name: 1 });
+	assert.ok(propertyError instanceof Error);
+	assert.match(propertyError.message, /^TypeCheckError: \.name /);
+});
+
+test("Should expose cache and unnamed type configuration.", () => {
+	const originalCount = typeCheckerConfig.getNoNameTypeCount();
+	typeCheckerConfig.resetNoNameTypeCount(40);
+	assert.equal(typeCheckerConfig.getNoNameTypeCount(), 40);
+
+	const definition = { value: /value/ };
+	const first = typeChecker(definition, "CachedObject");
+	assert.equal(typeChecker(definition), first);
+	typeCheckerConfig.clearCache();
+	assert.notEqual(typeChecker(definition, "FreshObject"), first);
+	typeCheckerConfig.resetNoNameTypeCount(originalCount);
+});
+
 test("Should serialize definitions (type guard)", () => {
 	typeCheckerConfig.resetNoNameTypeCount();
 	const isT1 = typeChecker(function isFoo() {

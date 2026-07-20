@@ -52,6 +52,9 @@ import * as assert from "node:assert";
 import {
   typeChecker,
   ensure,
+  validate,
+  validateAll,
+  ValidationIssueCode,
   isString,
   isPositiveSafeInteger,
   isArrayOf,
@@ -81,6 +84,28 @@ const response = await fetch("https://jsonplaceholder.typicode.com/users/1");
 const member = ensure(await response.json(), isUser);
 console.info(`member.id: ${member.id}`);
 console.info(`member.name: ${member.name}`);
+
+// validate returns the first machine-readable issue without throwing.
+const validation = validate({ id: "1", name: "a" }, isUser);
+assert.deepEqual(validation, {
+  ok: false,
+  issue: {
+    path: ["id"],
+    code: ValidationIssueCode.GuardFailed,
+    expected: "TypeChecker<isPositiveSafeInteger>",
+    actualType: "String",
+  },
+});
+
+// validateAll collects every issue discoverable in structural checkers.
+const allValidation = validateAll({ id: "1", name: 1 }, isUser);
+assert.equal(allValidation.ok, false);
+if (!allValidation.ok) {
+  assert.deepEqual(
+    allValidation.issues.map((issue) => issue.path),
+    [["id"], ["name"]],
+  );
+}
 
 // isArrayOf returns TypeChecker<Array<T>>.
 const isUserArray = isArrayOf(isUser);
