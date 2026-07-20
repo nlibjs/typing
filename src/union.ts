@@ -4,6 +4,17 @@ import type { Guarded, TypeGuard, ValidationIssue } from "./types.ts";
 import { getDiagnoser, setDiagnoser } from "./validation.private.ts";
 import { ValidationIssueCode } from "./validationIssue.ts";
 
+const createUnionGuard =
+	(typeGuards: ReadonlyArray<TypeGuard<unknown>>): TypeGuard<unknown> =>
+	(input): input is unknown => {
+		for (const typeGuard of typeGuards) {
+			if (typeGuard(input)) {
+				return true;
+			}
+		}
+		return false;
+	};
+
 /** Returns the type guard that never succeeds. */
 export function union(): typeof isNever;
 
@@ -33,14 +44,7 @@ export function union(
 		return typeGuards[0] as TypeGuard<unknown>;
 	}
 
-	const combined = (input: unknown): input is unknown => {
-		for (const typeGuard of typeGuards) {
-			if (typeGuard(input)) {
-				return true;
-			}
-		}
-		return false;
-	};
+	const combined = createUnionGuard(typeGuards);
 
 	setDiagnoser(combined, (input, path, report, context) => {
 		const branchIssues: Array<ValidationIssue> = [];

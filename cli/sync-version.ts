@@ -1,12 +1,13 @@
 import * as fs from "node:fs/promises";
 import { ensure } from "../src/ensure.ts";
 import { isString } from "../src/is/String.ts";
+import { isObjectWith } from "../src/typeChecker.ts";
 
-const hasNameAndVersion = {
+const hasNameAndVersion = isObjectWith({
 	name: isString,
 	version: isString,
 	description: isString,
-};
+});
 
 const packageJsonUrl = new URL("../package.json", import.meta.url);
 const packageJson = await fs

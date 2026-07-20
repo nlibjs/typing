@@ -1,20 +1,64 @@
 # Changelog
 
+## v4.0.0 (2026-07-20)
+
+### Breaking Changes
+
+- make object definitions exact by default and add isObjectWith (#435) ([a12a915](https://github.com/nlibjs/typing/commit/a12a915f59dcbb7caa13717095159a0faa94813e))
+
+### Features
+
+- add fromDiagnosis for narrowing guards (#439) ([e342353](https://github.com/nlibjs/typing/commit/e342353105ff8d60e5d6f37c8a7ce6f4ab51e773))
+- support relative and multiple narrowing diagnoses (#438) ([ae11029](https://github.com/nlibjs/typing/commit/ae110291d3ab0baa9886d43b944e8df18f9a31c6))
+- add a union type-guard combinator (#437) ([90ddd5e](https://github.com/nlibjs/typing/commit/90ddd5eea5dcfd45b8ed72b78e12e564c0023e7e))
+- add composable narrowing guards (#436) ([08f78a4](https://github.com/nlibjs/typing/commit/08f78a4c02fb1bd8199459e1695cdb6fe04729b0))
+- add structured validation results (#434) ([791565b](https://github.com/nlibjs/typing/commit/791565bff6236f4c487e03fb8773cda83c9bea25))
+- add const type parameters for literal type inference from Set definitions ([813eebe](https://github.com/nlibjs/typing/commit/813eebe74490ee05c57657accaf0bd36ad94ca0d))
+
+### Bug Fixes
+
+- preserve checker identity across cache clears (#435) ([aa07bda](https://github.com/nlibjs/typing/commit/aa07bdad07fd9d35713d5a53bf092a12246ea04f))
+- build error ([127b840](https://github.com/nlibjs/typing/commit/127b840d5fccdb574155f1cefff12abe8b0e2150))
+- exclude 'jsr.json' from biome configuration includes ([c16273b](https://github.com/nlibjs/typing/commit/c16273b9449f5f8334e8df09f086e33fc89170dd))
+- update file includes in biome configuration ([f6336b9](https://github.com/nlibjs/typing/commit/f6336b9ce462edb1df736d20f270f22d2887a45a))
+
+### Performance Improvements
+
+- add side-effect-free package exports (#440) ([78824aa](https://github.com/nlibjs/typing/commit/78824aa606f29a896bc0e793f2a1368cc8290ec7))
+
+### Tests
+
+- cover remaining public typeChecker paths (#434) ([53008e3](https://github.com/nlibjs/typing/commit/53008e33c66696668ba085dba5ef87d75d744d6c))
+- add missing tests (#434) ([1fe5631](https://github.com/nlibjs/typing/commit/1fe5631dad33fd2f583199c53eeec363c7d3a9f6))
+- cover structured circular reference issues (#434) ([aaa2f3a](https://github.com/nlibjs/typing/commit/aaa2f3a0fa76fe6c7b5ab71ac9ec66f7a926571e))
+- remove order-dependent type numbering (#434) ([18f8af5](https://github.com/nlibjs/typing/commit/18f8af523580268fa93e5ee770a039c992aadda9))
+
+### Code Refactoring
+
+- compose string and typed-array checkers ([e0454a4](https://github.com/nlibjs/typing/commit/e0454a4f5d0a9a2a601573e3f057afd6ce4efa6a))
+
+### Documentation
+
+- fix comments ([1d46c5e](https://github.com/nlibjs/typing/commit/1d46c5ec19ccb21bbf4cc3acd60083448cdc0bc2))
+
+### Continuous Integration
+
+- use node v26 ([aea8630](https://github.com/nlibjs/typing/commit/aea86308824b6f632ffa6a35363b1131aa43c534))
+
+### Dependency Upgrades
+
+- npm audit fix ([39934e4](https://github.com/nlibjs/typing/commit/39934e436810649001d6650aeac95ab36d15708f))
+- @biomejs/biome:2.2.5→2.5.4 ([f1d8723](https://github.com/nlibjs/typing/commit/f1d8723f733a3edb1227b6f69eee8548b020ae3d))
+- @types/node:24.7.2→26.1.1 ([638899c](https://github.com/nlibjs/typing/commit/638899c001c62c89f197cd82c04e9475bab2ca47))
+- typescript:5.9.3→7.0.2 ([27493b5](https://github.com/nlibjs/typing/commit/27493b5f3b770cafa9fc4539d93a69a30746d0e9))
+
+
 ## v3.0.4 (2025-10-12)
 
 ### Bug Fixes
 
 - include 'types' directory in package files ([8ac8125](https://github.com/nlibjs/typing/commit/8ac81259ebefdfb4c2f9f8e7463950cb81daab5c))
-
-
-## v3.0.3 (2025-10-12)
-
-### Bug Fixes
-
 - update module file extensions in exports ([684a808](https://github.com/nlibjs/typing/commit/684a8086ae8870f06ead29311fd689ed4bed6307))
-
-
-## v3.0.2 (2025-10-12)
 
 ### Code Refactoring
 

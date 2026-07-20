@@ -56,6 +56,7 @@ void _titleTypeGuard;
 void _incompatibleDirectChecker;
 
 test("fromDiagnosis produces a reusable standard narrowing predicate", () => {
+	assert.equal(contextuallyTyped.name, "");
 	assert.equal(contextuallyTyped("Title"), true);
 	assert.equal(contextuallyTyped(""), false);
 	assert.equal(explicitlyTyped("Title"), true);
@@ -67,6 +68,20 @@ test("fromDiagnosis produces a reusable standard narrowing predicate", () => {
 	}
 	assert.equal("diagnosis" in contextuallyTyped, false);
 	assert.deepEqual(Object.getOwnPropertySymbols(contextuallyTyped), []);
+});
+
+test("fromDiagnosis remains anonymous for direct typeChecker wrapping", () => {
+	function* diagnoseUnknown(value: unknown): Iterable<NarrowingIssue> {
+		if (typeof value !== "string") {
+			yield { code: ValidationIssueCode.NarrowingFailed };
+		}
+	}
+	const checker = typeChecker(
+		fromDiagnosis<unknown, string>(diagnoseUnknown),
+		"StringValue",
+	);
+	assert.equal(checker.name, "");
+	assert.equal(checker.toString(), "TypeChecker<isStringValue>");
 });
 
 test("the boolean path shares its issue, skips details, and stops at the first issue", () => {

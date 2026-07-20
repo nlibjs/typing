@@ -13,6 +13,23 @@ const returnIssue: NarrowingIssue = {
 };
 const diagnoses = new WeakMap<object, unknown>();
 
+const createDiagnosisGuard =
+	<T, U extends T>(diagnosis: Diagnosis<T>): NarrowingGuard<T, U> =>
+	(value): value is U => {
+		for (const _issue of diagnosis(value, returnIssue)) {
+			return false;
+		}
+		return true;
+	};
+
+const createNarrowedGuard =
+	<T, U extends T>(
+		typeGuard: TypeGuard<T>,
+		narrowing: NarrowingGuard<T, U>,
+	): TypeGuard<U> =>
+	(input): input is U =>
+		typeGuard(input) && narrowing(input);
+
 /**
  * Derives a narrowing predicate from a diagnosis generator.
  *
@@ -22,12 +39,7 @@ const diagnoses = new WeakMap<object, unknown>();
 export const fromDiagnosis: <T, U extends T>(
 	diagnosis: Diagnosis<T>,
 ) => NarrowingGuard<T, U> = <T, U extends T>(diagnosis: Diagnosis<T>) => {
-	const guard: NarrowingGuard<T, U> = (value): value is U => {
-		for (const _issue of diagnosis(value, returnIssue)) {
-			return false;
-		}
-		return true;
-	};
+	const guard = createDiagnosisGuard<T, U>(diagnosis);
 	diagnoses.set(guard, diagnosis);
 	return guard;
 };
@@ -44,8 +56,7 @@ export const narrow = <const T, U extends T>(
 	diagnosis?: Diagnosis<T>,
 ): TypeGuard<U> => {
 	const derivedDiagnosis = diagnoses.get(narrowing) as Diagnosis<T> | undefined;
-	const narrowed = (input: unknown): input is U =>
-		typeGuard(input) && narrowing(input);
+	const narrowed = createNarrowedGuard(typeGuard, narrowing);
 
 	setDiagnoser(narrowed, (input, path, report, context) => {
 		let baseFailed = false;

@@ -72,6 +72,14 @@ test("zero and one guard preserve the required singleton identities", () => {
 	assert.equal(union(rawGuard), rawGuard);
 });
 
+test("a combined union remains anonymous for typeChecker wrapping", () => {
+	const combined = union(isString, isNumber);
+	assert.equal(combined.name, "");
+	const checker = typeChecker(combined, "StringOrNumber");
+	assert.equal(checker.name, "");
+	assert.equal(checker.toString(), "TypeChecker<isStringOrNumber>");
+});
+
 test("object guards infer and validate a discriminated union", () => {
 	const circle = Object.freeze({ kind: "circle" as const, radius: 2 });
 	const square = { kind: "square" as const, side: 3 };
