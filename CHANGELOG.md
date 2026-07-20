@@ -1,6 +1,6 @@
 # Changelog
 
-## v4.0.0 (2026-07-20)
+## v4.0.1 (2026-07-20)
 
 ### Breaking Changes
 
@@ -17,7 +17,6 @@
 
 ### Bug Fixes
 
-- report unexpected exact-object properties with their paths
 - preserve checker identity across cache clears (#435) ([aa07bda](https://github.com/nlibjs/typing/commit/aa07bdad07fd9d35713d5a53bf092a12246ea04f))
 - build error ([127b840](https://github.com/nlibjs/typing/commit/127b840d5fccdb574155f1cefff12abe8b0e2150))
 - exclude 'jsr.json' from biome configuration includes ([c16273b](https://github.com/nlibjs/typing/commit/c16273b9449f5f8334e8df09f086e33fc89170dd))
@@ -36,7 +35,7 @@
 
 ### Code Refactoring
 
-- compose string and typed-array checkers ([e0454a4](https://github.com/nlibjs/typing/commit/e0454a4f5d0a9a2a601573e3f057afd6ce4efa6a))
+- compose string and typed-array checkers ([701a005](https://github.com/nlibjs/typing/commit/701a00569be8a794b31885a2f50237fb4ac6ec84))
 
 ### Documentation
 
@@ -739,4 +738,5 @@
 ### Styles
 
 - move dependencies ([130aa4d](https://github.com/nlibjs/typing/commit/130aa4d28116f3c3cf8d976c237b5c03742c5a76))
+
 
