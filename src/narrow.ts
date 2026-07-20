@@ -12,7 +12,10 @@ import { ValidationIssueCode } from "./validationIssue.ts";
 export const narrow = <const T, U extends T>(
 	typeGuard: TypeGuard<T>,
 	narrowing: NarrowingGuard<T, U>,
-	diagnosis?: (value: T) => Iterable<NarrowingIssue>,
+	diagnosis?: (
+		value: T,
+		returnIssue?: NarrowingIssue,
+	) => Iterable<NarrowingIssue>,
 ): TypeGuard<U> => {
 	const narrowed = (input: unknown): input is U =>
 		typeGuard(input) && narrowing(input);
@@ -41,7 +44,7 @@ export const narrow = <const T, U extends T>(
 		if (diagnosis) {
 			for (const issue of diagnosis(value)) {
 				issueReported = true;
-				if (!report({ path, ...issue })) {
+				if (!report({ ...issue, path: path.concat(issue.path ?? []) })) {
 					return false;
 				}
 			}

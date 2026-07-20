@@ -49,6 +49,8 @@ export type NarrowingGuard<T, U extends T> = (value: T) => value is U;
 
 /** A diagnostic emitted when an additional narrowing constraint fails. */
 export interface NarrowingIssue {
+	/** Location relative to the narrowed value. Omit for the value itself. */
+	readonly path?: ReadonlyArray<string | number>;
 	/** Machine-readable built-in or caller-defined issue identifier. */
 	readonly code: ValidationIssueCode;
 	/** Description of the expected value, when available. */
