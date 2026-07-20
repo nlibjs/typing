@@ -50,8 +50,10 @@ import { typeChecker } from 'https://esm.sh/@nlib/typing@3.0.0';
 ```typescript
 import * as assert from "node:assert";
 import {
+  type Nominal,
   typeChecker,
   ensure,
+  narrow,
   validate,
   validateAll,
   ValidationIssueCode,
@@ -79,6 +81,26 @@ const isUser = typeChecker({
 // i.e. TypeChecker<User> is (value: unknown) => value is User
 assert.equal(isUser({ id: 1, name: "a" }), true);
 assert.equal(isUser({ id: "1", name: "a" }), false);
+
+// narrow composes a base TypeGuard with a reusable subtype predicate.
+type EmailAddress = Nominal<string, "EmailAddress">;
+const hasEmailAddressSyntax = (value: string): value is EmailAddress =>
+  /^[^@]+@[^@]+$/.test(value);
+const isContactEmail = narrow(isString, hasEmailAddressSyntax, () => [
+  {
+    code: "invalid_email_address",
+    expected: "an email address containing @",
+  },
+]);
+assert.equal(isContactEmail("ada@example.com"), true);
+assert.deepEqual(validate("invalid", isContactEmail), {
+  ok: false,
+  issue: {
+    path: [],
+    code: "invalid_email_address",
+    expected: "an email address containing @",
+  },
+});
 
 // API responses commonly contain additional fields, so validate this one as
 // an open shape with isObjectWith().

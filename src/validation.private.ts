@@ -1,4 +1,4 @@
-import type { TypeChecker, ValidationIssue } from "./types.ts";
+import type { TypeChecker, TypeGuard, ValidationIssue } from "./types.ts";
 
 export interface ValidationContext {
 	readonly objects: WeakSet<WeakKey>;
@@ -15,6 +15,10 @@ export type Diagnoser = (
 
 const diagnosers = new WeakMap<object, Diagnoser>();
 
+export const getRegisteredDiagnoser = (
+	checker: object,
+): Diagnoser | undefined => diagnosers.get(checker);
+
 export const getDiagnoser = <T>(checker: TypeChecker<T>): Diagnoser => {
 	const diagnose = diagnosers.get(checker);
 	if (!diagnose) {
@@ -24,7 +28,7 @@ export const getDiagnoser = <T>(checker: TypeChecker<T>): Diagnoser => {
 };
 
 export const setDiagnoser = <T>(
-	checker: TypeChecker<T>,
+	checker: TypeGuard<T>,
 	diagnose: Diagnoser,
 ): void => {
 	diagnosers.set(checker, diagnose);
