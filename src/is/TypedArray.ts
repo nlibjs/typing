@@ -13,6 +13,7 @@ const typedArrayChecker = <T>(name: string): TypeChecker<T> => {
 				isNonNegativeSafeInteger(input.BYTES_PER_ELEMENT) &&
 				getType(input) === name,
 		}[functionName],
+		name,
 	);
 };
 
