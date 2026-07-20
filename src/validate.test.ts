@@ -2,7 +2,7 @@ import * as assert from "node:assert";
 import { test } from "node:test";
 import { isBoolean } from "./is/Boolean.ts";
 import { isString } from "./is/String.ts";
-import { isArrayOf, typeChecker } from "./typeChecker.ts";
+import { isArrayOf, isDictionaryOf, typeChecker } from "./typeChecker.ts";
 import type { ValidationIssue } from "./types.ts";
 import { validate, validateAll } from "./validate.ts";
 import {
@@ -189,5 +189,63 @@ test("structural mismatch reports the input runtime type", () => {
 		// Unnamed type numbers depend on the test runner's module load order.
 		expected: definition.items.toString(),
 		actualType: "Null",
+	});
+});
+
+test("built-in definitions report their specific issue codes", () => {
+	assert.deepEqual(validate(null, "Date"), {
+		ok: false,
+		issue: {
+			path: [],
+			code: ValidationIssueCode.TypeMismatch,
+			expected: "TypeChecker<Date>",
+			actualType: "Null",
+		},
+	});
+	assert.deepEqual(validate("invalid", /^valid$/), {
+		ok: false,
+		issue: {
+			path: [],
+			code: ValidationIssueCode.PatternMismatch,
+			expected: "TypeChecker</^valid$/>",
+			actualType: "String",
+		},
+	});
+	assert.deepEqual(validate("green", new Set(["red", "blue"])), {
+		ok: false,
+		issue: {
+			path: [],
+			code: ValidationIssueCode.ValueMismatch,
+			expected: 'TypeChecker<"red" | "blue">',
+			actualType: "String",
+		},
+	});
+});
+
+test("dictionary validation reports structural and entry issues", () => {
+	const checker = isDictionaryOf(isString, "StringDictionary");
+	assert.deepEqual(validate(null, checker), {
+		ok: false,
+		issue: {
+			path: [],
+			code: ValidationIssueCode.TypeMismatch,
+			expected: "TypeChecker<Record<string, isstring>>",
+			actualType: "Null",
+		},
+	});
+	const input = { valid: "value", invalid: 1 };
+	const expectedIssue = {
+		path: ["invalid"],
+		code: ValidationIssueCode.GuardFailed,
+		expected: "TypeChecker<isstring>",
+		actualType: "Number",
+	};
+	assert.deepEqual(validate(input, checker), {
+		ok: false,
+		issue: expectedIssue,
+	});
+	assert.deepEqual(validateAll(input, checker), {
+		ok: false,
+		issues: [expectedIssue],
 	});
 });
