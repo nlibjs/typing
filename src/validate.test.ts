@@ -5,6 +5,7 @@ import { isString } from "./is/String.ts";
 import {
 	isArrayOf,
 	isDictionaryOf,
+	isObjectWith,
 	isOptionalOf,
 	typeChecker,
 } from "./typeChecker.ts";
@@ -285,4 +286,49 @@ test("root object mismatch reports a structured issue", () => {
 			actualType: "Null",
 		},
 	});
+});
+
+test("exact and open objects retain their structured validation behavior", () => {
+	const exact = typeChecker({ name: isString }, "ExactPerson");
+	const open = isObjectWith({ name: isString }, "OpenPerson");
+	const input = { name: 1, extra: true };
+
+	assert.deepEqual(validate(input, exact), {
+		ok: false,
+		issue: {
+			path: [],
+			code: ValidationIssueCode.TypeMismatch,
+			expected: "TypeChecker<ExactPerson {\n  name: isstring,\n}>",
+			actualType: "Object",
+		},
+	});
+	const all = validateAll(input, exact);
+	assert.equal(all.ok, false);
+	if (!all.ok) {
+		assert.deepEqual(
+			all.issues.map(({ path, code }) => ({ path, code })),
+			[
+				{ path: [], code: ValidationIssueCode.TypeMismatch },
+				{ path: ["name"], code: ValidationIssueCode.GuardFailed },
+			],
+		);
+	}
+	assert.deepEqual(validate({ name: "Ada", extra: true }, open), {
+		ok: true,
+		value: { name: "Ada", extra: true },
+	});
+});
+
+test("exact object validation preserves its input without sanitizing it", () => {
+	const checker = typeChecker({ name: isString });
+	const input = Object.freeze({ name: "Ada" });
+	const before = Object.getOwnPropertyDescriptors(input);
+	const result = validate(input, checker);
+
+	assert.equal(result.ok, true);
+	if (result.ok) {
+		assert.equal(result.value, input);
+	}
+	assert.deepEqual(Object.getOwnPropertyDescriptors(input), before);
+	assert.equal(Object.isFrozen(input), true);
 });

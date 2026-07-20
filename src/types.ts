@@ -53,6 +53,11 @@ export type TypeGuard<T> = (input: unknown) => input is T;
  */
 export type Guarded<T> = T extends TypeGuard<infer S> ? S : never;
 
+/** An object type definition used by `typeChecker()` and `isObjectWith()`. */
+export type ObjectTypeDefinition<T extends object> = {
+	[K in keyof T]: TypeDefinition<T[K]>;
+};
+
 /**
  * A type of the first argument of `typeChecker()`.
  */

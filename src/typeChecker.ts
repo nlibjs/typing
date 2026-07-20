@@ -1,6 +1,7 @@
 import { getType } from "./getType.ts";
 import type {
 	Callable,
+	ObjectTypeDefinition,
 	TypeChecker,
 	TypeDefinition,
 	TypeGuard,
@@ -27,6 +28,13 @@ const is$Set = (v: unknown): v is Set<unknown> => getType(v) === "Set";
 const is$Function = (v: unknown): v is Callable => typeof v === "function";
 const is$Object = (v: unknown): v is Record<PropertyKey, unknown> =>
 	is$Function(v) || (typeof v === "object" && v !== null);
+const is$PlainObject = (v: unknown): v is Record<PropertyKey, unknown> => {
+	if (typeof v !== "object" || v === null) {
+		return false;
+	}
+	const prototype = Object.getPrototypeOf(v);
+	return prototype === Object.prototype || prototype === null;
+};
 const lazy = <T>(getter: () => T): (() => T) => {
 	let cached: { value: T } | null = null;
 	return () => {
@@ -428,6 +436,29 @@ export const typeChecker: <const T>(
 			},
 		};
 	}
+	return objectFactoryProps(d, typeName, true);
+});
+
+/**
+ * Creates an open-shape type checker from an object definition.
+ *
+ * Declared properties are validated, while additional properties are allowed.
+ * Unlike an object definition passed directly to `typeChecker()`, this checker
+ * retains shape-based matching for functions, arrays, and class instances.
+ */
+export const isObjectWith: <const T extends object>(
+	definition: ObjectTypeDefinition<T>,
+	typeName?: string,
+) => TypeChecker<T> = factory(
+	<T extends object>(d: ObjectTypeDefinition<T>, typeName: string) =>
+		objectFactoryProps(d, typeName, false),
+);
+
+const objectFactoryProps = <T>(
+	d: { [K in keyof T]: TypeDefinition<T[K]> },
+	typeName: string,
+	exact: boolean,
+): FactoryProps<T> => {
 	type PropertyTuple<K extends keyof T = keyof T> = readonly [
 		K,
 		TypeChecker<T[K]>,
@@ -439,6 +470,19 @@ export const typeChecker: <const T>(
 	const properties = lazy(
 		(): Array<PropertyTuple> => keys(d).map((k) => toPropertyTuple(k)),
 	);
+	const propertyKeys = lazy(
+		() => new Set<PropertyKey>(properties().map(([key]) => key)),
+	);
+	const acceptsObject = (
+		input: unknown,
+	): input is Record<PropertyKey, unknown> =>
+		exact ? is$PlainObject(input) : is$Object(input);
+	const hasUnknownKey = (input: Record<PropertyKey, unknown>): boolean =>
+		keys(input).some((key) => !propertyKeys().has(key));
+	const getProperty = (
+		input: Record<PropertyKey, unknown>,
+		key: keyof T,
+	): unknown => (exact && !Object.hasOwn(input, key) ? undefined : input[key]);
 	type TypeGuardWithRefs<U> = (
 		input: unknown,
 		refs?: WeakMap<WeakKey, string>,
@@ -452,14 +496,19 @@ export const typeChecker: <const T>(
 		v: unknown,
 		refs = new WeakMap<WeakKey, string>(),
 	): v is T => {
-		if (!is$Object(v)) {
+		if (!acceptsObject(v)) {
 			return false;
 		}
 		if (refs.has(v)) {
 			throw new Error(`CircularReference: ${refs.get(v)} -> ${typeName}`);
 		}
+		if (exact && hasUnknownKey(v)) {
+			return false;
+		}
 		refs.set(v, typeName);
-		return properties().every(([k, is]) => runGuard(is, v[k], refs));
+		return properties().every(([k, is]) =>
+			runGuard(is, getProperty(v, k), refs),
+		);
 	};
 	return {
 		typeGuard,
@@ -481,7 +530,7 @@ export const typeChecker: <const T>(
 			yield `${getIndent(depth)}}`;
 		},
 		diagnose(checker, input, path, report, context) {
-			if (!is$Object(input)) {
+			if (!acceptsObject(input)) {
 				return report(
 					createIssue(checker, input, path, ValidationIssueCode.TypeMismatch),
 				);
@@ -497,11 +546,20 @@ export const typeChecker: <const T>(
 				return circular;
 			}
 			try {
+				if (
+					exact &&
+					hasUnknownKey(input) &&
+					!report(
+						createIssue(checker, input, path, ValidationIssueCode.TypeMismatch),
+					)
+				) {
+					return false;
+				}
 				for (const [key, property] of properties()) {
 					if (
 						typeof key !== "symbol" &&
 						!getDiagnoser(property)(
-							input[key],
+							getProperty(input, key),
 							path.concat(String(key)),
 							report,
 							context,
@@ -516,11 +574,11 @@ export const typeChecker: <const T>(
 			}
 		},
 		test(input: unknown, route: Array<string | number | symbol> = []) {
-			if (!is$Object(input)) {
+			if (!acceptsObject(input) || (exact && hasUnknownKey(input))) {
 				return new TypeCheckError(this, input);
 			}
 			for (const [k, pd] of properties()) {
-				const error = pd.test(input[k], route.concat(k));
+				const error = pd.test(getProperty(input, k), route.concat(k));
 				if (error) {
 					return error;
 				}
@@ -528,7 +586,7 @@ export const typeChecker: <const T>(
 			return null;
 		},
 	};
-});
+};
 
 class TypeCheckError<T> extends Error {
 	constructor(
