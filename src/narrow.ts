@@ -3,6 +3,35 @@ import type { NarrowingGuard, NarrowingIssue, TypeGuard } from "./types.ts";
 import { getDiagnoser, setDiagnoser } from "./validation.private.ts";
 import { ValidationIssueCode } from "./validationIssue.ts";
 
+type Diagnosis<T> = (
+	value: T,
+	returnIssue?: NarrowingIssue,
+) => Iterable<NarrowingIssue>;
+
+const returnIssue: NarrowingIssue = {
+	code: ValidationIssueCode.NarrowingFailed,
+};
+const diagnoses = new WeakMap<object, unknown>();
+
+/**
+ * Derives a narrowing predicate from a diagnosis generator.
+ *
+ * Boolean evaluation stops at the first issue and supplies a shared issue so
+ * callers can skip constructing detailed diagnostics with `returnIssue ??`.
+ */
+export const fromDiagnosis: <T, U extends T>(
+	diagnosis: Diagnosis<T>,
+) => NarrowingGuard<T, U> = <T, U extends T>(diagnosis: Diagnosis<T>) => {
+	const guard: NarrowingGuard<T, U> = (value): value is U => {
+		for (const _issue of diagnosis(value, returnIssue)) {
+			return false;
+		}
+		return true;
+	};
+	diagnoses.set(guard, diagnosis);
+	return guard;
+};
+
 /**
  * Composes a type guard with an additional subtype constraint.
  *
@@ -12,11 +41,9 @@ import { ValidationIssueCode } from "./validationIssue.ts";
 export const narrow = <const T, U extends T>(
 	typeGuard: TypeGuard<T>,
 	narrowing: NarrowingGuard<T, U>,
-	diagnosis?: (
-		value: T,
-		returnIssue?: NarrowingIssue,
-	) => Iterable<NarrowingIssue>,
+	diagnosis?: Diagnosis<T>,
 ): TypeGuard<U> => {
+	const derivedDiagnosis = diagnoses.get(narrowing) as Diagnosis<T> | undefined;
 	const narrowed = (input: unknown): input is U =>
 		typeGuard(input) && narrowing(input);
 
@@ -36,13 +63,14 @@ export const narrow = <const T, U extends T>(
 		}
 
 		const value = input as T;
-		if (narrowing(value)) {
+		if (!derivedDiagnosis && narrowing(value)) {
 			return true;
 		}
 
 		let issueReported = false;
-		if (diagnosis) {
-			for (const issue of diagnosis(value)) {
+		const diagnose = derivedDiagnosis ?? diagnosis;
+		if (diagnose) {
+			for (const issue of diagnose(value)) {
 				issueReported = true;
 				if (!report({ ...issue, path: path.concat(issue.path ?? []) })) {
 					return false;
@@ -50,6 +78,7 @@ export const narrow = <const T, U extends T>(
 			}
 		}
 		return (
+			derivedDiagnosis !== undefined ||
 			issueReported ||
 			report({ path, code: ValidationIssueCode.NarrowingFailed })
 		);
