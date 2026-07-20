@@ -51,8 +51,11 @@ import { typeChecker } from 'https://esm.sh/@nlib/typing@3.0.0';
 import * as assert from "node:assert";
 import {
   type Nominal,
+  type NarrowingIssue,
+  type TypeGuard,
   typeChecker,
   ensure,
+  fromDiagnosis,
   narrow,
   union,
   validate,
@@ -102,6 +105,34 @@ assert.deepEqual(validate("invalid", isContactEmail), {
     expected: "an email address containing @",
   },
 });
+
+// fromDiagnosis makes one generator the source of truth for both the boolean
+// constraint and detailed structured-validation issues.
+type Title = Nominal<string, "Title">;
+function* diagnoseTitle(
+  value: string,
+  returnIssue?: NarrowingIssue,
+): Iterable<NarrowingIssue> {
+  const length = Array.from(value).length;
+  if (length === 0) {
+    yield returnIssue ?? {
+      code: "too_short",
+      expected: "at least 1 code point",
+    };
+  }
+  if (100 < length) {
+    yield returnIssue ?? {
+      code: "too_long",
+      expected: "at most 100 code points",
+    };
+  }
+}
+const isTitle: TypeGuard<Title> = typeChecker(
+  narrow(isString, fromDiagnosis(diagnoseTitle)),
+  "Title",
+);
+assert.equal(isTitle("A title"), true);
+assert.equal(isTitle(""), false);
 
 // Diagnosis paths are relative to the narrowed value. Structural checkers
 // prefix them, and validateAll preserves every issue in iteration order.
