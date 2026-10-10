@@ -536,10 +536,16 @@ const objectFactoryProps = <T>(
 		if (exact && hasUnknownKey(v)) {
 			return false;
 		}
+		// refs holds only the active recursion path, so an object shared by
+		// sibling properties is not mistaken for a circular reference.
 		refs.set(v, typeName);
-		return properties().every(([k, is]) =>
-			runGuard(is, getProperty(v, k), refs),
-		);
+		try {
+			return properties().every(([k, is]) =>
+				runGuard(is, getProperty(v, k), refs),
+			);
+		} finally {
+			refs.delete(v);
+		}
 	};
 	return {
 		typeGuard,

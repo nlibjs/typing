@@ -9,6 +9,7 @@ import {
 	typeCheckerConfig,
 } from "./typeChecker.ts";
 import type { Nominal, TypeChecker } from "./types.ts";
+import { validate, validateAll } from "./validate.ts";
 
 test("Should able to define tree structures", () => {
 	typeCheckerConfig.resetNoNameTypeCount();
@@ -67,6 +68,64 @@ test("Should detect circular references.", () => {
 	assert.equal(isT(obj), true);
 	obj.sub = obj;
 	assert.throws(() => isT(obj), /^Error: CircularReference:/);
+});
+
+const assertSharedObjectAccepted = <T>(
+	isT: TypeChecker<T>,
+	input: unknown,
+): void => {
+	assert.equal(isT(input), true, `${isT}`);
+	assert.equal(validate(input, isT).ok, true, `${isT}`);
+	assert.equal(validateAll(input, isT).ok, true, `${isT}`);
+};
+
+test("Should accept objects shared between sibling properties.", () => {
+	const shared = { name: "Ada" };
+	assertSharedObjectAccepted(
+		typeChecker({ left: { name: isString }, right: { name: isString } }),
+		{ left: shared, right: shared },
+	);
+	assertSharedObjectAccepted(
+		isObjectWith({ left: { name: isString }, right: { name: isString } }),
+		{ left: shared, right: shared },
+	);
+	assertSharedObjectAccepted(
+		typeChecker({
+			left: { name: isString },
+			right: isObjectWith({ name: /^A/ }),
+		}),
+		{ left: shared, right: shared },
+	);
+	assertSharedObjectAccepted(
+		typeChecker({
+			pair: { left: { name: isString } },
+			right: { name: isString },
+		}),
+		{ pair: { left: shared }, right: shared },
+	);
+});
+
+test("Should detect circular references reached through a shared object.", () => {
+	interface Node {
+		name: string;
+		next: Node;
+	}
+	const isNode: TypeChecker<Node> = typeChecker<Node>(
+		{
+			name: isString,
+			get next() {
+				return isNode;
+			},
+		},
+		"Node",
+	);
+	const isPair = typeChecker({ left: isNode, right: isNode });
+	const shared = { name: "shared" } as Node;
+	shared.next = shared;
+	assert.throws(
+		() => isPair({ left: shared, right: shared }),
+		/^Error: CircularReference:/,
+	);
 });
 
 test("Should test type guards and object definitions.", () => {
