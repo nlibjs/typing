@@ -2,7 +2,7 @@
 
 **TypeScript types that actually work at runtime.**
 
-Stop writing your types twice. `@nlib/typing` lets you define the shape of your data **once** — and use it for both compile-time type safety and runtime validation. No more keeping Zod schemas in sync with your interfaces. No more manual type guards that go stale.
+Define the shape of your data **once** and use it for both compile-time type safety and runtime validation. Every checker is an ordinary TypeScript type guard, so it composes with the `(input: unknown) => input is T` predicates you already have instead of replacing them.
 
 ```typescript
 // Define once...
@@ -21,7 +21,8 @@ const user = ensure(await response.json(), isUser); // throws with a clear messa
 - **Rich built-in validators** — Email addresses, UUIDs, IPv4/IPv6, HTTP methods, Base64, URLs, and more — all with branded types for extra compile-time safety
 - **Recursive types** — Model trees and self-referencing structures with a simple getter pattern
 - **Works everywhere** — Node.js, Deno, and browsers (via esm.sh CDN)
-- **Zero runtime overhead** — Results are cached via `WeakMap`; the same definition always returns the same checker instance
+- **Interoperates with existing type guards** — Any type predicate can be used as a definition, and `typeChecker`, `narrow`, `union`, and `fromDiagnosis` combine your own guards and narrowing predicates with the built-in checkers (see [Usage](#usage))
+- **Cached checker construction** — Checkers are cached in a `WeakMap` keyed by the definition object, so passing the same definition again returns the same checker instance. Validation results are not cached: every call checks the input again
 - **Descriptive errors** — `ensure()` throws with the exact property path that failed validation
 
 [![NPM Version](https://img.shields.io/npm/v/%40nlib%2Ftyping)](https://www.npmjs.com/package/@nlib/typing)
