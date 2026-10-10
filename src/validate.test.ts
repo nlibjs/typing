@@ -9,7 +9,7 @@ import {
 	isOptionalOf,
 	typeChecker,
 } from "./typeChecker.ts";
-import type { ValidationIssue } from "./types.ts";
+import type { TypeChecker, ValidationIssue } from "./types.ts";
 import { validate, validateAll } from "./validate.ts";
 import {
 	ValidationIssueCode,
@@ -405,4 +405,40 @@ test("exact object validation preserves its input without sanitizing it", () => 
 	}
 	assert.deepEqual(Object.getOwnPropertyDescriptors(input), before);
 	assert.equal(Object.isFrozen(input), true);
+});
+
+const assertArrayResult = <T>(
+	checker: TypeChecker<Array<T>>,
+	input: unknown,
+	expected: boolean,
+): void => {
+	const label = `${checker} ${JSON.stringify(input)}`;
+	assert.equal(checker(input), expected, label);
+	assert.equal(checker.test(input) === null, expected, label);
+	assert.equal(validate(input, checker).ok, expected, label);
+	assert.equal(validateAll(input, checker).ok, expected, label);
+};
+
+test("array holes are checked like undefined elements on every path", () => {
+	const isStrings = isArrayOf(isString);
+	const isOptionalStrings = isArrayOf(isOptionalOf(isString));
+	// biome-ignore lint/suspicious/noSparseArray: sparse arrays are the subject
+	const mixed = ["a", , "c"];
+	const cases: Array<[unknown, boolean, boolean]> = [
+		// [input, isStrings, isOptionalStrings]
+		[[], true, true],
+		[new Array(2), false, true],
+		[mixed, false, true],
+		[["a", undefined], false, true],
+		[["a", "b"], true, true],
+	];
+	for (const [input, strings, optionalStrings] of cases) {
+		assertArrayResult(isStrings, input, strings);
+		assertArrayResult(isOptionalStrings, input, optionalStrings);
+	}
+	const result = validate(mixed, isStrings);
+	assert.equal(result.ok, false);
+	if (!result.ok) {
+		assert.deepEqual(result.issue.path, [1]);
+	}
 });

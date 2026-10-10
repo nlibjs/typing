@@ -236,8 +236,19 @@ export const isArrayOf: <const T>(
 		const k = `isArrayOf${typeName}`;
 		return {
 			typeGuard: {
-				[k]: (v: unknown): v is Array<T> =>
-					Array.isArray(v) && v.every((i) => isT(i)),
+				// Visit every index (holes included) to match the diagnosis path;
+				// Array.prototype.every() would skip holes.
+				[k]: (v: unknown): v is Array<T> => {
+					if (!Array.isArray(v)) {
+						return false;
+					}
+					for (let index = 0; index < v.length; index++) {
+						if (!isT(v[index])) {
+							return false;
+						}
+					}
+					return true;
+				},
 			}[k],
 			*serialize(depth, done) {
 				yield "Array<";
