@@ -396,14 +396,21 @@ export const typeChecker: <const T>(
 		};
 	}
 	if (is$RegExp(d)) {
+		// A private copy keeps global/sticky patterns deterministic and leaves
+		// the caller's lastIndex untouched.
+		const pattern = new RegExp(d);
+		const matches = (v: string): boolean => {
+			pattern.lastIndex = 0;
+			return pattern.test(v);
+		};
 		return {
-			typeGuard: { [k]: (v: unknown): v is T => is$String(v) && d.test(v) }[k],
+			typeGuard: { [k]: (v: unknown): v is T => is$String(v) && matches(v) }[k],
 			*serialize() {
 				yield `${d}`;
 			},
 			diagnose(checker, input, path, report) {
 				return (
-					(is$String(input) && d.test(input)) ||
+					(is$String(input) && matches(input)) ||
 					report(
 						createIssue(
 							checker,
