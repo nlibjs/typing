@@ -25,10 +25,11 @@ const user = ensure(await response.json(), isUser); // throws with a clear messa
 - **Cached checker construction** — Checkers are cached in a `WeakMap` keyed by the definition object, so passing the same definition again returns the same checker instance. Validation results are not cached: every call checks the input again
 - **Descriptive errors** — `ensure()` throws with the exact property path that failed validation
 
-[![NPM Version](https://img.shields.io/npm/v/%40nlib%2Ftyping)](https://www.npmjs.com/package/@nlib/typing)
+[![npm](https://img.shields.io/npm/v/%40nlib%2Ftyping)](https://www.npmjs.com/package/@nlib/typing)
 [![JSR](https://jsr.io/badges/@nlib/typing)](https://jsr.io/@nlib/typing)
-[![test](https://github.com/nlibjs/typing/actions/workflows/test.yml/badge.svg)](https://github.com/nlibjs/typing/actions/workflows/test.yml)
+[![Test](https://github.com/nlibjs/typing/actions/workflows/test.yml/badge.svg)](https://github.com/nlibjs/typing/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/nlibjs/typing/graph/badge.svg?token=msEnyrNAzF)](https://codecov.io/gh/nlibjs/typing)
+[![License](https://img.shields.io/npm/l/%40nlib%2Ftyping)](https://github.com/nlibjs/typing/blob/main/LICENSE.txt)
 
 ```
 npm install @nlib/typing
