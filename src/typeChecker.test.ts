@@ -339,3 +339,19 @@ test("Should serialize definitions (Recursive)", () => {
 	].join("\n");
 	assert.equal(actual, expected);
 });
+
+test("Should check global and sticky RegExp definitions deterministically", () => {
+	for (const pattern of [/a/, /a/g, /a/y]) {
+		pattern.lastIndex = 1;
+		const isT = typeChecker(pattern);
+		for (let i = 0; i < 3; i++) {
+			assert.equal(isT("a"), true, `${pattern} #${i}`);
+			assert.equal(isT("b"), false, `${pattern} #${i}`);
+			assert.equal(validate("a", isT).ok, true, `${pattern} #${i}`);
+			assert.equal(validateAll("a", isT).ok, true, `${pattern} #${i}`);
+			assert.equal(validate("b", isT).ok, false, `${pattern} #${i}`);
+			assert.equal(isT.test("a"), null, `${pattern} #${i}`);
+		}
+		assert.equal(pattern.lastIndex, 1, `${pattern} lastIndex`);
+	}
+});
