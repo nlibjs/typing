@@ -236,19 +236,10 @@ export const isArrayOf: <const T>(
 		const k = `isArrayOf${typeName}`;
 		return {
 			typeGuard: {
-				// Visit every index (holes included) to match the diagnosis path;
-				// Array.prototype.every() would skip holes.
-				[k]: (v: unknown): v is Array<T> => {
-					if (!Array.isArray(v)) {
-						return false;
-					}
-					for (let index = 0; index < v.length; index++) {
-						if (!isT(v[index])) {
-							return false;
-						}
-					}
-					return true;
-				},
+				// findIndex() visits holes as undefined, matching the diagnosis
+				// path; every() would skip them.
+				[k]: (v: unknown): v is Array<T> =>
+					Array.isArray(v) && v.findIndex((i) => !isT(i)) < 0,
 			}[k],
 			*serialize(depth, done) {
 				yield "Array<";
