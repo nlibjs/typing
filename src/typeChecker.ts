@@ -236,8 +236,10 @@ export const isArrayOf: <const T>(
 		const k = `isArrayOf${typeName}`;
 		return {
 			typeGuard: {
+				// findIndex() visits holes as undefined, matching the diagnosis
+				// path; every() would skip them.
 				[k]: (v: unknown): v is Array<T> =>
-					Array.isArray(v) && v.every((i) => isT(i)),
+					Array.isArray(v) && v.findIndex((i) => !isT(i)) < 0,
 			}[k],
 			*serialize(depth, done) {
 				yield "Array<";
@@ -396,14 +398,21 @@ export const typeChecker: <const T>(
 		};
 	}
 	if (is$RegExp(d)) {
+		// A private copy keeps global/sticky patterns deterministic and leaves
+		// the caller's lastIndex untouched.
+		const pattern = new RegExp(d);
+		const matches = (v: string): boolean => {
+			pattern.lastIndex = 0;
+			return pattern.test(v);
+		};
 		return {
-			typeGuard: { [k]: (v: unknown): v is T => is$String(v) && d.test(v) }[k],
+			typeGuard: { [k]: (v: unknown): v is T => is$String(v) && matches(v) }[k],
 			*serialize() {
 				yield `${d}`;
 			},
 			diagnose(checker, input, path, report) {
 				return (
-					(is$String(input) && d.test(input)) ||
+					(is$String(input) && matches(input)) ||
 					report(
 						createIssue(
 							checker,
@@ -536,10 +545,16 @@ const objectFactoryProps = <T>(
 		if (exact && hasUnknownKey(v)) {
 			return false;
 		}
+		// refs holds only the active recursion path, so an object shared by
+		// sibling properties is not mistaken for a circular reference.
 		refs.set(v, typeName);
-		return properties().every(([k, is]) =>
-			runGuard(is, getProperty(v, k), refs),
-		);
+		try {
+			return properties().every(([k, is]) =>
+				runGuard(is, getProperty(v, k), refs),
+			);
+		} finally {
+			refs.delete(v);
+		}
 	};
 	return {
 		typeGuard,
