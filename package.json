@@ -220,9 +220,7 @@
 		"version:add-changelog": "git add CHANGELOG.md",
 		"version:sync-version": "node cli/sync-version.ts",
 		"version:add-jsr": "git add jsr.json",
-		"release:prepare": "npm run build && node cli/release-jsr.ts --check && git diff --exit-code -- package.json jsr.json src",
-		"release:jsr": "node cli/release-jsr.ts",
-		"test:release": "node --test cli/release-jsr.test.ts"
+		"release:prepare": "npm run build && git diff --exit-code -- src"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.4",

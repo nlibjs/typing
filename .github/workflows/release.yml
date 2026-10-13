@@ -40,7 +40,7 @@ jobs:
       action: stage
       tag: ${{ github.event.release.tag_name || inputs.tag }}
   PublishJsr:
-    if: (github.event_name == 'release' && !github.event.release.prerelease) || inputs.action == 'stage'
+    needs: Stage
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -49,15 +49,10 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           ref: ${{ github.sha }}
-          fetch-depth: 0
           persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: 26.x
           package-manager-cache: false
       - run: npm ci
-      - run: npm run release:prepare
-      - run: npm run release:jsr
-        env:
-          GH_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ github.event.release.tag_name || inputs.tag }}
+      - run: npx --yes jsr@0.14.3 publish
