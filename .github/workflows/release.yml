@@ -26,7 +26,7 @@ jobs:
     if: github.event_name == 'workflow_dispatch' && inputs.action == 'verify'
     permissions:
       contents: read
-    uses: nlibjs/actions/.github/workflows/npm-release.yml@fb8c1ebe8e807f896242c67e6dc407c71e4e34dd
+    uses: nlibjs/actions/.github/workflows/npm-release.yml@53324e92eb61920ce5d274a42eb23f73dd98a383
     with:
       action: verify
   Stage:
@@ -35,7 +35,7 @@ jobs:
       contents: read
       actions: read
       id-token: write
-    uses: nlibjs/actions/.github/workflows/npm-release.yml@fb8c1ebe8e807f896242c67e6dc407c71e4e34dd
+    uses: nlibjs/actions/.github/workflows/npm-release.yml@53324e92eb61920ce5d274a42eb23f73dd98a383
     with:
       action: stage
       tag: ${{ github.event.release.tag_name || inputs.tag }}
