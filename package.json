@@ -223,7 +223,7 @@
 		"release:prepare": "npm run build && git diff --exit-code -- src"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.6.7",
+		"@biomejs/biome": "2.6.8",
 		"@types/node": "26.6.6",
 		"@typescript/typescript6": "6.0.2",
 		"esbuild": "0.28.2",
